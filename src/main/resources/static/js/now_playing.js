@@ -24,6 +24,8 @@
 		    const posterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
 		    
 		    const movieId = movie.id; 
+		    
+		    //영화 카드 눌럿을때 가는 경로
     		const detailUrl = `/detail/${movieId}`;
 		    
 		    const card = document.createElement('div');

@@ -2,10 +2,103 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/top_rate.css">
-    <title>영화 상세정보</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화리뷰하기</title>
 </head>
 <body>
-	
+    <center>
+        <h1>작품이 어떠셨나요?</h1>
+        <h4>이 작품에 별점을 남겨주세요! 😊</h4> 
+
+        <!-- 별점 입력 섹션 -->
+        <p>
+            <input type="radio" id="star5" name="star" value="5">
+            <label for="star5">5점 ⭐⭐⭐⭐⭐</label>
+            <input type="radio" id="star4" name="star" value="4">
+            <label for="star4">4점 ⭐⭐⭐⭐</label>
+            <input type="radio" id="star3" name="star" value="3">
+            <label for="star3">3점 ⭐⭐⭐</label>
+            <input type="radio" id="star2" name="star" value="2">
+            <label for="star2">2점 ⭐⭐</label>
+            <input type="radio" id="star1" name="star" value="1">
+            <label for="star1">1점 ⭐</label>
+        </p>
+
+        <textarea rows="20" cols="100" placeholder="당신의 생각을 자유롭게 작성하여 주세요!"></textarea>
+
+        <!-- 버튼 섹션 -->
+        <p>
+            <input type="submit" value="등록하기">
+            <input type="button" value="취소">
+        </p>
+        <hr>
+        
+        
+        <!-- 리뷰 목록 섹션 -->
+        <h2>영화 리뷰 목록</h2>
+
+        <!-- ===== 리뷰 아이템 시작 ===== -->
+        <table border="0" cellpadding="5" cellspacing="0" width="80%">
+            <tr>
+                <td align="left"><b>남자라면제육</b></td>
+                <td align="right">⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="left">
+                    <p>연기 지리네요 ㄷㄷ 스토리도 잘 짜여진 거 같고 추첩합니당</p>
+                </td>
+            </tr>
+        </table>
+        <hr width="80%">
+
+        <table border="0" cellpadding="5" cellspacing="0" width="80%">
+            <tr>
+                <td align="left"><b>메가박스인수함</b></td>
+                <td align="right">⭐⭐⭐☆☆</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="left">
+                    <p>기대했던 것보단 평범하네요 ㅠ 그래도 감독님과 연기자분들 촬영하신다고 고생하셨겠어요</p>
+                </td>
+            </tr>
+        </table>
+        <hr width="80%">
+
+        <table border="0" cellpadding="5" cellspacing="0" width="80%">
+            <tr>
+                <td align="left"><b>빛태훈갓태훈</b></td>
+                <td align="right">⭐⭐⭐⭐☆</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="left">
+                    <p>보길 잘한 것 같습니다!</p>
+                </td>
+            </tr>
+        </table>
+        <hr width="80%">
+
+        <table border="0" cellpadding="5" cellspacing="0" width="80%">
+            <tr>
+                <td align="left"><b>눈나나죽어</b></td>
+                <td align="right">⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td colspan="2" align="left">
+                    <p>"수능 8시간 전 최고의 선택"</p>
+                </td>
+            </tr>
+        </table>
+        <hr width="80%">
+        
+        <!-- 페이지네이션 섹션 -->
+        <p>
+            <a href="#">1</a>
+            <a href="#">2</a>
+            <a href="#">3</a>
+            <a href="#">4</a>
+            <a href="#">5</a>
+            <a href="#">다음 &gt;&gt;</a>
+        </p>
+    </center>
 </body>
 </html>

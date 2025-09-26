@@ -9,6 +9,14 @@
   box-sizing: border-box;
 }
 
+
+/* a태그 밑줄 없앰  */
+
+a{
+	text-decoration: none;	
+	color: black ;
+}
+
 /* 영화 카드들이 들어가는 영역 */
 #movie-list2 {
   display: flex;                  /* 가로 배치 */
