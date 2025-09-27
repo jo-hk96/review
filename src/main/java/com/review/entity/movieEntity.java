@@ -16,6 +16,10 @@ public class movieEntity {
 		@Id
 		@Column(name = "MOVIE_ID")
 	    private Long movieId; // 영화 고유 ID
+		
+		
+		@Column(name = "API_ID", unique = true, nullable = false)
+		private Long apiId; 
 	    private String originalTitle; //원제
 		private String title; //제목
 		private String overview; //줄거리

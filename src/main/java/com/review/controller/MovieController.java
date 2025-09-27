@@ -17,15 +17,16 @@ public class MovieController {
 	//역대 영화 사이트
 	@GetMapping("/TopRate")
 	public String MovieList() {
-		return "movies/top_rate";
+		return "movies/movies_list";
 	}
 	
 	
-	//현재 개봉중인 영화
-	@GetMapping("/NowPlaying")
+	//영화리스트
+	@GetMapping("/MoviesList")
 	public String NowPlaying() {
-		return "movies/now_playing";
+		return "movies/movies_list";
 	}
+	
 	
 	//영화 상세 정보
 	@GetMapping("/detail/{movieId}")
@@ -33,5 +34,8 @@ public class MovieController {
 		System.out.println("넘어온 영화 ID: " + id);
 		return "movies/movies_detail";
 	}
+	
+	
+	
 	
 }

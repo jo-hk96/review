@@ -2,103 +2,131 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>영화리뷰하기</title>
 </head>
+<style>
+	.rating-area {
+	    font-size: 2em; /* 별 크기 설정 */
+	    color: #ccc;    /* 기본 색상: 회색 (비활성화) */
+	    cursor: pointer;
+	    user-select: none; /* 드래그 방지 */
+	}
+	
+	/* 개별 별 스타일 */
+	.star {
+	    transition: color 0.2s;
+	}
+	
+	/* 마우스 오버되거나 'on' 클래스가 붙은 별에만 색상 적용 */
+	.rating-area:hover .star {
+	    color: gold; /* 마우스가 영역에 올라가면 기본 색상 지정 */
+	}
+	
+	/* 'on' 클래스가 붙거나, 그 이전 별들 */
+	.star.on {
+	    color: gold;
+	}
+	
+	/* 마우스가 특정 별 위에 있을 때, 그 별과 그 앞의 모든 별에 색상 적용 */
+	.rating-area .star:hover ~ .star {
+	    color: #ccc; /* 마우스가 지나간 뒤의 별은 다시 회색으로 */
+	}
+
+</style>
 <body>
-    <center>
-        <h1>작품이 어떠셨나요?</h1>
-        <h4>이 작품에 별점을 남겨주세요! 😊</h4> 
-
-        <!-- 별점 입력 섹션 -->
-        <p>
-            <input type="radio" id="star5" name="star" value="5">
-            <label for="star5">5점 ⭐⭐⭐⭐⭐</label>
-            <input type="radio" id="star4" name="star" value="4">
-            <label for="star4">4점 ⭐⭐⭐⭐</label>
-            <input type="radio" id="star3" name="star" value="3">
-            <label for="star3">3점 ⭐⭐⭐</label>
-            <input type="radio" id="star2" name="star" value="2">
-            <label for="star2">2점 ⭐⭐</label>
-            <input type="radio" id="star1" name="star" value="1">
-            <label for="star1">1점 ⭐</label>
-        </p>
-
-        <textarea rows="20" cols="100" placeholder="당신의 생각을 자유롭게 작성하여 주세요!"></textarea>
-
-        <!-- 버튼 섹션 -->
-        <p>
-            <input type="submit" value="등록하기">
-            <input type="button" value="취소">
-        </p>
-        <hr>
-        
-        
-        <!-- 리뷰 목록 섹션 -->
-        <h2>영화 리뷰 목록</h2>
-
-        <!-- ===== 리뷰 아이템 시작 ===== -->
-        <table border="0" cellpadding="5" cellspacing="0" width="80%">
+	    <div id="movie-detail-container">
+	        <p>상세정보 불러오는중</p>
+	    </div>
+	    
+	  <form action="/UserReview" method = "POST">
+	  		<h3>리뷰쓰기</h3>
+	  		글쓴이 : <input type = "text" ><br>
+	  		내용   : <textarea rows = "5" cols = "30"></textarea><br>
+		  	별점:	<div class="rating-area">
+					    <span class="star" data-rating="1">★</span>
+					    <span class="star" data-rating="2">★</span>
+					    <span class="star" data-rating="3">★</span>
+					    <span class="star" data-rating="4">★</span>
+					    <span class="star" data-rating="5">★</span>
+					</div>
+					<input type="hidden" id="selected-rating" name="rating" value="0">
+	  </form>
+	    
+		<hr>
+        <table>
             <tr>
-                <td align="left"><b>남자라면제육</b></td>
-                <td align="right">⭐⭐⭐⭐⭐</td>
+                <td><b>닉네임:남자라면제육</b></td>
             </tr>
             <tr>
-                <td colspan="2" align="left">
+                <td>별점 : ⭐⭐⭐⭐⭐</td>
+            </tr>
+            <tr>
+                <td>
                     <p>연기 지리네요 ㄷㄷ 스토리도 잘 짜여진 거 같고 추첩합니당</p>
                 </td>
             </tr>
         </table>
-        <hr width="80%">
 
-        <table border="0" cellpadding="5" cellspacing="0" width="80%">
-            <tr>
-                <td align="left"><b>메가박스인수함</b></td>
-                <td align="right">⭐⭐⭐☆☆</td>
-            </tr>
-            <tr>
-                <td colspan="2" align="left">
-                    <p>기대했던 것보단 평범하네요 ㅠ 그래도 감독님과 연기자분들 촬영하신다고 고생하셨겠어요</p>
-                </td>
-            </tr>
-        </table>
-        <hr width="80%">
-
-        <table border="0" cellpadding="5" cellspacing="0" width="80%">
-            <tr>
-                <td align="left"><b>빛태훈갓태훈</b></td>
-                <td align="right">⭐⭐⭐⭐☆</td>
-            </tr>
-            <tr>
-                <td colspan="2" align="left">
-                    <p>보길 잘한 것 같습니다!</p>
-                </td>
-            </tr>
-        </table>
-        <hr width="80%">
-
-        <table border="0" cellpadding="5" cellspacing="0" width="80%">
-            <tr>
-                <td align="left"><b>눈나나죽어</b></td>
-                <td align="right">⭐⭐⭐⭐⭐</td>
-            </tr>
-            <tr>
-                <td colspan="2" align="left">
-                    <p>"수능 8시간 전 최고의 선택"</p>
-                </td>
-            </tr>
-        </table>
-        <hr width="80%">
         
-        <!-- 페이지네이션 섹션 -->
-        <p>
-            <a href="#">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">4</a>
-            <a href="#">5</a>
-            <a href="#">다음 &gt;&gt;</a>
-        </p>
-    </center>
+        
+
+<script>
+	document.addEventListener('DOMContentLoaded', () => {
+	    const ratingArea = document.querySelector('.rating-area');
+	    const stars = ratingArea.querySelectorAll('.star');
+	    const ratingInput = document.getElementById('selected-rating');
+	
+	    // ⭐️ 1. 초기 로딩 시 별점 상태 설정
+	    // 만약 수정 페이지라면 초기 값으로 별을 'on' 상태로 만들어줘야 합니다.
+	    let currentRating = parseInt(ratingInput.value) || 0;
+	    highlightStars(currentRating);
+	
+	
+	    // ⭐️ 2. 별 클릭 이벤트 처리
+	    ratingArea.addEventListener('click', (event) => {
+	        if (event.target.classList.contains('star')) {
+	            const clickedRating = parseInt(event.target.dataset.rating);
+	            
+	            // 현재 별점을 업데이트하고 화면에 반영
+	            currentRating = clickedRating;
+	            ratingInput.value = currentRating; // Hidden Input에 값 저장
+	            highlightStars(currentRating);
+	        }
+	    });
+	
+	    // ⭐️ 3. 마우스 오버 효과 (선택된 별만 색칠)
+	    ratingArea.addEventListener('mouseover', (event) => {
+	        if (event.target.classList.contains('star')) {
+	            const hoveredRating = parseInt(event.target.dataset.rating);
+	            highlightStars(hoveredRating);
+	        }
+	    });
+	
+	    // ⭐️ 4. 마우스가 영역을 벗어났을 때 원래의 선택된 별점으로 돌아감
+	    ratingArea.addEventListener('mouseout', () => {
+	        highlightStars(currentRating);
+	    });
+	
+	
+	    // ⭐️ 별을 활성화(색칠)하는 핵심 함수
+	    function highlightStars(ratingValue) {
+	        stars.forEach((star) => {
+	            const starRating = parseInt(star.dataset.rating);
+	            
+	            // 현재 별점 값보다 작거나 같으면 'on' 클래스 추가
+	            if (starRating <= ratingValue) {
+	                star.classList.add('on');
+	            } else {
+	                star.classList.remove('on');
+	            }
+	        });
+	    }
+	
+	});
+</script>	    
+	    
+	    
+	    
+<script src="/js/movies_detail.js"></script>
 </body>
 </html>

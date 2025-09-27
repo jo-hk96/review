@@ -4,44 +4,74 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/top_rate.css">
     <link rel="stylesheet" href="/css/now_playing.css">
+    <link rel="stylesheet" href="/css/index.css">
     <title>영화 정보 보기</title>
 </head>
+<style>
+	#userIndex{
+			border:1px solid black;
+			margin-left:400px;
+			font-size:30px;
+	}
+</style>
+
+
 
 <body>
+	<div id ="userIndex">
+		<a href = "/UserJoinForm">회원가입</a>
+		<a href = "/UserMypage">내정보</a>
+		<a href = "/UserLoginForm">로그인</a>
+		<a href = "">로그아웃</a>
+	</div>
+	
 	<div>
-		<h2><a href = "/UserJoinForm">회원가입</a></h2>
-		<h2><a href = "/UserMypage">내정보</a></h2>
-		<h2><a href = "/UserLoginForm">로그인</a></h2>
-		<h2><a href = "">로그아웃</a></h2>
+		<form action ="" method ="">
+			영화 검색 : <input type ="text" id = 'movieSearch' name = "movieSearch">
+			<button type = "submit">검색</button>
+		</form>
+	
 	</div>
 	
-	<form action = "" method = "get">
-		<input type = "text" name ="movieSearch" id = "movieSearch">
-		<button type = "submit" id = "movieSearch" name ="movieSearch">검색</button>
-	</form>
 	
-	<div>	
-		<h2><a href = "">리뷰 평점 순</a></h2>
-	</div>
+	
+	
 	
   	 <!-- 개봉중인 영화  -->
 	 <div class="slider-container2">
-  		 	<h1><a href = "">개봉중인 영화</a></h1>
+  		 	<h1><a href ="/MoviesList">개봉중인 영화</a></h1>
 		    <button id="prev-btn2" class="nav-btn2">&lt;</button> 
 		  	  <div id="movie-list2"></div>
 		    <button id="next-btn2" class="nav-btn2">&gt;</button> 
 	 </div>
  	 <div id="loading-indicator2">데이터를 불러오는 중...</div>
      	<hr>
+     	
 	  <!--역대 인기 영화 -->
 	  <div class="slider-container">
-	  		<h1><a href = "" >역대인기영화</a></h1>
+	  		<h1><a href ="/TopRate">역대인기영화</a></h1>
 		    <button id="prev-btn" class="nav-btn">&lt;</button> 
 		    	<div id="movie-list"></div>
 		    <button id="next-btn" class="nav-btn">&gt;</button> 
 	  </div>
 	  <div id="loading-indicator">데이터를 불러오는 중...</div>
   		<hr>
+	 
+	 
+	 <!-- 푸터 -->
+	 <div id = "footer">
+	 	 <p><strong>ReviewPlus</strong></p>
+        <p>리뷰플러스에서 사용된 모든 영화 정보는 
+           <span style ="font-size:15px; font-weight:bold" >
+      				<a href ="https://www.themoviedb.org/">
+      						TMDb(The Movie Database)
+      				</a>
+			</span> 통해 제공되었습니다.
+        </p>
+        <p>주소:못골번영로 56번길 8<br>© 2025 ReviewPlus.All Rights Reserved.</p>
+	 </div>
+	 
+	 
 	 
  <!--영화 슬라이더 -->
  <script src="js/now_playing.js" type="module"></script>

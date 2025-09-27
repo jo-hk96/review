@@ -1,0 +1,85 @@
+/* 1. 전체 페이지 기본 스타일 */
+body {
+    /* 폰트 설정 등 기본 스타일 */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+/* 2. 영화 목록 컨테이너 (핵심!) */
+#movie-list2 {
+    /* Grid 레이아웃 사용: 여러 줄로 자연스럽게 배치 */
+    display: grid;
+    
+    /* 화면 너비에 따라 자동으로 컬럼 수 조정 (최소 180px, 최대 1fr) */
+    /* 이렇게 하면 창 크기에 따라 3개, 4개, 5개 등으로 카드가 자동으로 줄바꿈 돼 */
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+    
+    gap: 30px 20px; /* 세로 30px, 가로 20px 간격 */
+    max-width: 1400px; /* 목록의 최대 너비 지정 (선택 사항) */
+    margin: 20px auto; /* 중앙 정렬 */
+    padding: 0 20px;
+}
+
+/* 3. 개별 영화 카드 스타일 */
+.movie-card2 {
+    /* 슬라이더에서 사용했던 고정된 width나 transform 속성을 모두 제거 */
+    width: 100%; /* Grid 컬럼 너비에 꽉 채움 */
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden; /* 이미지 모서리 둥글게 처리 */
+    background-color: #fff;
+    transition: transform 0.2s;
+}
+
+.movie-card2:hover {
+    transform: translateY(-5px); /* 호버 시 살짝 떠오르는 효과 */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.movie-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* 4. 포스터 이미지 스타일 */
+.movie-card2 img {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 2 / 3; /* 포스터 표준 비율 (가로 2: 세로 3) 유지 */
+    object-fit: cover;
+}
+
+/* 5. 영화 정보 텍스트 스타일 */
+.movie-info2 {
+    padding: 10px;
+    text-align: left;
+}
+
+.movie-info2 h2 {
+    font-size: 1em;
+    font-weight: bold;
+    margin: 5px 0 8px 0;
+    /* 제목이 길 경우 말줄임표 처리 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.movie-info2 p {
+    font-size: 0.85em;
+    color: #555;
+    margin: 3px 0;
+}
+
+/* 6. 로딩 인디케이터 */
+#loading-indicator2 {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.1em;
+    color: #888;
+}

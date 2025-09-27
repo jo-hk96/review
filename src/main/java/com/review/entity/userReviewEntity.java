@@ -20,8 +20,8 @@ public class userReviewEntity {
 	
 		//유저 한줄평 영화 별점 저장
 		@SequenceGenerator(
-		    name = "REVIEW_SEQ_GENERATOR", // ⭐ 또 다른 Generator 이름
-		    sequenceName = "REVIEW_SEQ",   // ⭐ DB 시퀀스 이름도 다르게!
+		    name = "REVIEW_SEQ_GENERATOR", 
+		    sequenceName = "REVIEW_SEQ",   
 		    allocationSize = 1
 		)
 		@Id
