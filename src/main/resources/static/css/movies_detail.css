@@ -1,11 +1,53 @@
-#footer{
+	
+	/* =======리뷰작성 디자인======= */
+	.rating-area {
+	    font-size: 2em; /* 별 크기 설정 */
+	    color: #ccc;    /* 기본 색상: 회색 (비활성화) */
+	    cursor: pointer;
+	    user-select: none; /* 드래그 방지 */
+	}
+	
+	/* 개별 별 스타일 */
+	.star {
+	    transition: color 0.2s;
+	}
+	
+	/* 마우스 오버되거나 'on' 클래스가 붙은 별에만 색상 적용 */
+	.rating-area:hover .star {
+	    color: gold; /* 마우스가 영역에 올라가면 기본 색상 지정 */
+	}
+	
+	/* 'on' 클래스가 붙거나, 그 이전 별들 */
+	.star.on {
+	    color: gold;
+	}
+	
+	/* 마우스가 특정 별 위에 있을 때, 그 별과 그 앞의 모든 별에 색상 적용 */
+	.rating-area .star:hover ~ .star {
+	    color: #ccc; /* 마우스가 지나간 뒤의 별은 다시 회색으로 */
+	}
+	
+	
+	
+	
+	/* 리뷰목록 디자인  */
+	#reviewsRegdate{
+	 font-size: 0.8em; color: #666; margin-top: 5px;
+	}
+	
+	#reviews{
+	border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;
+	}
+	
+	
+	#reviewsRating{
+	padding-right: 10px;
+	}
+	
+	
+	#reviewsRating > span{
+	color: gold;
+	}
+	
 
-  position: relative;
-  width: 100%;            /* 부모 크기에 맞춤 */
-  max-width: 1500px;      /* 최대 넓이 제한 */
-  margin: 0 auto;         /* 가운데 정렬 */
-  overflow: hidden;       /* 슬라이드 영역 밖은 숨김 */
-  padding: 15px;
-  box-sizing: border-box;
-  
-}
+

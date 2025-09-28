@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+                  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/now_playing.css">
+    <link rel="stylesheet" href="/css/footer.css">
     <title>개봉중인 영화</title>
 </head>
 <body>
@@ -15,6 +17,8 @@
 			</div>
 	    	<div id="loading-indicator2">개봉중인 영화 정보를 불러오는 중</div>
 	    	
+	<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
+	<div th:insert="index/index :: footer"></div>
 	 <!-- 개봉중인 영화.js  -->
 	 <script src="/js/now_playing.js"></script>
 </body>

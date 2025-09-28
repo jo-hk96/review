@@ -1,132 +1,233 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+                  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>영화리뷰하기</title>
-</head>
-<style>
-	.rating-area {
-	    font-size: 2em; /* 별 크기 설정 */
-	    color: #ccc;    /* 기본 색상: 회색 (비활성화) */
-	    cursor: pointer;
-	    user-select: none; /* 드래그 방지 */
-	}
-	
-	/* 개별 별 스타일 */
-	.star {
-	    transition: color 0.2s;
-	}
-	
-	/* 마우스 오버되거나 'on' 클래스가 붙은 별에만 색상 적용 */
-	.rating-area:hover .star {
-	    color: gold; /* 마우스가 영역에 올라가면 기본 색상 지정 */
-	}
-	
-	/* 'on' 클래스가 붙거나, 그 이전 별들 */
-	.star.on {
-	    color: gold;
-	}
-	
-	/* 마우스가 특정 별 위에 있을 때, 그 별과 그 앞의 모든 별에 색상 적용 */
-	.rating-area .star:hover ~ .star {
-	    color: #ccc; /* 마우스가 지나간 뒤의 별은 다시 회색으로 */
-	}
+    <link rel="stylesheet" href="/css/movies_detail.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/header.css">
 
-</style>
+</head>
+
 <body>
+	<div th:insert = "index/index :: header"></div>
+
+
 	    <div id="movie-detail-container">
 	        <p>상세정보 불러오는중</p>
 	    </div>
-	    
-	  <form action="/UserReview" method = "POST">
-	  		<h3>리뷰쓰기</h3>
-	  		글쓴이 : <input type = "text" ><br>
-	  		내용   : <textarea rows = "5" cols = "30"></textarea><br>
-		  	별점:	<div class="rating-area">
-					    <span class="star" data-rating="1">★</span>
-					    <span class="star" data-rating="2">★</span>
-					    <span class="star" data-rating="3">★</span>
-					    <span class="star" data-rating="4">★</span>
-					    <span class="star" data-rating="5">★</span>
-					</div>
-					<input type="hidden" id="selected-rating" name="rating" value="0">
-	  </form>
-	    
-		<hr>
-        <table>
-            <tr>
-                <td><b>닉네임:남자라면제육</b></td>
-            </tr>
-            <tr>
-                <td>별점 : ⭐⭐⭐⭐⭐</td>
-            </tr>
-            <tr>
-                <td>
-                    <p>연기 지리네요 ㄷㄷ 스토리도 잘 짜여진 거 같고 추첩합니당</p>
-                </td>
-            </tr>
-        </table>
+	    				<b>영화별점:</b>
+						<div>
+						    <span data-rating="1">★</span>
+						    <span data-rating="2">★</span>
+						    <span data-rating="3">★</span>
+						    <span data-rating="4">★</span>
+						    <span data-rating="5">★</span>
+						</div>
+						
+						
+						
+	 <div sec:authorize="isAuthenticated()">
+		<form id="review-form"> 
+			    <h3>리뷰쓰기</h3>
+			    닉네임 : <span sec:authentication="principal.nickname" id = "nickname"></span><br>
+			    평가   : <textarea rows = "5" cols = "30" name="comment"></textarea><br>
+			    평점:	<div class="rating-area">
+			                <span class="star" data-rating="1">★</span>
+			                <span class="star" data-rating="2">★</span>
+			                <span class="star" data-rating="3">★</span>
+			                <span class="star" data-rating="4">★</span>
+			                <span class="star" data-rating="5">★</span>
+			            </div>
+			            <input type="hidden" id="apiId" name="apiId" th:value="${apiId}"> 
+			            <input type="hidden" id="selected-rating" name="rating" value="0">
+			    <button type="button" id="submit-review-btn">리뷰 등록</button> 
+			</form>
+	 </div>      
+<hr>
 
-        
-        
+<h3>등록된 리뷰</h3>
+<div id="review-list">
+    
+    <div th:if="${reviews == null or reviews.isEmpty()}">
+        <p>아직 등록된 리뷰가 없습니다.</p>
+    </div>
+    
+        <div th:each="review : ${reviews}" id = "reviews">
+            <p>
+                <strong>작성자:</strong> 
+                <span th:if="${review.userEntity != null}" 
+                      th:text="${review.userEntity.nickname}">닉네임</span>
+                <span th:if="${review.userEntity == null}">탈퇴한 사용자</span>
+            </p>
+            
+            <table>
+                <tr>
+                    <td id = "reviewsRating">
+                        <strong>별점:</strong> 
+                        <span th:if="${review.rating != null}" 
+                        th:text="${#strings.repeat('★', review.rating)}"></span> 
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p style="margin: 0;" th:text="${review.comment}">리뷰 내용</p>
+                    </td>
+				</tr>
+            </table>
+            
+            <p id="reviewsRegdate">
+                작성일: <span th:if="${review.regDate != null}" 
+                              th:text="${#temporals.format(review.regDate, 'yyyy-MM-dd HH:mm')}">2025-01-01 00:00</span>
+            </p>
+            
+        </div>
+</div>
+
+<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
+<div th:insert="index/index :: footer"></div>
 
 <script>
-	document.addEventListener('DOMContentLoaded', () => {
-	    const ratingArea = document.querySelector('.rating-area');
-	    const stars = ratingArea.querySelectorAll('.star');
-	    const ratingInput = document.getElementById('selected-rating');
-	
-	    // ⭐️ 1. 초기 로딩 시 별점 상태 설정
-	    // 만약 수정 페이지라면 초기 값으로 별을 'on' 상태로 만들어줘야 합니다.
-	    let currentRating = parseInt(ratingInput.value) || 0;
-	    highlightStars(currentRating);
-	
-	
-	    // ⭐️ 2. 별 클릭 이벤트 처리
-	    ratingArea.addEventListener('click', (event) => {
-	        if (event.target.classList.contains('star')) {
-	            const clickedRating = parseInt(event.target.dataset.rating);
-	            
-	            // 현재 별점을 업데이트하고 화면에 반영
-	            currentRating = clickedRating;
-	            ratingInput.value = currentRating; // Hidden Input에 값 저장
-	            highlightStars(currentRating);
-	        }
-	    });
-	
-	    // ⭐️ 3. 마우스 오버 효과 (선택된 별만 색칠)
-	    ratingArea.addEventListener('mouseover', (event) => {
-	        if (event.target.classList.contains('star')) {
-	            const hoveredRating = parseInt(event.target.dataset.rating);
-	            highlightStars(hoveredRating);
-	        }
-	    });
-	
-	    // ⭐️ 4. 마우스가 영역을 벗어났을 때 원래의 선택된 별점으로 돌아감
-	    ratingArea.addEventListener('mouseout', () => {
-	        highlightStars(currentRating);
-	    });
-	
-	
-	    // ⭐️ 별을 활성화(색칠)하는 핵심 함수
-	    function highlightStars(ratingValue) {
-	        stars.forEach((star) => {
-	            const starRating = parseInt(star.dataset.rating);
-	            
-	            // 현재 별점 값보다 작거나 같으면 'on' 클래스 추가
-	            if (starRating <= ratingValue) {
-	                star.classList.add('on');
-	            } else {
-	                star.classList.remove('on');
-	            }
-	        });
-	    }
-	
-	});
-</script>	    
-	    
-	    
-	    
+
+//별점 클릭 이벤트 핸들러
+document.querySelectorAll('.rating-area .star').forEach(star => {
+    // 클릭 이벤트: 숨겨진 input의 value를 업데이트하고 'on' 클래스 적용
+    star.addEventListener('click', function() {
+        const rating = this.getAttribute('data-rating');
+        
+        // 숨겨진 input 필드에 값 저장
+        document.getElementById('selected-rating').value = rating; 
+        
+        // 'on' 클래스 초기화 및 재적용
+        const allStars = this.parentElement.querySelectorAll('.star');
+        allStars.forEach(s => s.classList.remove('on'));
+        
+        let currentStar = this;
+        while (currentStar) {
+            currentStar.classList.add('on');
+            currentStar = currentStar.previousElementSibling; 
+        }
+    });
+
+    // 마우스 leave 이벤트: 선택된 별점까지 색상을 유지하도록 처리
+    star.parentElement.addEventListener('mouseleave', function() {
+        const selectedRating = parseInt(document.getElementById('selected-rating').value);
+        
+        document.querySelectorAll('.rating-area .star').forEach(s => {
+            const starRating = parseInt(s.getAttribute('data-rating'));
+            if (starRating <= selectedRating) {
+                s.classList.add('on');
+            } else {
+                s.classList.remove('on');
+            }
+        });
+    });
+    
+    // 마우스 enter 이벤트: 호버 시 모든 별 색칠
+    star.parentElement.addEventListener('mouseenter', function() {
+        document.querySelectorAll('.rating-area .star').forEach(s => s.classList.remove('on'));
+    });
+});
+
+
+
+document.getElementById('submit-review-btn').addEventListener('click', function() {
+    const apiId = document.getElementById('apiId').value; // 영화 ID (TMDB ID)
+    const nickname = document.getElementById('nickname').textContent;
+    const comment = document.querySelector('textarea[name="comment"]').value;
+    const rating = document.getElementById('selected-rating').value;
+
+    if (comment.trim() === '' || rating === '0') {
+        alert('리뷰 내용과 별점을 모두 입력해 주세요.');
+        return;
+    }
+    
+    const reviewData = {
+        movieId: apiId,
+        nickname: nickname,
+        comment: comment,
+        rating: parseInt(rating)
+    };
+
+    fetch('/api/userReview', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reviewData)
+    })
+    .then(response => {
+        if (!response.ok) {
+        	
+        	//에러발생
+            throw new Error('리뷰 전송 실패: ' + response.status);
+        }
+        return response.json(); // ⭐ 서버가 반환한 JSON(ReviewResponseDto)을 받음
+    })
+    .then(newReviewData => {
+        // ⭐⭐ 1. 서버 응답을 받아 HTML 생성 및 추가 ⭐⭐
+        const reviewHtml = createReviewHtml(newReviewData);
+        
+        // 리뷰 목록 컨테이너 (예: <div id="review-list">)의 가장 위에 추가
+        document.getElementById('review-list').insertAdjacentHTML('afterbegin', reviewHtml); 
+
+        // 2. 입력 폼 초기화 (리뷰 내용, 별점 초기화)
+        document.querySelector('textarea[name="comment"]').value = '';
+        document.getElementById('selected-rating').value = '0';
+        document.querySelectorAll('.rating-area .star').forEach(star => star.style.color = 'gray');
+        
+        alert('리뷰가 등록되었습니다.');
+    })
+    .catch(error => {
+        console.error('리뷰 전송 중 오류 발생:', error);
+        alert('리뷰 등록 중 오류가 발생했습니다. 로그를 확인하세요.');
+    });
+});
+
+
+function generateStars(rating) {
+    const count = Math.round(rating); 
+    const filledStars = '★'.repeat(count); // 별점 수만큼 ★ 반복
+    
+    // 스타일을 gold로 지정하여 별점이 눈에 띄게
+    return `<span style="color: gold;">${filledStars}</span>`; 
+}
+
+function createReviewHtml(review) {
+    // 서버에서 받은 데이터를 사용하여 HTML을 동적으로 생성
+    // ⭐ generateStars 함수를 호출하도록 수정 ⭐
+    const starHtml = generateStars(review.rating);
+    
+    return `
+        <div style="border: 1px solid #ccc; margin-bottom: 10px; padding: 10px;">
+            <p>
+                <strong>작성자:</strong> 
+                <span>${review.nickname}</span>
+            </p>
+            <table>
+                <tr>
+                    <td id="reviewsRating">
+                        <strong>평점:</strong> 
+                        <span>${starHtml}</span> 
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p style="margin: 0;">${review.comment}</p>
+                    </td>
+                </tr>
+            </table>
+            
+            <p id="reviewsRegdate">
+                작성일: <span>${review.regDate}</span>
+            </p>
+        </div>
+    `;
+}
+
+</script>
+            
 <script src="/js/movies_detail.js"></script>
 </body>
 </html>

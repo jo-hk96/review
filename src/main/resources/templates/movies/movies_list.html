@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+                  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>영화리뷰하기</title>
     <link rel="stylesheet" href="/css/movies_list.css">
+    <link rel="stylesheet" href="/css/footer.css">
 </head>
 <style>
 	#movie-categories-select{
-	
 		margin: 0 auto;
 		max-width:1400px;
 	}
@@ -27,11 +28,15 @@
 		</div>
 		
 		
-		
 	 <div id="movie-list2"></div>
 		<div id="loading-indicator2">
 		    영화 로드 중...
 		</div>
+		
+		
+	<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
+	<div th:insert="index/index :: footer"></div>		
+		
  <script src ="/js/movies_list.js"></script>
  
  

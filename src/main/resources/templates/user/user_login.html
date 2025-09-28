@@ -1,14 +1,26 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+                  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>로그인폼</title>
+    <link rel="stylesheet" href="/css/footer.css">
    
 </head>
 <body>
-	<form action = "" method = "get">
-		<input type = "text" name ="movieSearch" id = "movieSearch">
-		<button type = "submit" id = "movieSearch" name ="movieSearch">로그인</button>
-	</form>
+		<h1>로그인</h1>
+		<form action = "/UserLogin" method = "post">
+				이메일:<input type ="email" id="email" name="email"><br>
+				비밀번호:<input type = "password" name ="password" id="password"><br>
+			<button type = "submit" >로그인</button>
+		</form>
+		
+		<div class ="userIndex" sec:authorize="isAnonymous()">
+			<a href = "/UserJoinForm">회원가입하기!!</a>
+		</div>
+		
+		
+		<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
+		<div th:insert="index/index :: footer"></div>
 </body>
 </html>

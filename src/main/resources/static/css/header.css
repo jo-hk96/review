@@ -1,0 +1,16 @@
+
+
+/* 헤더  */
+#header{
+  position: fixed; 
+  top: 0;       /* 화면의 맨 아래쪽(0px)에 붙임 */
+  left: 0;         /* 화면의 왼쪽 끝에 붙임 */
+  width: 100%;       
+  z-index: 1000;     
+  background-color: rgba(248, 248, 248, 0.5);
+  padding: 15px;
+  box-sizing: border-box;
+  
+}
+
+

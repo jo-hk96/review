@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class movieDTO {
-
 		private Long movieId; // 영화 고유 ID
 	    private String originalTitle; //원제
 	    private String title; //제목

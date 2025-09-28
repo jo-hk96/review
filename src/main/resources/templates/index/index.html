@@ -1,42 +1,51 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+                  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/top_rate.css">
     <link rel="stylesheet" href="/css/now_playing.css">
     <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/header.css">
     <title>영화 정보 보기</title>
 </head>
-<style>
-	#userIndex{
-			border:1px solid black;
-			margin-left:400px;
-			font-size:30px;
-	}
-</style>
-
-
-
 <body>
-	<div id ="userIndex">
-		<a href = "/UserJoinForm">회원가입</a>
-		<a href = "/UserMypage">내정보</a>
-		<a href = "/UserLoginForm">로그인</a>
-		<a href = "">로그아웃</a>
+	<!--익명사용자(비로그인상태)isAnonymous() -->
+	<!--사용자(로그인상태)isAuthenticated() -->
+	
+	<div id ="header" th:fragment = "header">
+			<div sec:authorize="isAuthenticated()">
+			    안녕하세요, 
+			    <span sec:authorize="hasRole('ROLE_ADMIN')">
+			        관리자 (<span sec:authentication="principal.nickname"></span>)님!
+			        <b><a href="/AdminPage">관리자 페이지</a></b>
+			      	
+			    </span>
+			    <span sec:authorize="!hasRole('ROLE_ADMIN')">
+			        <span sec:authentication="principal.nickname"></span>님!
+			    </span>
+			</div>
+			
+			<div class ="userIndex" sec:authorize="isAnonymous()">
+				<a href = "/UserLoginForm">로그인</a>
+			</div>
+			
+			<div class ="userIndex"  sec:authorize="isAuthenticated()">
+				<a href = "/UserMypage">내정보</a>
+				<a href = "/logout">로그아웃</a>
+			</div>
+			<div>
+				<form action ="" method ="">
+					영화 검색 : <input type ="text" id = 'movieSearch' name = "movieSearch">
+					<button type = "submit">검색</button>
+				</form>
+			</div>
 	</div>
 	
-	<div>
-		<form action ="" method ="">
-			영화 검색 : <input type ="text" id = 'movieSearch' name = "movieSearch">
-			<button type = "submit">검색</button>
-		</form>
-	
-	</div>
 	
 	
-	
-	
-	
+<div id = "indexMovieList">
   	 <!-- 개봉중인 영화  -->
 	 <div class="slider-container2">
   		 	<h1><a href ="/MoviesList">현재상영중</a></h1>
@@ -45,7 +54,6 @@
 		    <button id="next-btn2" class="nav-btn2">&gt;</button> 
 	 </div>
  	 <div id="loading-indicator2">데이터를 불러오는 중...</div>
-     	<hr>
      	
 	  <!--최고평점-->
 	  <div class="slider-container">
@@ -57,9 +65,10 @@
 	  <div id="loading-indicator">데이터를 불러오는 중...</div>
   		<hr>
 	 
-	 
+</div>
+
 	 <!-- 푸터 -->
-	 <div id = "footer">
+	 <div id = "footer" th:fragment = "footer">
 	 	 <p><strong>ReviewPlus</strong></p>
         <p>리뷰플러스에서 사용된 모든 영화 정보는 
            <span style ="font-size:15px; font-weight:bold" >

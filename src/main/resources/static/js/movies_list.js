@@ -1,6 +1,4 @@
-// ==========================================================
 // 1. 전역 변수 초기화 (가장 먼저)
-// ==========================================================
 let currentPage = 1;
 let isLoading = false;
 let totalPages = 500;
@@ -11,9 +9,7 @@ let currentCategory = 'top_rated';
 const movieListContainer = document.getElementById('movie-list2');
 const loadingIndicator = document.getElementById('loading-indicator2'); 
 
-// ==========================================================
 // 2. 함수 정의 (사용할 함수를 먼저 정의)
-// ==========================================================
 
 // 1. 영화 카드를 렌더링하는 함수
 function renderMovies(newMovies) {
@@ -93,24 +89,22 @@ function handleInfiniteScroll() {
 function changeCategory(newCategory) {
     if (currentCategory === newCategory) return; 
 
-    currentCategory = newCategory; // 👈 이 변수가 업데이트됩니다!
-    currentPage = 1;               // 페이지 초기화
-    totalPages = 500;              // 총 페이지 수 초기화
+    currentCategory = newCategory; 
+    currentPage = 1;               
+    totalPages = 500;              
     
     // 화면과 로딩 인디케이터 초기화
     movieListContainer.innerHTML = ''; 
     loadingIndicator.textContent = '영화 로드 중...'; 
     loadingIndicator.style.display = 'none';
     
-    loadMovies(currentPage); // 👈 새 카테고리로 첫 페이지 로드 시작
+    loadMovies(currentPage); 
     
-    // (여기에 select/a 태그의 활성화 스타일 변경 로직을 추가하면 됩니다.)
+    
 }
 
 
-// ==========================================================
 // 3. 이벤트 리스너 및 초기 실행 (가장 마지막)
-// ==========================================================
 
 // 스크롤 이벤트 리스너 추가 (무한 스크롤)
 window.addEventListener('scroll', handleInfiniteScroll);
@@ -122,12 +116,12 @@ loadMovies(currentPage);
 document.addEventListener('DOMContentLoaded', () => {
     const categorySelect = document.getElementById('category-select');
     
-    // ⭐️ select 박스의 값이 변경(change)될 때 이벤트 처리 ⭐️
+    //select 박스의 값이 변경(change)될 때 이벤트 처리
     if (categorySelect) {
         categorySelect.addEventListener('change', (event) => {
             const newCategory = event.target.value;
             if (newCategory) {
-                // 선택된 값을 가지고 changeCategory 함수 호출!
+                // 선택된 값을 가지고 changeCategory 함수 호출
                 changeCategory(newCategory); 
             }
         });

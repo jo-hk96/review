@@ -32,7 +32,7 @@
 			      <div class="movie-info">
 			        <h2>${movie.title}</h2>
 			        <p>외부평점: ${movie.vote_average.toFixed(1)} / 10</p>
-			        <p>최초개봉날짜: ${movie.release_date}</p>
+			        <p>최초개봉일: ${movie.release_date}</p>
 			      </div>
 			   </a>
 		    `;
@@ -51,9 +51,6 @@
 		    nextBtn.disabled = true;
 		    return;
 		  }
-		
-		
-		
 		  const gap = 20; // CSS와 동일하게 유지
 		  const itemsPerView = getItemsPerView();
 		  const cardWidth = firstCard.offsetWidth;

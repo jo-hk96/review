@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+                  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/top_rate.css">
+    <link rel="stylesheet" href="/css/footer.css">
     <title>역대 영화 랭킹</title>
 </head>
 <body>
@@ -14,7 +16,8 @@
 		</div>
     	<div id="loading-indicator">역대 영화 인기 정보를 불러오는중</div>
 
-
+	<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
+	<div th:insert="index/index :: footer"></div>
 <!-- 역대영화 인기정보.js-->
  <script src="/js/top_rate.js"></script>
 </body>

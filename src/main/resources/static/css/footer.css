@@ -1,0 +1,16 @@
+
+
+/* 푸터  */
+#footer{
+
+  position: relative;
+  width: 100%;            /* 부모 크기에 맞춤 */
+  max-width: 1500px;      /* 최대 넓이 제한 */
+  margin: 0 auto;         /* 가운데 정렬 */
+  overflow: hidden;       /* 슬라이드 영역 밖은 숨김 */
+  padding: 15px;
+  box-sizing: border-box;
+  
+}
+
+

@@ -36,7 +36,7 @@
 				      <div class="movie-info2">
 					        <h2>${movie.title}</h2>
 					        <p>외부평점: ${movie.vote_average.toFixed(1)} / 10</p>
-					        <p>최초개봉날짜: ${movie.release_date}</p>
+					        <p>최초개봉일: ${movie.release_date}</p>
 				      </div>
 		      </a>
 		    `;

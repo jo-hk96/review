@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+                  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>유저 정보 수정</title>
+    <link rel="stylesheet" href="/css/footer.css">
+   
+</head>
+<body>
+	<h1>내정보 수정</h1>
+		<form action = "/UserEdit" method = "post">
+				이메일:<input type ="email" id="email" name="email"  
+					th:value="${#authentication.principal.username}" 
+	       			readonly="readonly" /><br>
+				변경할 닉네임:<input type = "text" name ="nickname" th:value = "${#authentication.principal.nickname}"><br>
+				현재 비밀번호:<input type = "password" name ="currentPassword" ><br>
+				수정 비밀번호:<input type = "password" name ="newPassword" ><br>
+				비밀번호 확인:<input type = "password" name ="confirmNewPassword" ><br>
+			<button type = "submit" >수정하기</button>
+		</form>
+		
+		
+		<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
+		<div th:insert="index/index :: footer"></div>
+</body>
+</html>
