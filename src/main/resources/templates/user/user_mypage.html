@@ -33,10 +33,50 @@
 				</td>
 		</tr>
 	</table>
-	<div>
+	
+	
+	
+	
 		 <h3><span sec:authentication="principal.nickname"></span>님이 좋아요 한 영화</h3>
+		 		
+		 
 		 <h3><span sec:authentication="principal.nickname"></span>님이 쓴 리뷰</h3>
-	</div>
+		 
+		 
+		 	<div id="review-list">
+			    <div th:if="${reviews == null or reviews.isEmpty()}">
+			        <p>아직 등록된 리뷰가 없습니다.</p>
+			    </div>
+			    
+			        <div th:each="review : ${reviews}" id = "reviews">
+			            <p>
+			                <strong>작성자:</strong> 
+			                <span th:if="${review.userEntity != null}" 
+			                      th:text="${review.userEntity.nickname}">닉네임</span>
+			                <span th:if="${review.userEntity == null}">탈퇴한 사용자</span>
+			            </p>
+				            <table>
+				                <tr>
+				                    <td id = "reviewsRating">
+				                        <strong>별점:</strong> 
+				                        <span th:if="${review.rating != null}" 
+				                        th:text="${#strings.repeat('★', review.rating)}"></span> 
+				                    </td>
+				                </tr>
+				                <tr>
+				                    <td>
+				                        <p style="margin: 0;" th:text="${review.comment}">리뷰 내용</p>
+				                    </td>
+								</tr>
+				            </table>
+			            <p id="reviewsRegdate">
+			                작성일: <span th:if="${review.regDate != null}" 
+			                              th:text="${#temporals.format(review.regDate, 'yyyy-MM-dd HH:mm')}">2025-01-01 00:00</span>
+			            </p>
+			        </div>
+			</div>
+		 	
+		 
 	<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
 	<div th:insert="index/index :: footer"></div>
 </body>

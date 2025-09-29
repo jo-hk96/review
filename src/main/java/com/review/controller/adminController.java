@@ -19,12 +19,11 @@ public class adminController {
 	@Autowired
 	private UserService userService;
 	
-	//회원가입 폼으로 이동
+	//관리자 페이지로 이동
 	@GetMapping("/AdminPage")
 	public String adminPage() {
 		return "admin/admin_mypage";
 	}
-	
 	
 	
 }

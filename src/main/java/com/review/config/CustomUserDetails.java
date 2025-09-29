@@ -53,7 +53,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 	    }
 	  
 	    //유저아이디
-	    public Long getUserid() {
+	    public Long getUserId() {
 	    	return userEntity.getUserId(); 
 	    }
 	    

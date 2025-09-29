@@ -78,7 +78,7 @@ public class UserController {
 	@PostMapping("/UserEdit")
 	public String userEdit(@AuthenticationPrincipal CustomUserDetails cud, @ModelAttribute UserEditDTO userDto) {
 		//userid 가져오기
-		Long userid = cud.getUserid();
+		Long userid = cud.getUserId();
 		userService.updateUser(userid, userDto);
 		return "redirect:/UserMypage";
 	}
@@ -88,7 +88,7 @@ public class UserController {
 	@PostMapping("/UserDelete")
 	//@AuthenticationPrincipal 통해 CustomUserDetails에 잇는 세션정보를 불러옴
 	public String userDelete(@AuthenticationPrincipal CustomUserDetails cud) {
-		Long userId = cud.getUserid();
+		Long userId = cud.getUserId();
 		userRepository.deleteById(userId);
 		return "redirect:/logout";
 		
