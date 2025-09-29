@@ -2,12 +2,14 @@ package com.review.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.review.DTO.UserDTO;
@@ -26,6 +28,23 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	
+	 // 이메일 중복 체크 API
+    @GetMapping("/check/email")
+    public ResponseEntity<Boolean> checkEmail(@RequestParam String email) {
+        boolean isDuplicated = userService.checkEmailDuplication(email);
+        // isDuplicated가 true면 중복, false면 사용 가능
+        return ResponseEntity.ok(isDuplicated);
+    }
+
+    // 닉네임 중복 체크 API
+    @GetMapping("/check/nickname")
+    public ResponseEntity<Boolean> checkNickname(@RequestParam String nickname) {
+        boolean isDuplicated = userService.checkNicknameDuplication(nickname);
+        return ResponseEntity.ok(isDuplicated);
+    }
+	
+	
 	//회원가입 폼으로 이동
 	@GetMapping("/UserJoinForm")
 	public String userJoinForm() {
@@ -37,19 +56,25 @@ public class UserController {
 	 @PostMapping("/UserJoin")
 	    public String userJoin(UserDTO userDto , RedirectAttributes re) {
 		 
-		 try {
-	        userService.joinUser(userDto);
-	        return "redirect:/UserLoginForm";
+		   // 1. 이메일 중복 검사
+	        if (userService.checkEmailDuplication(userDto.getEmail())) {
+	            re.addFlashAttribute("errorMessage", "이미 사용 중인 이메일입니다.");
+	            return "redirect:/UserJoinForm"; // 가입 폼으로 리다이렉트
+	        }
 	        
-		  } catch (DataIntegrityViolationException e) {
-			  
-			  //db에러 메시지 출력
-			  e.printStackTrace();
-		        
-		       return "redirect:/UserJoinForm";
-		    }
-	   }
+	        // 2. 닉네임 중복 검사
+	        if (userService.checkNicknameDuplication(userDto.getNickname())) {
+	            re.addFlashAttribute("errorMessage", "이미 사용 중인 닉네임입니다.");
+	            return "redirect:/UserJoinForm"; // 가입 폼으로 리다이렉트
+	        }
+	        
+	        // 3. 중복이 없으면 회원가입 진행
+	        userService.joinUser(userDto);
+	        
+	        return "redirect:/login"; // 성공 후 로그인 페이지로 이동
+	    }
 	
+
 	
 	
 	//로그인폼 security에서 자동으로 비교해서 로그인해줌 

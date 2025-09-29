@@ -8,15 +8,25 @@
 </head>
 <body>
 	<h1>회원가입</h1>
-		<form action = "/UserJoin" method = "post">
-				이름:<input type ="text" name="pname"><br>
-				닉네임:<input type = "text" name ="nickname" id="nickname"><br>
-				이메일:<input type ="email" id="email" name="email"><br>
-				비밀번호:<input type = "password" name ="password" id="password"><br>
-				생일 :<input type = "date" name ="birthdate" 
-						id="birthdate" min="1900-01-01" max="2025-09-27"><br>
-			<button type = "submit" >회원가입</button>
-		</form>
+		<div th:if="${errorMessage}" style="color: red; font-weight: bold; margin-bottom: 15px;">
+			    <span th:text="${errorMessage}"></span>
+			</div>
+			
+			<hr/>
+			<form action = "/UserJoin" method = "post"> 
+			    
+			    이름:<input type ="text" name="pname" th:value="${inputData?.pname}"><br>
+			    
+			    닉네임:<input type = "text" name ="nickname" id="nickname" th:value="${inputData?.nickname}"><br>
+			    
+			    이메일:<input type ="email" id="email" name="email" th:value="${inputData?.email}"><br>
+			    
+			    비밀번호:<input type = "password" name ="password" id="password"><br>
+			    
+			    생일 :<input type = "date" name ="birthdate" 
+			            id="birthdate" min="1900-01-01" max="2025-09-27" th:value="${inputData?.birthdate}"><br>
+			    <button type = "submit" >회원가입</button>
+			</form>
 		
 	<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
 	<div th:insert="index/index :: footer"></div>

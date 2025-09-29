@@ -36,7 +36,7 @@
     
     // 3. 영화 상세 정보를 HTML로 표시하는 함수
    
-	// ⭐⭐ 수정된 renderMovieDetail 함수 (감독, 배우 추가 로직 포함) ⭐⭐
+	//수정된 renderMovieDetail 함수 (감독, 배우 추가 로직 포함)
 	function renderMovieDetail(data) {
 	    const detailContainer = document.getElementById('movie-detail-container');
 	    const basePosterUrl = "https://image.tmdb.org/t/p/w500"; 
@@ -60,7 +60,6 @@
 	    const directors = data.credits.crew.filter(c => c.job === 'Director');
 	
 	
-		
 	    // 2. 주연 배우 5명 추출 (cast 배열의 order는 출연 비중에 따라 정렬됨)
 	    // 최대 5명만 잘라서 사용한다.
 	    const topCast = data.credits.cast.slice(0, 5); 

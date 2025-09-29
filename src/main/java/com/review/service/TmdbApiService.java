@@ -26,11 +26,13 @@ public class TmdbApiService {
 	
 	public movieDTO getMovieDetail(Long apiId) {
 		
+		String trimmedToken = bearerToken.trim();
+		
 		try {
 			
 			return webClient.get()
-					.uri("/movie/{apiId}" , apiId)
-					.header("Authorization","Bearer" + bearerToken)
+					.uri("/movie/{apiId}?language=ko-KR" , apiId)
+					.header("Authorization", "Bearer " + trimmedToken)
 					.retrieve() //응답을 처리합니다.
 					.bodyToMono(movieDTO.class)// 응답 본문을 DTO로 변환
 					.block(); //비동기 호출을 동기식으로 블로킹 하여 결과를 기다림

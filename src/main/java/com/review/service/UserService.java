@@ -23,6 +23,25 @@ public class UserService implements UserDetailsService {
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
 
+	
+	public userEntity findById(Long userId) {
+			return userRepository.findById(userId).orElseThrow(null);
+		}
+	
+	//이메일 중복 검사
+		 public boolean checkEmailDuplication(String email) {
+		        return userRepository.existsByEmail(email);
+		    }
+		
+		 //닉네임 중복검사
+		 public boolean checkNicknameDuplication(String nickname) {
+		        return userRepository.existsByNickname(nickname);
+		    }
+		
+	
+	
+	
+	
     // 사용자 이름(email)으로 사용자 정보를 가져오는 메소드
 	@Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -42,7 +61,7 @@ public class UserService implements UserDetailsService {
 	    userEntity.setPassword(encodedPassword);
 	    
 	    
-	    //slawk159@naver.com 이라는 이메일에 admin부여
+	    //admin 계정 부여
 	    if ("1234@1234.com".equals(userEntity.getEmail())) {
 	        // 특정 이메일 주소에만 ROLE_ADMIN을 부여
 	        userEntity.setRole("ROLE_ADMIN"); //컬럼에 입력 

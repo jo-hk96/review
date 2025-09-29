@@ -49,7 +49,7 @@ public class movieEntity {
 		@Column(name = "MOVIE_TITLE")
 		private String title; //제목
 		
-		@Column(name = "MOVIE_OVERVIEW")
+		@Column(name = "MOVIE_OVERVIEW" , length = 4000)
 		private String overview; //줄거리
 		
 		@Column(name = "MOVIE_POSTER")

@@ -21,10 +21,9 @@ public class MovieApiController {
 	
 
 		
-		@PostMapping("/api/MovieLike/${apiId}")
+		@PostMapping("/api/MovieLike/{apiId}")
 		public ResponseEntity<Boolean> toggleLike(@PathVariable Long apiId,
 				@AuthenticationPrincipal CustomUserDetails userDetails){
-			
 			
 			Long cuUserId = userDetails.getUserId();
 			

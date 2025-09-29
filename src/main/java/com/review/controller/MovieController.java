@@ -4,13 +4,18 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.review.config.CustomUserDetails;
 import com.review.entity.userReviewEntity;
+import com.review.service.MovieLikeService;
 import com.review.service.UserReviewService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 public class MovieController {
@@ -18,6 +23,9 @@ public class MovieController {
 	@Autowired
 	private UserReviewService userReviewService;
 
+	@Autowired
+	private MovieLikeService movieLikeService;
+	
 	//메인홈
 	@GetMapping("/")
 	public String Home(Principal principal, Model model) {
@@ -52,13 +60,30 @@ public class MovieController {
 	
 	//영화 상세 정보
 	@GetMapping("/detail/{movieId}")
-	public String getMovieDetail(@PathVariable("movieId") Long id ,Model model){
+	public String getMovieDetail(@PathVariable("movieId") Long id , 
+						@AuthenticationPrincipal CustomUserDetails userDetails ,Model model){
+		
+		
+		
 		System.out.println("넘어온 영화 ID: " + id);
 		
+		//리뷰 목록 가져오기
 		List<userReviewEntity> existingReviews = userReviewService.getReviewsByMovieId(id);
 		
+		//좋아요 상태 조회 로직 추가
+		boolean isLiked = false;
+		
+		
+		//로그인 했을 때만 좋아요 상태를 조회합니다.
+		if(userDetails != null) {
+			Long userId = userDetails.getUserId();
+			
+			 // MovieLikeService의 getLikeStatus 메서드를 사용해 DB 조회
+	        isLiked = movieLikeService.getLikeStatus(userId, id); 
+		}
 		System.out.println(id + "의 대한 영화 리뷰 갯수 : " + existingReviews.size()); 
 		model.addAttribute("apiId", id );
+		model.addAttribute("isLiked", isLiked);
 		model.addAttribute("reviews", existingReviews );
 		return "movies/movies_detail";
 	}
