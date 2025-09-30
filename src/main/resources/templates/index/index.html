@@ -56,8 +56,9 @@
 				<a href = "/logout">로그아웃</a>
 			</div>
 			
-		    <form onsubmit="handleMovieSearch(event)"> 
-			    영화 검색 : <input type ="text" id = 'movieSearch' name = "movieSearch" placeholder="영화 제목을 입력하세요">
+		    <form action="/MoviesList" method="GET">
+			    영화 검색 : 
+			    <input type ="text" id = 'movieSearch' name = "movieSearch" placeholder="영화 제목을 입력하세요"> 
 			    <button type = "submit">검색</button>
 			</form>
 	</div>
@@ -75,7 +76,7 @@
      	
 	  <!--최고평점-->
 	  <div class="slider-container">
-	  		<h1><a href ="/TopRate">최고평점</a></h1>
+	  		<h1><a href ="/MoviesList">최고평점</a></h1>
 		    <button id="prev-btn" class="nav-btn">&lt;</button> 
 		    	<div id="movie-list"></div>
 		    <button id="next-btn" class="nav-btn">&gt;</button> 

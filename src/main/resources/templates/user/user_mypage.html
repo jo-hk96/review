@@ -4,84 +4,94 @@
 <head>
     <meta charset="UTF-8">
     <title>유저정보</title>
-   <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/user_mypage.css">
 </head>
 <body>
-	<h2>마이페이지</h2>
-	<table>
-		<tr>
-			<td>이메일: <span sec:authentication="principal.username"></span></td>
-		</tr>
-		<tr>
-			<td>이름: <span sec:authentication="principal.pname"></span></td>
-		</tr>
-		<tr>
-			<td>닉네임: <span sec:authentication="principal.nickname"></span></td>
-		</tr>
-		<tr>
-			<td>생년월일:<span sec:authentication="principal.birthdate"></span></td>
-		</tr>
-		<tr>
-			<td><form th:action="@{/UserDelete}" method="post" >
-		        <button type="submit" 
-		                onclick="return confirm('정말로 회원 탈퇴를 하시겠습니까? 모든 정보가 삭제됩니다.');">
-		            회원 탈퇴
-		        </button>
-		    </form></td>
-			    <td>
-			    	<a href="/UserEditForm">회원수정하러가기...</a>
-				</td>
-		</tr>
-	</table>
-	
-	
-	
-	
-		 <h3><span sec:authentication="principal.nickname"></span>님이 좋아요 한 영화</h3>
-		 		
-		 
-		 <h3><span sec:authentication="principal.nickname"></span>님이 쓴 리뷰</h3>
-		 
-		 
-		 	<div id="review-list">
-			    <div th:if="${reviews == null or reviews.isEmpty()}">
-			        <p>아직 등록된 리뷰가 없습니다.</p>
-			    </div>
-			    
-			        <div th:each="review : ${reviews}" id = "reviews">
-			            <p>
-			                <strong>작성자:</strong> 
-			                <span th:if="${review.userEntity != null}" 
-			                      th:text="${review.userEntity.nickname}">닉네임</span>
-			                <span th:if="${review.userEntity == null}">탈퇴한 사용자</span>
-			            </p>
-				            <table>
-				                <tr>
-				                    <td id = "reviewsRating">
-				                        <strong>별점:</strong> 
-				                        <span th:if="${review.rating != null}" 
-				                        th:text="${#strings.repeat('★', review.rating)}"></span> 
-				                    </td>
-				                </tr>
-				                <tr>
-				                    <td>
-				                        <p style="margin: 0;" th:text="${review.comment}">리뷰 내용</p>
-				                    </td>
-								</tr>
-				            </table>
-			            <p id="reviewsRegdate">
-			                작성일: <span th:if="${review.regDate != null}" 
-			                              th:text="${#temporals.format(review.regDate, 'yyyy-MM-dd HH:mm')}">2025-01-01 00:00</span>
-			            </p>
-			        </div>
-			</div>
-		 	
-		 
-	<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
-	<div th:insert="index/index :: footer"></div>
+<button class="menu-btn" onclick="toggleMenu()">메뉴</button>
+
+<div id="menu-list" style="display:none; position:absolute; top:100px; right:30px; background:white; border:1px solid #ccc; padding:15px; box-shadow:0 2px 8px rgba(0,0,0,0.2); z-index:100;">
+  <form th:action="@{/UserDelete}" method="post">
+    <button type="submit" onclick="return confirm('정말 탈퇴 하시겠습니까?')">회원 탈퇴</button>
+  </form>
+</div>
+
+<script>
+function toggleMenu() {
+  const menu = document.getElementById("menu-list");
+  if(menu.style.display === "none" || menu.style.display === "") {
+    menu.style.display = "block";
+  } else {
+    menu.style.display = "none";
+  }
+}
+</script>
+
+<div class="profile-container">
+  <div class="profile-img"></div>
+  <span class="profile">프로필&nbsp;&nbsp;&nbsp;</span>
+</div>
+
+	<h2>마이페이지&nbsp;&nbsp;&nbsp;
+		<td><a href="/UserEditForm">프로필 편집</a></td>
+	</h2>
+<div class="user-info-box">
+<table>
+	<tr>
+		<td>이메일: <span sec:authentication="principal.username"></span></td>
+	</tr>
+	<tr>
+		<td>이름: <span sec:authentication="principal.pname"></span></td>
+	</tr>
+	<tr>
+		<td>닉네임: <span sec:authentication="principal.nickname"></span></td>
+	</tr>
+	<tr>
+		<td>생년월일:<span sec:authentication="principal.birthdate"></span></td>
+	</tr>
+	<tr>
+</tr>
+</table>
+</div>
+
+<h3><span sec:authentication="principal.nickname"></span>님이 좋아요 한 영화</h3>
+<div th:if="${likedMovies == null or likedMovies.isEmpty()}">
+  <p>아직 좋아요가 없습니다.</p><br>
+</div>
+<h3><span sec:authentication="principal.nickname"></span>님이 쓴 리뷰</h3>
+
+<div id="review-list">
+    <div th:if="${reviews == null or reviews.isEmpty()}">
+        <p>아직 등록된 리뷰가 없습니다.</p>
+    </div>
+    
+    <div th:each="review : ${reviews}" id="reviews">
+      <p>
+        <strong>작성자:</strong> 
+        <span th:if="${review.userEntity != null}" th:text="${review.userEntity.nickname}">닉네임</span>
+        <span th:if="${review.userEntity == null}">탈퇴한 사용자</span>1	
+      </p>
+      <table>
+        <tr>
+          <td id="reviewsRating">
+            <strong>별점:</strong> 
+            <span th:if="${review.rating != null}" th:text="${#strings.repeat('★', review.rating)}"></span> 
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="margin: 0;" th:text="${review.comment}">리뷰 내용</p>
+          </td>
+        </tr>
+      </table>
+      <p id="reviewsRegdate">
+        작성일: <span th:if="${review.regDate != null}" th:text="${#temporals.format(review.regDate, 'yyyy-MM-dd HH:mm')}">2025-01-01 00:00</span>
+      </p>
+    </div>
+</div>
+
+<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
+<div th:insert="index/index :: footer"></div>
+
 </body>
 </html>
-
-
-
-

@@ -13,10 +13,6 @@ import lombok.Data;
 public class movieDTO {
 	private Long movieId; // 영화 고유 ID
 		
-		//검색된 개별 영화 목록을 담는 리스트
-		@JsonProperty("result")
-		private List<movieDTO> results;
-		
 		//@JsonProperty("id") api에서 보낸 필드 이름과 매칭
 		//TMDB의 고유 ID
 		@JsonProperty("id")

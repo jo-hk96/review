@@ -35,13 +35,14 @@
 		</div>
 		
 		
-	 <div id="movie-list2"></div>
+	 <div id="movie-list2" class = "movie-list-container" th:attr="data-search-query=${searchQuery}"></div>
 		<div id="loading-indicator2">
 		    영화 로드 중...
 		</div>
-	</div>	
-		
-	<div th:insert="index/index :: footer"></div>		
+	</div>
+	<input type="hidden" id="searchQueryInput" th:value="${searchQuery}">
+	
+	<div th:insert="index/index :: footer"></div>
 		
  <script src ="/js/movies_list.js"></script>
  

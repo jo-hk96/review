@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
+import com.review.DTO.SearchResponseDTO;
 import com.review.DTO.movieDTO;
 
 @Service
@@ -57,36 +58,43 @@ public class TmdbApiService {
 	
 	//API에서 영화 제목으로 검색하는 함수
 	//movieDTO에 담긴 영화 정보들을 불러옴
-	public List<movieDTO> searchMovies(String query){
-		
-		//API의 검색 엔드포인트 경로
-		String path = "/search/movie?query={query}&language=ko-KR";
-		//베럴토큰 앞뒤 공백 제거
-		String trimmedToken = bearerToken.trim();
-		
-		
-			//응답을 movieDTO.class 로 받음
-		try {
-			movieDTO responseDto = webClient.get()
-					.uri(path,query)
-					.header("Authorization", "Bearer " + trimmedToken)
-					.retrieve()
-					.bodyToMono(movieDTO.class) 
-					.block();
-			//movieDTO 인스턴스에 'movieResults' 필드에 담긴 영화목록만 추출
-			if(responseDto != null && responseDto.getResults() != null) {
-				return responseDto.getResults();
-				
-			}
-	
-			return Collections.emptyList();
-		}catch(WebClientResponseException e) {
-			System.out.println("TMDB API 검색 오류:" + e.getStatusCode() + " - " + e.getMessage());
-			return Collections.emptyList();
-		}catch (Exception e) {
-			System.err.println("API 호출 중 오류 발생:" + e.getMessage());
-			return Collections.emptyList();
-		}
-	
+	public List<movieDTO> searchMovies(String query) {
+	    // 1. 검색어가 없으면 빈 목록 반환 (API 호출 필요 없음)
+	    if (query == null || query.trim().isEmpty()) {
+	        return Collections.emptyList();
+	    }
+	    
+	    // 2. 토큰 앞뒤 공백 제거
+	    String trimmedToken = bearerToken.trim();
+	    
+	    try {
+	        // ⭐️⭐️ WebClient 호출: UriBuilder를 사용하여 한글 인코딩 문제를 해결합니다. ⭐️⭐️
+	        SearchResponseDTO responseDto = webClient.get()
+	            // .uri() 대신 .uriBuilder()를 사용합니다.
+	            .uri(uriBuilder -> uriBuilder
+	                .path("/search/movie")              // API 경로
+	                .queryParam("query", query)         // ⭐️ 한글 검색어 안전하게 인코딩 ⭐️
+	                .queryParam("language", "ko-KR")    // 언어 설정
+	                .build())
+	            .header("Authorization", "Bearer " + trimmedToken)
+	            .retrieve()
+	            .bodyToMono(SearchResponseDTO.class) // ⭐️ 전체 응답을 SearchResponseDTO로 받습니다. ⭐️
+	            .block();
+
+	        // 3. 결과 추출 후 반환
+	        if (responseDto != null && responseDto.getResults() != null) {
+	            return responseDto.getResults(); // MovieDTO 목록 반환
+	        }
+	        return Collections.emptyList();
+	        
+	    } catch (WebClientResponseException e) {
+	        // HTTP 4xx, 5xx 에러 처리 (TMDB API 검색 오류)
+	        System.out.println("TMDB API 검색 오류: " + e.getStatusCode() + " - " + e.getMessage());
+	        return Collections.emptyList();
+	    } catch (Exception e) {
+	        // 기타 연결 오류 처리
+	        System.err.println("API 호출 중 오류 발생: " + e.getMessage());
+	        return Collections.emptyList();
+	    }
 	}
 }	

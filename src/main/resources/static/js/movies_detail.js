@@ -1,6 +1,4 @@
     
-    
-    
     //함수정의
     document.addEventListener('DOMContentLoaded', () => {
         // 1. 현재 URL 경로를 가져옴 (예: "/detail/1007734")
