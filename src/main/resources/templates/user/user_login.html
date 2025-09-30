@@ -9,18 +9,96 @@
 </head>
 <body>
 		<h1>로그인</h1>
-		<form action = "/UserLogin" method = "post">
-				이메일:<input type ="email" id="email" name="email"><br>
-				비밀번호:<input type = "password" name ="password" id="password"><br>
-			<button type = "submit" >로그인</button>
-		</form>
+	<form action = "/UserLogin" method = "post" id="loginForm"> 
+    이메일:<input type ="email" id="email" name="email">
+    <span id="emailError" style="color: red; font-size: 0.9em;"></span><br>
+    
+    비밀번호:<input type = "password" name ="password" id="password">
+    <span id="passwordError" style="color: red; font-size: 0.9em;"></span><br> <button type = "submit" >로그인</button>
+</form>
 		
 		<div class ="userIndex" sec:authorize="isAnonymous()">
 			<a href = "/UserJoinForm">회원가입하기!!</a>
 		</div>
 		
 		
-		<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
 		<div th:insert="index/index :: footer"></div>
+
+       <script>
+		document.addEventListener('DOMContentLoaded', function() {
+		    const form = document.getElementById('loginForm');
+		    
+		    // 이메일 관련 요소
+		    const emailInput = document.getElementById('email');
+		    const emailError = document.getElementById('emailError');
+		    
+		    //이메일 정규표현식
+		    const emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+		
+		    // 비밀번호 관련 요소 (새로 추가)
+		    const passwordInput = document.getElementById('password');
+		    const passwordError = document.getElementById('passwordError');
+		    const MIN_PASSWORD_LENGTH = 8; // 비밀번호 최소 길이 설정
+		
+		    // --- 이메일 유효성 검사 함수 (기존 코드) ---
+		    function validateEmail() {
+		        const emailValue = emailInput.value.trim();
+		
+		        if (emailValue === "") {
+		            emailError.textContent = "이메일을 입력해 주세요.";
+		            return false;
+		        } else if (!emailRegex.test(emailValue)) {
+		            emailError.textContent = "올바른 이메일 형식이 아닙니다.";
+		            return false;
+		        } else {
+		            emailError.textContent = ""; 
+		            return true;
+		        }
+		    }
+		    
+		    // --- 비밀번호 유효성 검사 함수 (새로 추가) ---
+		    function validatePassword() {
+		        const passwordValue = passwordInput.value;
+		
+		        if (passwordValue === "") {
+		            passwordError.textContent = "비밀번호를 입력해 주세요.";
+		            return false;
+		        } else if (passwordValue.length < MIN_PASSWORD_LENGTH) {
+		            passwordError.textContent = `비밀번호는 최소 ${MIN_PASSWORD_LENGTH}자 이상이어야 합니다.`;
+		            return false;
+		        } else {
+		            passwordError.textContent = ""; // 에러 메시지 제거
+		            return true;
+		        }
+		    }
+		
+		    // --- 폼 제출(Submit) 이벤트 리스너 업데이트 ---
+		    form.addEventListener('submit', function(event) {
+		        // 이메일과 비밀번호 유효성 검사 결과를 모두 변수에 저장
+		        const isEmailValid = validateEmail();
+		        const isPasswordValid = validatePassword(); // 비밀번호 검사 실행
+		
+		        // 두 검사 중 하나라도 실패하면 폼 제출을 중지합니다.
+		        if (!isEmailValid || !isPasswordValid) {
+		            event.preventDefault(); // 폼 제출 중지 (서버 전송 방지)
+		            alert('입력된 정보를 다시 확인해 주세요.');
+		            
+		            // 어떤 필드에 문제가 있는지에 따라 포커스를 이동시킬 수 있습니다.
+		            if (!isEmailValid) {
+		                emailInput.focus();
+		            } else if (!isPasswordValid) {
+		                passwordInput.focus();
+		            }
+		            return;
+		        }
+		        
+		        // 모든 검사 통과 시 폼 제출이 진행됩니다.
+		    });
+		
+		    // (선택 사항) 사용자가 입력 필드에서 포커스를 잃었을 때 (blur) 즉시 검사하여 피드백 제공
+		    emailInput.addEventListener('blur', validateEmail);
+		    passwordInput.addEventListener('blur', validatePassword); // 비밀번호 blur 이벤트 추가
+		});
+</script>
 </body>
 </html>

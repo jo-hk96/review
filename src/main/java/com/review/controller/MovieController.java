@@ -9,13 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.review.config.CustomUserDetails;
 import com.review.entity.userReviewEntity;
 import com.review.service.MovieLikeService;
 import com.review.service.UserReviewService;
-
-import lombok.RequiredArgsConstructor;
 
 @Controller
 public class MovieController {
@@ -25,6 +24,9 @@ public class MovieController {
 
 	@Autowired
 	private MovieLikeService movieLikeService;
+	
+	//@Autowired
+	//private final TmdbApiService tmdbApiService;
 	
 	//메인홈
 	@GetMapping("/")
@@ -44,6 +46,7 @@ public class MovieController {
 	}
 	
 	
+	
 	//역대 영화 사이트
 	@GetMapping("/TopRate")
 	public String MovieList() {
@@ -58,12 +61,11 @@ public class MovieController {
 	}
 	
 	
+	
 	//영화 상세 정보
 	@GetMapping("/detail/{movieId}")
 	public String getMovieDetail(@PathVariable("movieId") Long id , 
 						@AuthenticationPrincipal CustomUserDetails userDetails ,Model model){
-		
-		
 		
 		System.out.println("넘어온 영화 ID: " + id);
 		

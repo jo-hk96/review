@@ -10,6 +10,26 @@
     <link rel="stylesheet" href="/css/header.css">
     <title>영화 정보 보기</title>
 </head>
+
+<style>
+
+		.review-container {
+		  display: flex; /* 자식 요소를 가로로 나열 */
+		  flex-wrap: wrap; /* 공간이 부족하면 다음 줄로 넘어가게 함 */
+		  gap: 20px; /* 카드 사이의 간격 */
+		  justify-content: center; /* 리뷰 카드를 가운데 정렬 (선택 사항) */
+		}
+		.review-card {
+		  width: 250px;
+		  border: 1px solid #ddd; /* 10x를 1px로 수정 */
+		  border-radius: 12px;
+		  padding: 12px;
+		  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+		}
+
+</style>
+
+
 <body>
 	<!--익명사용자(비로그인상태)isAnonymous() -->
 	<!--사용자(로그인상태)isAuthenticated() -->
@@ -36,12 +56,10 @@
 				<a href = "/logout">로그아웃</a>
 			</div>
 			
-			<div>
-				<form action ="" method ="Get">
-					영화 검색 : <input type ="text" id = 'movieSearch' name = "movieSearch">
-					<button type = "submit">검색</button>
-				</form>
-			</div>
+		    <form onsubmit="handleMovieSearch(event)"> 
+			    영화 검색 : <input type ="text" id = 'movieSearch' name = "movieSearch" placeholder="영화 제목을 입력하세요">
+			    <button type = "submit">검색</button>
+			</form>
 	</div>
 	
 	
@@ -64,23 +82,132 @@
 	  </div>
 	  <div id="loading-indicator">데이터를 불러오는 중...</div>
   		<hr>
-	 
 </div>
 
-	 <!-- -----------------------푸터--------------------------- -->
-	 <div id = "footer" th:fragment = "footer">
-	 	 <p><strong>ReviewPlus</strong></p>
+
+
+
+	
+<div class = "slider-container2">	
+
+	<h2>최신 리뷰</h2>
+	<div class="review-container">
+		  <div class="review-card">
+		    <h3>어쩔 수가 없다 봤는데</h3>
+		    <p>진짜 뭐 어쩔 수가 없노</p>
+		    <span class="rating">⭐⭐⭐⭐</span>
+		    <div class="footer">
+		      <span>좋아요 78</span>
+		      <span>작성자: 영화관팝콘한입충</span>
+		    </div>
+		  </div>
+		  
+		  <div class="review-card">
+		  
+		    <h3>기생충 오랜만에 다시 봄</h3>
+		    <p>준호형 진짜 미띤 거 아니냐고</p>
+		    <span class="rating">⭐⭐⭐⭐⭐</span>
+		    <div class="footer">
+		      <span>좋아요 78</span>
+		      <span>작성자: 친절한영자씨</span>
+		    </div>
+		  </div>
+		  
+		  <div class="review-card">
+			    <h3>귀칼 무한성 액션씬 개지리노</h3>
+			    <p>구라 안 치고 웅장이 가슴해지는 작품이니 꼭 한 번쯤 보길 바란다</p>
+			    <span class="rating">⭐⭐⭐⭐⭐</span>
+			    <div class="footer">
+			      <span>좋아요 78</span>
+			      <span>작성자: 병신을보면짖는개</span>
+			    </div>
+		  </div>
+		  <div class="review-card">
+			    <h3>귀칼 무한성 액션씬 개지리노</h3>
+			    <p>구라 안 치고 웅장이 가슴해지는 작품이니 꼭 한 번쯤 보길 바란다</p>
+			    <span class="rating">⭐⭐⭐⭐⭐</span>
+			    <div class="footer">
+			      <span>좋아요 78</span>
+			      <span>작성자: 병신을보면짖는개</span>
+			    </div>
+		  </div>
+		  <div class="review-card">
+			    <h3>귀칼 무한성 액션씬 개지리노</h3>
+			    <p>구라 안 치고 웅장이 가슴해지는 작품이니 꼭 한 번쯤 보길 바란다</p>
+			    <span class="rating">⭐⭐⭐⭐⭐</span>
+			    <div class="footer">
+			      <span>좋아요 78</span>
+			      <span>작성자: 병신을보면짖는개</span>
+			    </div>
+		  </div>
+	</div>
+</div>
+
+
+
+	<!-- -----------------------푸터--------------------------- -->
+    <div id = "footer" th:fragment = "footer">
+        <p><strong>ReviewPlus</strong></p>
         <p>리뷰플러스에서 사용된 모든 영화 정보는 
            <span style ="font-size:15px; font-weight:bold" >
-      				<a href ="https://www.themoviedb.org/">
-      						TMDb(The Movie Database)
-      				</a>
-			</span> 통해 제공되었습니다.
+                  <a href ="https://www.themoviedb.org/">
+                        TMDb(The Movie Database)
+                  </a>
+         </span> 통해 제공되었습니다.
         </p>
         <p>주소:못골번영로 56번길 8<br>© 2025 ReviewPlus.All Rights Reserved.</p>
-	 </div>
+    </div>
+    
+    <!-- --------------------------------------------------------------------- -->
+	<script>
+		async function handleMovieSearch(event){
+			//폼의 기본 제출(페이지이동)을 막음
+			event.preventDefault();
+			
+			//검색 입력 필드의 값을 가져옴
+			const searchInput = document.getElementById('movieSearch');
+			const query = searchInput.value.trim();
+			const movieListContainer = document.getElementById('movieListContainer');
+			
+			//검색어가 비어 있으면 경고 후 목록을 비움
+			if(!query){
+				alert("검색어를 입력해 주세요.");
+				movieListContainer.innerHTML = ''; //기존 목록을 비움
+				return;
+			}
+			
+			//백엔드 API URL을 정확히 'query' 파라미터로 설정함
+			const url = `/api/movies/search?query=${encodeURIComponent(query)}`;
+			
+			try{
+				const response = await fetch(url);
+				
+				if(response.ok){
+					const searchResults = await response.json();
+					
+					//기존 목록을 비우고 새로운 결과를 렌더링
+					movieListContainer.innerHTML = '';
+					
+					if(searchResults && searchResults.length > 0 ){
+						renderMovies(searchResults); // 렌더링함수 호출
+					}else{
+						movieListContainer.innerHTML = '<p>일치하는 영화 검색 결과가 없습니다.</p>'
+					}
+				}else {
+					// 서버 응답 오류 처리
+					console.error("검색 API 응답 오류:", response.status);
+					movieListContainer.innerHTML = `<p>검색 중 오류가 발생했습니다(코드: ${response.status}).</p>`;
+					}
+				}catch(error){
+					//네트워크 연결 실패 등 오류 처리
+					console.error("네트워크 오류:", error);
+					movieListContainer.innerHTML = '<p>서버 연결에 실패했습니다.</p>';
+				}
+				
+			}
+	</script>
 	 
-	 <!-- --------------------------------------------------------------------- -->
+	 
 	 
  <!--영화 슬라이더 -->
  <script src="js/now_playing.js" type="module"></script>

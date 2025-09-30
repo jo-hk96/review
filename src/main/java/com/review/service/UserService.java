@@ -33,11 +33,11 @@ public class UserService implements UserDetailsService {
 		        return userRepository.existsByEmail(email);
 		    }
 		
-		 //닉네임 중복검사
-		 public boolean checkNicknameDuplication(String nickname) {
-		        return userRepository.existsByNickname(nickname);
-		    }
-		
+	 //닉네임 중복검사
+	 public boolean checkNicknameDuplication(String nickname) {
+	        return userRepository.existsByNickname(nickname);
+	    }
+	
 	
 	
 	
