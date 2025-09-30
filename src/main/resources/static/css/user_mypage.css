@@ -1,0 +1,186 @@
+/* 기본 바디 및 텍스트 */
+body {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  background-color: #f9fafc;
+  margin: 0;
+  padding: 30px 40px;
+  color: #222;
+}
+
+/* 메뉴 버튼 */
+.menu-btn {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border: none;
+  background-color: #4a90e2;
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 14px;
+  box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+  user-select: none;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+.menu-btn:hover {
+  background-color: #357ab8;
+  box-shadow: 0 7px 20px rgba(53, 122, 184, 0.5);
+}
+
+/* 프로필 영역 */
+.profile-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 36px;
+  gap: 24px;
+}
+
+.profile-img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  border: 4px solid #4a90e2;
+  background: url('/images/default-profile.png') no-repeat center/cover;
+  box-shadow: 0 10px 22px rgba(74, 144, 226, 0.35);
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+.profile-img:hover {
+  transform: scale(1.07);
+}
+
+.profile {
+  font-size: 34px;
+  font-weight: 700;
+  color: #111;
+  user-select: none;
+  letter-spacing: 0.03em;
+}
+
+/* 제목 스타일 */
+h2 {
+  margin-bottom: 30px;
+  color: #0c1a2b;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* 버튼 */
+.edit-btn {
+  font-size: 15px;
+  text-decoration: none;
+  color: #4a90e2;
+  padding: 8px 20px;
+  border: 2.5px solid #4a90e2;
+  border-radius: 8px;
+  transition: all 0.35s ease;
+  display: inline-block;
+}
+.edit-btn:hover {
+  background-color: #4a90e2;
+  color: white;
+  box-shadow: 0 5px 15px rgba(74, 144, 226, 0.4);
+}
+
+/* 테이블 */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 14px;
+  font-weight: 500;
+}
+
+td {
+  padding: 16px 18px;
+  background-color: #ffffff;
+  font-size: 18px;
+  color: #2e3a59;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgb(46 58 89 / 0.06);
+  border: none;
+}
+
+/* 제출 버튼 */
+button[type="submit"] {
+  background-color: #fb5f5f;
+  border: none;
+  padding: 14px 28px;
+  color: white;
+  font-weight: 800;
+  font-size: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(251, 95, 95, 0.45);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  letter-spacing: 0.04em;
+}
+button[type="submit"]:hover {
+  background-color: #d34c4c;
+  box-shadow: 0 8px 20px rgba(211, 76, 76, 0.5);
+}
+
+/* 링크 */
+a {
+  color: #4a90e2;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: #305e8f;
+  text-decoration: underline;
+}
+
+/* 하위 제목 */
+h3 {
+  color: #172a4d;
+  margin-bottom: 22px;
+  border-bottom: 3px solid #4a90e2;
+  padding-bottom: 12px;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+}
+
+/* 리뷰 박스 */
+#reviews {
+  background-color: #ffffff;
+  padding: 22px 28px;
+  margin: 18px 0;
+  border-radius: 14px;
+  box-shadow: 0 6px 22px rgb(74 144 226 / 0.12);
+  transition: box-shadow 0.3s ease;
+  font-size: 15px;
+  color: #434a56;
+}
+#reviews:hover {
+  box-shadow: 0 9px 30px rgb(74 144 226 / 0.25);
+}
+
+#reviewsRating {
+  font-size: 24px;
+  color: #ffcc33; /* 금색 별 */
+  user-select: none;
+  margin-bottom: 10px;
+}
+#reviewsRegdate {
+  font-size: 14px;
+  color: #9aa7bb;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* 유저 정보 박스 */
+.user-info-box {
+  width: 95%;
+  max-width: 95%;
+  margin: 12px 48px 34px 20px;
+  border: 3px solid #4a90e2;
+  padding: 26px 30px;
+  border-radius: 14px;
+  background-color: #fff;
+  box-shadow: 0 7px 22px rgba(74, 144, 226, 0.18);
+}
