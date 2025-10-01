@@ -15,4 +15,6 @@ public interface UserReviewRepository extends JpaRepository<userReviewEntity, Lo
 	//  OrderByRegDateDesc  : JPA에서 함수메서드 이름으로 자동으로 쿼리문을 만들어줌
 	//리뷰 댓글 불러오기
 	List<userReviewEntity> findByMovieEntityOrderByRegDateDesc(movieEntity movie);
+	
+	List<userReviewEntity> findTop5ByOrderByRegDateDesc();
 }

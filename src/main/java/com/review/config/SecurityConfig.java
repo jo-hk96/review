@@ -20,7 +20,7 @@ public class SecurityConfig {
 		            csrfConfig.disable()
 		        )
 		        // 2. HTTP 요청에 대한 인가(Authorization) 설정 시작
-		        .authorizeHttpRequests((authorizeRequests ->
+		        .authorizeHttpRequests(authorizeRequests ->
 		            authorizeRequests
 		            	//로그인 없이 모두 허용할 경로 정의
 		                .requestMatchers("/",
@@ -29,10 +29,21 @@ public class SecurityConfig {
 				                "/UserJoinForm",
 		                        "/UserJoin","/MoviesList","/TopRate"
 				                ).permitAll()
+		                //ROLE_ADMIN만 허용 시큐리티에서 자동으로 ROLE_ 을 앞에 붙혀줌
+		                //hasAuthority 를 붙이면 ROLE_ 접두사를 붙이지 않음
+		                .requestMatchers("/Admin/**").hasAnyRole("ADMIN")
 		                //위의 명시되지않은 모든 나머지요청은 로그인이 필요함
 		                .anyRequest().authenticated()
-		        ));
+		        ) 
+		        
+		        //권한 없이 접근시
+		        .exceptionHandling(exception -> exception
+		        .accessDeniedPage("/access-error") 
+		       );
 		 
+		    
+		    
+		    //로그인 페이지 처리
 		    http
 		        .formLogin(login -> login
 		          .loginPage("/UserLoginForm") // 로그인 페이지
@@ -49,10 +60,8 @@ public class SecurityConfig {
 	                    .logoutSuccessUrl("/") //로그아웃 후 이동할 페이지
 	                    .invalidateHttpSession(true)
 	                    .deleteCookies("JSESSIONID")
-	                );
+	              );
 
-		    
-		
 		// http.build()를 붙여서 SecurityFilterChain 빈으로 반환
 	    return http.build();
 	  }

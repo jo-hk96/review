@@ -37,7 +37,7 @@
 			    안녕하세요, 
 			    <span sec:authorize="hasRole('ROLE_ADMIN')">
 			        관리자 (<span sec:authentication="principal.nickname"></span>)님!
-			        <b><a href="/AdminPage">관리자 페이지</a></b>
+			        <b><a href="/Admin/AdminPage">관리자 페이지</a></b>
 			      	
 			    </span>
 			    <span sec:authorize="!hasRole('ROLE_ADMIN')">
@@ -87,55 +87,19 @@
 <div class = "slider-container2">	
 	<h2>최신 리뷰</h2>
 	<div class="review-container">
-		  <div class="review-card">
-		    <h3>어쩔 수가 없다 봤는데</h3>
-		    <p>진짜 뭐 어쩔 수가 없노</p>
+		  <div class="review-card" th:each ="review : ${recentReviews}">
+		    <p>[[${review.comment}]]</p>
 		    <span class="rating">⭐⭐⭐⭐</span>
 		    <div class="footer">
-		      <span>좋아요 78</span>
-		      <span>작성자: 영화관팝콘한입충</span>
+		      <span>작성자: [[${review.nickname}]]</span>
 		    </div>
-		  </div>
-		  
-		  <div class="review-card">
-		  
-		    <h3>기생충 오랜만에 다시 봄</h3>
-		    <p>준호형 진짜 미띤 거 아니냐고</p>
-		    <span class="rating">⭐⭐⭐⭐⭐</span>
-		    <div class="footer">
-		      <span>좋아요 78</span>
-		      <span>작성자: 친절한영자씨</span>
+		    <div>
+		      <span>[[${review.regDate}]]</span>
 		    </div>
-		  </div>
-		  
-		  <div class="review-card">
-			    <h3>귀칼 무한성 액션씬 개지리노</h3>
-			    <p>구라 안 치고 웅장이 가슴해지는 작품이니 꼭 한 번쯤 보길 바란다</p>
-			    <span class="rating">⭐⭐⭐⭐⭐</span>
-			    <div class="footer">
-			      <span>좋아요 78</span>
-			      <span>작성자: 병신을보면짖는개</span>
-			    </div>
-		  </div>
-		  <div class="review-card">
-			    <h3>귀칼 무한성 액션씬 개지리노</h3>
-			    <p>구라 안 치고 웅장이 가슴해지는 작품이니 꼭 한 번쯤 보길 바란다</p>
-			    <span class="rating">⭐⭐⭐⭐⭐</span>
-			    <div class="footer">
-			      <span>좋아요 78</span>
-			      <span>작성자: 병신을보면짖는개</span>
-			    </div>
-		  </div>
-		  <div class="review-card">
-			    <h3>귀칼 무한성 액션씬 개지리노</h3>
-			    <p>구라 안 치고 웅장이 가슴해지는 작품이니 꼭 한 번쯤 보길 바란다</p>
-			    <span class="rating">⭐⭐⭐⭐⭐</span>
-			    <div class="footer">
-			      <span>좋아요 78</span>
-			      <span>작성자: 병신을보면짖는개</span>
-			    </div>
-		  </div>
+		  </div>	  
 	</div>
+	<p th:if ="${recentReviews.isEmpty()}">아직 작성된 리뷰가 없습니다.</p>
+	
 </div>
 
 

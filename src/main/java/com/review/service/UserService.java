@@ -67,7 +67,7 @@ public class UserService implements UserDetailsService {
 	    if ("1234@1234.com".equals(userEntity.getEmail())) {
 	        // 특정 이메일 주소에만 ROLE_ADMIN을 부여
 	        userEntity.setRole("ROLE_ADMIN"); //컬럼에 입력 
-	        System.out.println(">>> 관리자 계정 생성: " + userEntity.getEmail());
+	        System.out.println("관리자 계정 생성: " + userEntity.getEmail());
 	    } else {
 	        // 그 외 모든 계정은 기본 ROLE_USER를 부여
 	        userEntity.setRole("ROLE_USER"); 

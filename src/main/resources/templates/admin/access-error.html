@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
+   
+</head>
+
+<style>
+	body{
+	display:flex; /* FlexBox 컨테이너 */
+	justify-content:center; /* 자식요소(가로 중앙 정렬)  */
+	align-items:center;		/* 자식요소(세로) 중앙 정렬 */
+	min-height:100vh;		/* 화면 전체 높이만큼 늘림 */
+	margin:0px;		/* 브라우저 기본 마진 제거 */
+	}
+	
+	#error{
+	font-size:35px;
+	}
+	
+	h2{
+	display:flex;
+	justify-content: center;
+	color:red;
+	font-size:70px;
+	}
+	
+
+</style>
+
+<body>
+
+<div id ="error">
+
+		<h2>엇!!!</h2>
+		<hr style ="height:2px; background-color: red;">
+		<table>
+			<tr>
+				<th>⚠️로그인을 하지않으셨거나 권한이 없는 페이지로 들어오셨습니다.</th>
+			</tr>
+			<tr>
+				<th>로그인하시고 접속하시거나 권한이 있는 계정으로 들어와주세요.</th>
+			</tr>
+			<tr>
+				<th><a href ="/UserLoginForm" style = "text-decoration: none;">로그인하러가기</a></th>
+			</tr>
+		</table>
+		<hr style ="height:2px; background-color: red;">
+</div>
+</body>
+</html>

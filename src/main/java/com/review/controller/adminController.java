@@ -20,9 +20,16 @@ public class adminController {
 	private UserService userService;
 	
 	//관리자 페이지로 이동
-	@GetMapping("/AdminPage")
+	@GetMapping("/Admin/AdminPage")
 	public String adminPage() {
 		return "admin/admin_mypage";
+	}
+	
+	
+	//권한 없이 접속시 페이지로 이동
+	@GetMapping("/access-error")
+	public String accessError() {
+		return "admin/access-error";
 	}
 	
 	

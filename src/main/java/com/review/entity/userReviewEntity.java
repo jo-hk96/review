@@ -55,8 +55,6 @@ public class userReviewEntity {
 	    @JoinColumn(name = "MOVIE_ID") // 실제 DB 컬럼명
 	    private movieEntity movieEntity; // Movie 엔티티와 연결
 	    
-	    
-	    
 	    @Builder.Default
 	    @Column(name = "REGDATE" ,updatable = false) // 최초 생성 후 업데이트 방지
 	    private LocalDateTime regDate = LocalDateTime.now();

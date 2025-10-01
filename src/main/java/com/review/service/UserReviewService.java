@@ -3,6 +3,7 @@ package com.review.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,8 +54,6 @@ public class UserReviewService{
         return userReviewRepository.save(newReview);
     }
     
-    
-    
     //영화 리뷰 가져오기
     public List<userReviewEntity> getReviewsByMovieId(Long apiId) {
     	
@@ -66,11 +65,20 @@ public class UserReviewService{
         if (movie == null) {
             return Collections.emptyList(); 
         }
-        
         // 3. MovieEntity를 기준으로 모든 리뷰를 조회하여 반환
         // JPA가 UserEntity와 MovieEntity를 JOIN해서 가져옴
         return userReviewRepository.findByMovieEntityOrderByRegDateDesc(movie);
     }
+    
+    public List<UserReviewDTO> getRecentReviews(){
+    	
+    	List<userReviewEntity> recentReview = userReviewRepository.findTop5ByOrderByRegDateDesc();
+    	
+    	return recentReview.stream()
+    			.map(UserReviewDTO::fromEntity)
+    			.collect(Collectors.toList());
+    }
+    
 	
 }
 	    
