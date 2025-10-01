@@ -1,6 +1,8 @@
 package com.review.repository;
 
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +17,9 @@ public interface MovieLikeRepository extends JpaRepository<MovieLike ,MovieLikeI
 	
 	//특정 사용자가 특정 영화를 좋아요 했는지 확인하는 메서드
 	boolean existsById_UserIdAndId_MovieId(Long userId , Long movieId);
+	
+	List<MovieLike> findById_UserId(Long userId);
+	
 	
 	
 }

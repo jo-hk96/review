@@ -71,7 +71,8 @@
 	        </div>
 	    `).join('');
 	    
-	    // 주연 배우들을 HTML 문자열로 만든다.
+
+		//문자열로 찾아낸 감독들을 html형식으로 보여줌
 	    const directorHTML = directors.map(directors => `
 	        <div style="text-align: center; width: 100px;">
 	            <img src="${basePosterUrl}${directors.profile_path}"alt="${directors.name}" 
@@ -114,7 +115,8 @@
 	                <p><strong>태그라인:</strong> <em>${data.tagline || '태그 정보 없음'}</em></p>
 	            </div>
 	        </section>
-	
+	        
+	        
 	        <hr style="margin: 40px 0;">
 	        <h2>감독 / 주요 출연진</h2>
 	        <div style="display: flex; gap: 15px; overflow-x: auto;">

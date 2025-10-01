@@ -49,5 +49,393 @@
 	color: gold;
 	}
 	
+	body {
+    background-color: white;
+    color: #333;
+    font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+    
+    align-items: center;
+}
+	
+	#movie-datil-container {
+	  padding: 30px;
+	  background: white;
+	  border-radius: 10px;
+	  box-shadow: 0 2px 4px rgba()
+	}
+
+
+/* 좋아요 버튼의 기본 스타일 */
+.like-btn {
+    /* 배경 및 테두리 */
+    background-color: #f0f0f0; /* 밝은 회색 배경 */
+    color: #333; /* 어두운 글자색 */
+    border: 1px solid #ccc;
+    border-radius: 20px; /* 둥근 모서리 */
+    
+    /* 패딩 및 폰트 */
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer; /* 마우스 오버 시 포인터 변경 */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.1s; /* 부드러운 전환 효과 */
+    
+    /* 하트 아이콘과 텍스트 간격 */
+    letter-spacing: 1px;
+    line-height: 1;
+    display: inline-flex; /* 텍스트와 하트를 정렬하기 위해 사용 */
+    align-items: center;
+    justify-content: center;
+}
+
+/* 마우스 오버 시 스타일 (호버 효과) */
+.like-btn:hover {
+    background-color: #e0e0e0;
+    border-color: #a0a0a0;
+    /* transform: translateY(-1px); 마우스를 올리면 약간 위로 올라가는 효과 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
+}
+
+/* 클릭 시 스타일 (활성 상태) */
+.like-btn:active {
+    transform: scale(0.98); /* 클릭 시 약간 축소되는 효과 */
+}
+
+/* '좋아요'를 누른 상태의 스타일 (클래스: liked) */
+.like-btn.liked {
+    /* 배경 및 테두리 */
+    background-color: #ff4d4d; /* 빨간색 배경 */
+    color: white; /* 흰색 글자색 */
+    border-color: #ff4d4d;
+    
+    /* 텍스트 강조 */
+    font-weight: bolder;
+    /* box-shadow: 0 0 8px rgba(255, 77, 77, 0.5); 약간의 빛나는 효과 */
+}
+
+/* '좋아요'를 누른 상태의 마우스 오버 시 스타일 */
+.like-btn.liked:hover {
+    background-color: #cc0000; /* 더 진한 빨간색 */
+    border-color: #cc0000;
+}
+
+/* 폰트 크기를 좀 더 조정하고 싶다면 */
+/*
+.like-btn {
+    font-size: 15px; 
+}
+*/
+
+/* 리뷰 등록 버튼 기본 스타일 */
+#submit-review-btn {
+    /* 색상 및 배경 */
+    background-color: #4CAF50; /* 눈에 띄는 녹색 (예시: 승인, 제출) */
+    color: white; /* 흰색 글자 */
+    
+    /* 테두리 및 모서리 */
+    border: none;
+    border-radius: 8px; /* 부드러운 모서리 */
+    
+    /* 패딩 및 폰트 */
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase; /* 대문자 스타일로 강조 */
+    cursor: pointer; /* 마우스 오버 시 포인터 변경 */
+    
+    /* 배치 및 효과 */
+    margin-top: 15px; /* 위쪽 여백 */
+    display: block; /* 블록 요소로 만들어 전체 너비를 사용하거나 정렬 용이하게 */
+    width: auto; /* 내용에 맞게 너비 조정 */
+    transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s; /* 부드러운 전환 효과 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 약한 그림자 */
+}
+
+/* 마우스 오버 시 스타일 (호버 효과) */
+#submit-review-btn:hover {
+    background-color: #45a049; /* 약간 어두운 녹색 */
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* 그림자 강화 */
+}
+
+/* 클릭 시 스타일 (활성 상태) */
+#submit-review-btn:active {
+    background-color: #3e8e41; /* 더 어두운 녹색 */
+    transform: translateY(1px); /* 약간 아래로 눌리는 효과 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 약화 */
+}
+
+/* 리뷰 폼 내에서 버튼 위치 조정 */
+/* 폼 안에 있는 버튼이 오른쪽으로 정렬되게 하고 싶다면 (선택 사항) */
+/*
+.review-form-container form {
+    text-align: right; 
+}
+#submit-review-btn {
+    display: inline-block; 
+}
+*/
+
+/* [수정된] 영화 상세 정보 컨테이너 스타일 */
+#movie-detail-container {
+    background-color: #ffffff; /* 흰색 배경 유지 */
+    padding: 30px; 
+    border-radius: 12px;
+    
+    /* 1. 경계선 강조: 얇지만 진한 색상 */
+    border: 1px solid #c0c0c0; /* 중간 톤의 회색 테두리 */
+    
+    /* 2. 그림자 강화: 더 뚜렷한 입체감 */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12); /* 그림자를 더 강하게 하여 주요 섹션임을 강조 */
+    
+    margin-top: 20px; /* 상단 여백 추가 (원래 스타일에서 부족했다면) */
+}
+
+/* ------------------------------------------------------------- */
+/* 참고: 이전에 정의한 다른 스타일도 같이 유지됩니다. */
+/* ------------------------------------------------------------- */
+
+/* 제목 스타일 (h2) */
+h2 {
+    font-size: 26px;
+    font-weight: 700; 
+    color: #1a1a1a;
+    border-left: 5px solid #007bff; 
+    padding-left: 10px;
+    margin-bottom: 20px;
+    /* movie-detail-container 안에 있을 경우, border-left와 충돌하지 않도록 margin-top을 0으로 설정할 수도 있습니다. */
+    margin-top: 0; 
+}
+
+.movie-actions {
+    display: flex;
+    justify-content: space-between; /* 양 끝 정렬 */
+    align-items: center;
+    padding: 15px 0;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #ccc;
+}
+
+/* 별점 평균 표시 스타일 */
+.rating-display h3 {
+    font-size: 20px;
+    color: #555;
+    margin: 0;
+}
+
+/* 좋아요 버튼 스타일 (이전에 제안된 것과 유사하지만 전문성 강화) */
+.like-btn {
+    background-color: #f0f0f0;
+    color: #555;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    padding: 10px 25px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.like-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.like-btn.liked {
+    background-color: #ff4d4d;
+    color: white;
+    border-color: #ff4d4d;
+    box-shadow: 0 2px 8px rgba(255, 77, 77, 0.4);
+}
+
+.like-btn.liked:hover {
+    background-color: #cc0000;
+    border-color: #cc0000;
+}
+
+/* [수정된] 내 리뷰 작성 컨테이너 스타일 */
+.review-form-container {
+    background-color: #ffffff; /* 흰색 배경 유지 */
+    padding: 30px; /* 패딩을 약간 늘려 여유 공간 확보 */
+    border-radius: 12px;
+    
+    /* 1. 경계선 강조: 얇지만 진한 색상 */
+    border: 1px solid #c0c0c0; /* 밝은 회색 대신 중간 톤의 회색 */
+    
+    /* 2. 그림자 강화: 더 뚜렷한 입체감 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 그림자를 더 진하게 하여 뚜렷하게 보이게 함 */
+    
+    margin-bottom: 30px;
+}
+
+/* 추가적으로, 입력 필드도 시각적으로 개선하여 폼의 전문성을 높입니다. */
+#review-comment {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    /* 테두리도 진한 색상으로 통일 */
+    border: 1px solid #a0a0a0; 
+    border-radius: 6px;
+    box-sizing: border-box; 
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#review-comment:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* 포커스 시 푸른색 하이라이트 */
+    outline: none;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+/* 텍스트 영역 스타일 */
+#review-comment {
+    width: 100%;
+    max-width: 100%;
+    min-height: 100px;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
+    font-size: 15px;
+    transition: border-color 0.3s;
+}
+
+#review-comment:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* 별점 선택 영역 */
+.rating-area {
+    display: flex;
+    font-size: 28px;
+    color: #ccc; /* 빈 별은 회색 */
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.rating-area .star {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+/* 선택되었거나 마우스 오버된 별점 색상 */
+.rating-area:hover .star,
+.rating-area .star[aria-checked="true"] {
+    color: #ffc107; /* 황금색 */
+}
+
+/* 리뷰 등록 버튼 스타일 (강조) */
+#submit-review-btn {
+    background-color: #007bff; /* 브랜드 메인 색상 */
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    margin-top: 15px;
+}
+
+#submit-review-btn:hover {
+    background-color: #0056b3;
+}
+
+#submit-review-btn:active {
+    transform: scale(0.98);
+}
+
+.review-list-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.no-reviews-message {
+    text-align: center;
+    padding: 30px;
+    color: #999;
+    font-style: italic;
+}
+
+/* 개별 리뷰 카드 스타일 */
+.review-item {
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: box-shadow 0.2s;
+}
+
+.review-item:hover {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* 마우스 오버 시 미묘한 강조 */
+}
+
+.review-header {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 10px;
+}
+
+.review-header strong {
+    color: #1a1a1a;
+    font-size: 16px;
+}
+
+.review-header span {
+    font-weight: 500;
+    color: #333;
+}
+
+.deleted-user {
+    color: #999;
+    font-style: italic;
+}
+
+.review-content {
+    margin-bottom: 10px;
+}
+
+.review-rating-info {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.review-stars {
+    color: #ffc107; /* 별점 색상 */
+    letter-spacing: 2px;
+}
+
+.review-text {
+    font-size: 15px;
+    color: #555;
+    white-space: pre-wrap; /* 리뷰 내용의 줄바꿈 유지 */
+}
+
+.review-footer {
+    font-size: 13px;
+    color: #999;
+    text-align: right;
+    margin-top: 10px;
+    padding-top: 5px;
+    border-top: 1px solid #f9f9f9;
+}
+
 
 

@@ -33,23 +33,6 @@ async function fetchAndRenderSearchResults(query) {
     }
 }
 
-// form 제출 시 실행되는 함수
-/*function handleMovieSearch(event) {
-   event.preventDefault(); // 새로고침 막기
-
-     const movieSearchInput = document.getElementById('movieSearch');
-    const query = movieSearchInput ? movieSearchInput.value.trim() : '';
-
-    if (!query) {
-        alert("검색할 영화 제목을 입력해주세요.");
-        return;
-    }
-    
-    // ⭐️⭐️ 핵심: URL에 검색어를 포함하여 페이지 이동을 강제합니다. ⭐️⭐️
-    const url = `/MoviesList?movieSearch=${encodeURIComponent(query)}`; 
-    window.location.href = url;
-}*/
-
 // ==================== 영화 카드 렌더링 ====================
 function renderMovies(newMovies) {
     newMovies.forEach(movie => {

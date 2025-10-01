@@ -2,33 +2,44 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" 
                   xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <title>유저 회원 가입</title>
     <link rel="stylesheet" href="/css/footer.css">
+    <link rel="stylesheet" href="/css/user_newjoin.css">
 </head>
 <body>
 	<h1>회원가입</h1>
 		<div th:if="${errorMessage}" style="color: red; font-weight: bold; margin-bottom: 15px;">
 			    <span th:text="${errorMessage}"></span>
 			</div>
-			
-			<hr/>
-			<form action = "/UserJoin" method = "post"> 
-			    
-			    이름:<input type ="text" name="pname" th:value="${inputData?.pname}"><br>
-			    
-			    닉네임:<input type = "text" name ="nickname" id="nickname" th:value="${inputData?.nickname}"><br>
-			    
-			    이메일:<input type ="email" id="email" name="email" th:value="${inputData?.email}"><br>
-			    
-			    비밀번호:<input type = "password" name ="password" id="password"><br>
-			    
-			    생일 :<input type = "date" name ="birthdate" 
-			            id="birthdate" min="1900-01-01" max="2025-09-27" th:value="${inputData?.birthdate}"><br>
-			    <button type = "submit" >회원가입</button>
-			</form>
+<form action="/UserJoin" method="post" id="joinForm">
+    <input type="text" name="pname" id="pname" th:value="${inputData?.pname}" placeholder = "이름"><br>
+    <span id="pnameCheckResult" style="color: red; font-size: 0.9em; display: block; margin-top: -10px; margin-bottom: 15px;"></span>
+
+    <input type="text" name="nickname" id="nickname" th:value="${inputData?.nickname}" placeholder = "닉네임"><br>
+   	 <span id="nicknameCheckResult" style="color: red; font-size: 0.9em; display: block; margin-top: -10px; margin-bottom: 15px;"></span>
+    <input type="hidden" id="nicknameChecked" value="false">
+    
+    <input type ="email" id="email" name="email" th:value="${inputData?.email}" placeholder = "이메일"><br>
+    
+    <span id="emailCheckResult" style="color: red; font-size: 0.9em; display: block; margin-top: -10px; margin-bottom: 15px;"></span>
+    <input type="hidden" id="emailChecked" value="false">
+    
+    <input type = "password" name ="password" id="password" placeholder = "비밀번호"><br>
+    <span id="passwordCheckResult" style="color: red; font-size: 0.9em; display: block; margin-top: -10px; margin-bottom: 15px;"></span>
+
+    
+    <input type = "date" name ="birthdate" 
+            id="birthdate" min="1900-01-01" max="2025-09-27" th:value="${inputData?.birthdate}" placeholder = "생일"><br>
+    <span id="birthdateCheckResult" style="color: red; font-size: 0.9em; display: block; margin-top: -10px; margin-bottom: 15px;"></span>
+            
+    <button type = "submit" >회원가입</button>
+</form>
 		
-	<!-- index/index 파일에 있는 "footer" 태그를 가져옴  -->
 	<div th:insert="index/index :: footer"></div>
+
+
+<script src = "js/user_newjoin.js"></script>
+
 </body>
 </html>

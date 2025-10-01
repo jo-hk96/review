@@ -1,8 +1,15 @@
 package com.review.service;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.review.DTO.movieDTO;
+import com.review.entity.MovieLike;
 import com.review.entity.movieEntity;
+import com.review.repository.MovieLikeRepository;
 import com.review.repository.MovieRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +23,46 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
     
+    private final MovieLikeRepository movieLikeRepository;
+    
+    private final TmdbApiService tmdbApiService;
+    
+    
+    public List<movieDTO> getLikeMoviesByUserId(Long userId){
+    	
+    	if(userId == null) {
+    		Collections.emptyList();    		
+    	}
+
+    	//DB에서 좋아요 기록 조회: userId에 해당하는 모든 MovieLike 기록을 조회
+    	List<MovieLike> likedRecords = movieLikeRepository.findById_UserId(userId);
+    	
+    	
+    	if(likedRecords.isEmpty()) {
+    		return Collections.emptyList();    		
+    	}
+    	
+    	
+    	//좋아요 기록에서 TMDB 영화 ID 목록 추출
+    	List<Long> likedTmdbIds = likedRecords.stream()
+    			// MovieLike 엔티티의 복합 키(Id)에서 movieId를 추출
+    			.map(movieLike -> movieLike.getApiId())
+    			.collect(Collectors.toList());
+    	
+    	//api를 통해 영화 상세 정보 조회 및 매핑
+    	//각 ID별로 API를 호출하여 상세 정보를 가져와야 함
+    	List<movieDTO> likedMovies = likedTmdbIds.stream()
+    			.map(tmdbApiService::getMovieDetail)// (TMDBapiservice에 구현된 상세 정보 함수)
+    			.filter(dto -> dto != null)
+    			.collect(Collectors.toList());
+    	
+    	return likedMovies;
+    }
+    
+    
+    
+    
+    //apiId 기준으로 영화 정보 저장
     @Transactional
     public movieEntity saveIfNotExist(Long apiId) {
         return movieRepository.findByApiId(apiId)

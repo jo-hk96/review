@@ -1,5 +1,8 @@
 package com.review.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,7 +58,6 @@ public class TmdbApiService {
 		
 	}
 	
-	
 	//API에서 영화 제목으로 검색하는 함수
 	//movieDTO에 담긴 영화 정보들을 불러옴
 	public List<movieDTO> searchMovies(String query) {
@@ -63,7 +65,10 @@ public class TmdbApiService {
 	    if (query == null || query.trim().isEmpty()) {
 	        return Collections.emptyList();
 	    }
-	    
+	    //WebClient의 자동 인코딩 무시
+		//"반지의 제왕" -> "반지의+제왕" 으로 변경
+	    String searchKeyword = query.trim().replace(" ", "+");
+	   
 	    // 2. 토큰 앞뒤 공백 제거
 	    String trimmedToken = bearerToken.trim();
 	    
@@ -73,7 +78,7 @@ public class TmdbApiService {
 	            // .uri() 대신 .uriBuilder()를 사용합니다.
 	            .uri(uriBuilder -> uriBuilder
 	                .path("/search/movie")              // API 경로
-	                .queryParam("query", query)         // ⭐️ 한글 검색어 안전하게 인코딩 ⭐️
+	                .queryParam("query", searchKeyword)         // ⭐️ 한글 검색어 안전하게 인코딩 ⭐️
 	                .queryParam("language", "ko-KR")    // 언어 설정
 	                .build())
 	            .header("Authorization", "Bearer " + trimmedToken)

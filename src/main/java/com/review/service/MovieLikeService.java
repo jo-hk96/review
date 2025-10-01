@@ -26,6 +26,10 @@ public class MovieLikeService {
 	private final TmdbApiService tmdbApiService;
 	private final MovieLikeRepository movieLikeRepository; 
 	
+	
+	
+	
+	//영화 좋아요 로직
 	public boolean toggleLike(Long userId , Long apiId) {
 		
 		//MovieEntity에 정보가 없다면 api 호출후 DB에 저장
@@ -45,12 +49,14 @@ public class MovieLikeService {
 		
 		if(existingLike.isPresent()) {
 			
-			//좋아요 했으면 : 좋아요 기록 DB에서 삭제
+			//좋아요 했으면 : Movie_like DB에서 삭제
 			movieLikeRepository.delete(existingLike.get());
 			return false; //좋아요 취소됨
 		}else {
 			//좋아요 하지 않았으면 : MovieLike 엔티티 DB에 저장
 			MovieLike newLike = new MovieLike();
+			newLike.setApiId(apiId);
+			newLike.setNickname(userEntity.getNickname());
 			newLike.setId(likeId);
 			newLike.setUserEntity(userEntity);
 			newLike.setMovieEntity(movieEntity);
@@ -68,7 +74,6 @@ public class MovieLikeService {
 		
 		 // 1. TMDB API 호출 (TmdbApiService 사용)
 	    movieDTO apiData = tmdbApiService.getMovieDetail(apiId);
-	    
 	    if (apiData == null) {
 	        // API에서 영화 정보를 찾지 못하면 예외 처리
 	        throw new RuntimeException("TMDB API에서 ID [" + apiId + "]에 대한 정보를 찾을 수 없습니다.");
@@ -85,7 +90,6 @@ public class MovieLikeService {
 	    
 	    // 3. MovieRepository를 사용하여 DB에 저장
 	    return movieRepository.save(newMovie); 
-		
 	}
 	
 	

@@ -9,98 +9,178 @@
     <link rel="stylesheet" href="/css/header.css">
 
 </head>
-
 <body>
 
-	<!-- 헤더 -->
-	<div th:insert = "index/index :: header"></div>
-						
-						
-		<!-- 영화 상세 정보 -->
-	    <div id="movie-detail-container">
-	        <p>상세정보 불러오는중</p>
-	    </div>
-	    
-   				<b>영화별점:</b>
-				<div>
-				    <span data-rating="1">★</span>
-				    <span data-rating="2">★</span>
-				    <span data-rating="3">★</span>
-				    <span data-rating="4">★</span>
-				    <span data-rating="5">★</span>
-				</div>
-				
-				<div>
-			    <button 
-			        id="likeButton"
-			        th:data-api-id="${apiId}" 
-			        th:data-liked="${isLiked}" th:classappend = "${isLiked} ? 'liked' : ''"
-			        th:text = "${isLiked} ? '♥ 좋아요 취소' : '♡ 좋아요 하기'"
-			        onclick = "toggleLike(this)"
-			        class="like-btn">
-			    </button>
+	<!-- header -->
+	<header th:insert="index/index :: header"></header>
+
+	<main>
+		<section id="movie-detail-container">
+			<p>상세정보 불러오는중</p>
+		</section>
+
+
+         <hr>
+
+		<section class="movie-actions">
+			<div class="rating-display">
+				<h3>영화 별점 (평균)</h3>
 			</div>
-						
-						
-	<!-- 영화 리뷰  -->				
-	 <div sec:authorize="isAuthenticated()">
-		<form id="review-form"> 
-			    <h3>영화 리뷰 목록</h3>
-			    닉네임 : <span sec:authentication="principal.nickname" id = "nickname"></span><br>
-			    평가   : <textarea rows = "5" cols = "30" name="comment"></textarea><br>
-			    평점:	<div class="rating-area">
-			                <span class="star" data-rating="1">★</span>
-			                <span class="star" data-rating="2">★</span>
-			                <span class="star" data-rating="3">★</span>
-			                <span class="star" data-rating="4">★</span>
-			                <span class="star" data-rating="5">★</span>
-			            </div>
-			            <input type="hidden" id="apiId" name="apiId" th:value="${apiId}"> 
-			            <input type="hidden" id="selected-rating" name="rating" value="0">
-			    <button type="button" id="submit-review-btn">리뷰 등록</button> 
-			</form>
-	 </div>      
-<hr>
 
-<h3>등록된 리뷰</h3>
-<div id="review-list">
-    
-    <div th:if="${reviews == null or reviews.isEmpty()}">
-        <p>아직 등록된 리뷰가 없습니다.</p>
-    </div>
-    
-        <div th:each="review : ${reviews}" id = "reviews">
-            <p>
-                <strong>작성자:</strong> 
-                <span th:if="${review.userEntity != null}" 
-                      th:text="${review.userEntity.nickname}">닉네임</span>
-                <span th:if="${review.userEntity == null}">탈퇴한 사용자</span>
-            </p>
-            <table>
-                <tr>
-                    <td id = "reviewsRating">
-                        <strong>별점:</strong> 
-                        <span th:if="${review.rating != null}" 
-                        th:text="${#strings.repeat('★', review.rating)}"></span> 
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p style="margin: 0;" th:text="${review.comment}">리뷰 내용</p>
-                    </td>
-				</tr>
-            </table>
-            <p id="reviewsRegdate">
-                작성일: <span th:if="${review.regDate != null}" 
-                              th:text="${#temporals.format(review.regDate, 'yyyy-MM-dd HH:mm')}">2025-01-01 00:00</span>
-            </p>
-        </div>
-</div>
+			<div class="like-action">
+				<button
+					id="likeButton"
+					th:data-api-id="${apiId}"
+					th:data-liked="${isLiked}"
+					th:classappend="${isLiked} ? 'liked' : ''"
+					th:text="${isLiked} ? '♥ 좋아요 취소' : '♡ 좋아요 하기'"
+					onclick="toggleLike(this)"
+					class="like-btn"
+					aria-pressed="${isLiked}">
+					좋아요 버튼
+				</button>
+			</div>
+		</section>
 
+		<section class="movie-reviews">
+		
+		<hr>
+
+			<div sec:authorize="isAuthenticated()" class="review-form-container">
+				<h2>내 리뷰 작성</h2>
+				<form id="review-form">
+					<p>
+						<strong>닉네임:</strong> <span sec:authentication="principal.nickname" id="nickname"></span>
+					</p>
+
+					<div class="form-group">
+						<label for="review-comment">평가:</label>
+						<textarea id="review-comment" rows="5" cols="30" name="comment" placeholder="리뷰를 작성해 주세요."></textarea>
+					</div>
+
+					<div class="form-group">
+						<strong>평점:</strong>
+						<div class="rating-area" role="radiogroup" aria-label="평점 선택">
+							<span class="star" data-rating="1" tabindex="0" role="radio" aria-checked="false">★</span>
+							<span class="star" data-rating="2" tabindex="0" role="radio" aria-checked="false">★</span>
+							<span class="star" data-rating="3" tabindex="0" role="radio" aria-checked="false">★</span>
+							<span class="star" data-rating="4" tabindex="0" role="radio" aria-checked="false">★</span>
+							<span class="star" data-rating="5" tabindex="0" role="radio" aria-checked="false">★</span>
+						</div>
+					</div>
+
+					<input type="hidden" id="apiId" name="apiId" th:value="${apiId}">
+					<input type="hidden" id="selected-rating" name="rating" value="0">
+
+					<button type="button" id="submit-review-btn">리뷰 등록</button>
+				</form>
+			</div>
+
+			<hr>
+
+			<div class="review-list-container">
+				<h2>등록된 리뷰</h2>
+				<div id="review-list">
+
+					<p th:if="${reviews == null or reviews.isEmpty()}" class="no-reviews-message">
+						아직 등록된 리뷰가 없습니다.
+					</p>
+
+					<article th:each="review : ${reviews}" id="reviews" class="review-item">
+						<header class="review-header">
+							<strong>작성자:</strong>&nbsp;&nbsp;
+							<span th:if="${review.userEntity != null}"
+								  th:text="${review.userEntity.nickname}">닉네임</span>
+							<span th:if="${review.userEntity == null}" class="deleted-user">탈퇴한 사용자</span>
+						</header>
+
+						<div class="review-content">
+							<div class="review-rating-info">
+								<strong>별점:</strong>
+								<span th:if="${review.rating != null}"
+									  th:text="${#strings.repeat('★', review.rating)}"
+									  class="review-stars"></span>
+							</div>
+							<p class="review-text" th:text="${review.comment}">리뷰 내용</p>
+						</div>
+
+						<footer class="review-footer">
+							작성일: <time th:if="${review.regDate != null}"
+										 th:datetime="${#temporals.format(review.regDate, 'yyyy-MM-dd HH:mm')}"
+										 th:text="${#temporals.format(review.regDate, 'yyyy-MM-dd HH:mm')}">2025-01-01 00:00</time>
+						</footer>
+					</article>
+
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer th:insert="index/index :: footer"></footer>
+
+	<script>
+        // toggleLike 함수
+        async function toggleLike(buttonElement){
+            //... 기존 코드
+            const apiId = buttonElement.getAttribute('data-api-id');
+            const isCurrentlyLiked = buttonElement.getAttribute('data-liked') === 'true';
+
+            //좋아요 API URL 설정
+            const url = `/api/MovieLike/${apiId}`;
+
+            try{
+                const response = await fetch(url,{
+                    method : 'POST',
+                    headers: {
+                        'Content-Type' : 'application/json'
+
+                    },
+                });
+
+                if(response.ok){
+                    //서버응답(좋아요 상태:true/false) 받기
+                    const isLiked = await response.json();
+                    //HTML 요소(버튼)의 상태 업데이트(사용자 피드백)
+                    updateLikeBtnState(buttonElement, isLiked);
+                }else if(response.status === 401){
+                    //비로그인 사용자 처리
+                    alert("로그인 후 이용가능합니다.");
+                    window.location.href = '/login' //로그인 페이지로 리다이렉트
+                }else {
+                    alert("오류발생");
+                    console.error("좋아요 API 오류:" , response.status);
+
+                }
+            }catch(error){
+                console.error("네트워크 오류:", error);
+                alert("서버 연결 실패.");
+            }
+        }
+
+        //버튼 상태 변경
+        function updateLikeBtnState(buttonElement, isLiked){
+            //data-liked 속성 값 변경
+            buttonElement.setAttribute('data-liked', isLiked);
+
+            if(isLiked){
+                //좋아요 상태: 하트와 '취소' 텍스트로 변경
+                buttonElement.innerHTML = '♥ 좋아요 취소';
+                buttonElement.classList.add ('liked');// CSS 클래스 추가
+            }else {
+                //취소 상태: 빈 하트 '하기' 텍스트로 변경
+                buttonElement.innerHTML = '♡ 좋아요 하기';
+                buttonElement.classList.remove('liked'); //CSS 클래스 제거
+            }
+        }
+    </script>
+
+	<script src="/js/movies_review.js"></script>
+	<script src="/js/movies_detail.js"></script>
+</body>
+</html>
 
 
 <!-- index/index 파일에 있는 "footer" 태그조각를 가져옴  -->
-<div th:insert="index/index :: footer"></div>
 
 
 
@@ -134,8 +214,8 @@
 			}else {
 				alert("오류발생");
 				console.error("좋아요 API 오류:" , response.status);
+				
 			}
-			
 		}catch(error){
 			console.error("네트워크 오류:", error);
 			alert("서버 연결 실패.");
@@ -157,13 +237,47 @@
 			buttonElement.classList.remove('liked'); //CSS 클래스 제거
 		}
 	}
+	
+	// /js/movies_review.js 파일에 있다고 가정한 함수 (실제 파일의 구조에 맞게 적용하세요)
+
+	/**
+	 * 서버에서 새로운 리뷰 정보를 받은 후, DOM에 리뷰를 추가하고 '리뷰 없음' 메시지를 처리합니다.
+	 * @param {object} newReview 서버에서 받은 새로운 리뷰 객체
+	 */
+	function appendNewReviewToDOM(newReview) {
+	    const reviewListContainer = document.getElementById('review-list');
+	    
+	    // 1. '리뷰 없음' 메시지 요소 찾기
+	    const noReviewsMessage = reviewListContainer.querySelector('.no-reviews-message');
+	    
+	    // 2. 메시지가 존재하면 제거
+	    if (noReviewsMessage) {
+	        noReviewsMessage.remove();
+	    }
+
+	    // 3. 새로운 리뷰 HTML 요소를 생성하고 목록에 추가
+	    // (이 부분은 새 리뷰 객체(newReview)를 HTML 문자열로 변환하는 로직이 필요합니다. 
+	    //  예시에서는 Thymeleaf 없이 순수 JS로 동적 생성한다고 가정합니다.)
+	    const newReviewArticle = document.createElement('article');
+	    newReviewArticle.className = 'review-item';
+	    newReviewArticle.innerHTML = `
+	        <header class="review-header">
+	            <strong>작성자:</strong> 
+	            <span>${newReview.userNickname}</span>
+	        </header>
+	        <div class="review-content">
+	            <div class="review-rating-info">
+	                <strong>별점:</strong> 
+	                <span class="review-stars">${'★'.repeat(newReview.rating)}</span>
+	            </div>
+	            <p class="review-text">${newReview.comment}</p>
+	        </div>
+	        <footer class="review-footer">
+	            작성일: <time>${new Date().toLocaleTimeString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</time>
+	        </footer>
+	    `;
+
+	    reviewListContainer.appendChild(newReviewArticle);
+	}
 </script>
 
-
-<!-- 리뷰.js  -->
-<script src ="/js/movies_review.js"></script>
-
-<!-- 영화상세정보.js -->
-<script src="/js/movies_detail.js"></script>
-</body>
-</html>

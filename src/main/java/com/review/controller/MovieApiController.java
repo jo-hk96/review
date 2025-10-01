@@ -29,7 +29,7 @@ public class MovieApiController {
 		private final TmdbApiService tmdbApiService;
 		
 		
-		//영화 좋아요 비동기API
+		//영화정보 좋아요 비동기API
 		@PostMapping("/api/MovieLike/{apiId}")
 		public ResponseEntity<Boolean> toggleLike(@PathVariable Long apiId,
 				@AuthenticationPrincipal CustomUserDetails userDetails){

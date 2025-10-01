@@ -28,6 +28,8 @@ public class UserService implements UserDetailsService {
 			return userRepository.findById(userId).orElseThrow(null);
 		}
 	
+	
+	
 	//이메일 중복 검사
 		 public boolean checkEmailDuplication(String email) {
 		        return userRepository.existsByEmail(email);
