@@ -21,15 +21,18 @@ public class UserReviewDTO {
 	    private String comment;     
 	    private int rating;
 	    private String regDate;     // 포맷된 작성일 (응답에 필수)
-		private Long movieId;    
+		private Long apiId;
+		private String title;
 	    
 	    public static UserReviewDTO fromEntity(userReviewEntity entity) {
 	        // 엔티티를 DTO로 변환하는 로직:
 	        return UserReviewDTO.builder()
+	        		.apiId(entity.getApiId())
 	                .reviewId(entity.getReviewId())
 	                .nickname(entity.getUserEntity().getNickname()) // ⭐ 관계를 통해 닉네임 확보
 	                .comment(entity.getComment())
 	                .rating(entity.getRating())
+	                .title(entity.getTitle()) 
 	                .regDate(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").format(entity.getRegDate()))
 	                .build();
 	    }

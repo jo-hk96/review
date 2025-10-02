@@ -28,6 +28,27 @@ public class MovieService {
     private final TmdbApiService tmdbApiService;
     
     
+    //apiId로 영화 제목 들고오기
+	/*
+	 * public String getMovieTitle(Long apiId) {
+	 * 
+	 * String title = movieRepository.findByApiId(apiId)
+	 * .map(movieEntity::getTitle).orElse(null);
+	 * 
+	 * 
+	 * //db에 title 이 null이 아닐 경우 반환 if(title != null) { return title; }
+	 * 
+	 * try { String tmdbTitle = tmdbApiService.getMovieTitle(apiId); return
+	 * tmdbTitle;
+	 * 
+	 * }catch(Exception e) { return "TMDB API 호출 실패"; }
+	 * 
+	 * }
+	 */
+    
+    
+    
+    //좋아요 눌렀을때 영화 정보 저장
     public List<movieDTO> getLikeMoviesByUserId(Long userId){
     	
     	if(userId == null) {
@@ -59,20 +80,6 @@ public class MovieService {
     	return likedMovies;
     }
     
+}    
     
-    
-    
-    //apiId 기준으로 영화 정보 저장
-    @Transactional
-    public movieEntity saveIfNotExist(Long apiId) {
-        return movieRepository.findByApiId(apiId)
-                .orElseGet(() -> {
-                    movieEntity newMovie = movieEntity.builder()
-                            .apiId(apiId)
-                            .build(); 
-                    return movieRepository.save(newMovie);
-                });
-    		}
-		}
-		
 		

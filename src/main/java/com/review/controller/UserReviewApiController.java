@@ -38,12 +38,15 @@ public class UserReviewApiController {
 	}
 	
 	
+	
+	
+	
 	//유저들의 영화 리뷰 목록
 	@PostMapping("/api/userReview")
-	public ResponseEntity<?> createReview (@RequestBody UserReviewDTO reviewDto){
+	public ResponseEntity<?> createReview (@RequestBody UserReviewDTO reviewDto,Long apiId){
 		
 		 // 1. 서비스 호출 및 DB 저장
-	    userReviewEntity newReview = userReviewService.saveReview(reviewDto);
+	    userReviewEntity newReview = userReviewService.saveReview(reviewDto,apiId);
 	    
 	    // 2. 응답 DTO로 변환 (필수: 닉네임, 내용, 작성일 포함)
 	    UserReviewDTO responseDto = UserReviewDTO.fromEntity(newReview); 

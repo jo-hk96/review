@@ -41,7 +41,7 @@ document.querySelectorAll('.rating-area .star').forEach(star => {
 
 
 document.getElementById('submit-review-btn').addEventListener('click', function() {
-    const apiId = document.getElementById('apiId').value; // 영화 ID (TMDB ID)
+    const apiIdValue = document.getElementById('apiId').value; // 영화 ID (TMDB ID)
     const nickname = document.getElementById('nickname').textContent;
     const comment = document.querySelector('textarea[name="comment"]').value;
     const rating = document.getElementById('selected-rating').value;
@@ -52,7 +52,7 @@ document.getElementById('submit-review-btn').addEventListener('click', function(
     }
     
     const reviewData = {
-        movieId: apiId,
+        apiId: apiIdValue,
         nickname: nickname,
         comment: comment,
         rating: parseInt(rating)

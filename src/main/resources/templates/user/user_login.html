@@ -11,110 +11,19 @@
 		<h1>로그인</h1>
 			<form action = "/UserLogin" method = "post" id="loginForm">
 			    <input type ="email" id="email" name="email" placeholder = "이메일을 입력해주세요.">
-			    <span id="emailError" style="color: red; font-size: 0.9em;"></span><br> 
+			    <span id="emailError" style="color: red; font-size: 0.8em;"></span><br> 
 			
 			    <input type = "password" name ="password" id="password"  placeholder = "비밀번호를 입력해주세요.">
-			    <span id="passwordError" style="color: red; font-size: 0.9em;"></span><br> 
+			    <span id="passwordError" style="color: red; font-size: 0.8em;"></span><br> 
 			    
 			    <button type = "submit" >로그인</button>
 			</form>
-
 	<div class ="userIndex" sec:authorize="isAnonymous()">
 	<a href = "/UserJoinForm" class="btn-join">회원가입</a> </div>
 
-
 	<div th:insert="index/index :: footer"></div>
 
-      <script>
-			document.addEventListener('DOMContentLoaded', function() {
-		    const form = document.getElementById('loginForm');
-		
-		    // 이메일 관련 요소
-		    const emailInput = document.getElementById('email');
-		    const emailError = document.getElementById('emailError');
-		    const emailRegex = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-		
-		    // 비밀번호 관련 요소
-		    const passwordInput = document.getElementById('password');
-		    const passwordError = document.getElementById('passwordError');
-		
-		    /**
-		     * 이메일 유효성 검사 (빈 값 및 형식 체크)
-		     * 반환 값: 0(비어있음), 1(형식 오류), 2(유효함)
-		     */
-		    function validateEmail() {
-		        const emailValue = emailInput.value.trim();
-		
-		        if (emailValue === "") {
-		            emailError.textContent = "이메일을 입력해 주세요.";
-		            return 0; // 비어 있음
-		        } else if (!emailRegex.test(emailValue)) {
-		            emailError.textContent = "올바른 이메일 형식이 아닙니다.";
-		            return 1; // 형식 오류
-		        } else {
-		            emailError.textContent = "";
-		            return 2; // 유효함
-		        }
-		    }
-		
-		    /**
-		     * 비밀번호 빈 값 검사
-		     * 반환 값: 0(비어있음), 2(유효함)
-		     */
-		    function validatePassword() {
-		        const passwordValue = passwordInput.value.trim();
-		
-		        if (passwordValue === "") {
-		            passwordError.textContent = "비밀번호를 입력해 주세요.";
-		            return 0; // 비어 있음
-		        } else {
-		            // 비밀번호 길이 검사 요청이 없으므로, 비어 있지 않으면 유효한 것으로 처리
-		            passwordError.textContent = "";
-		            return 2; // 유효함
-		        }
-		    }
-		
-		    // --- 폼 제출(Submit) 이벤트 리스너 ---
-		    form.addEventListener('submit', function(event) {
-		        // 1. 유효성 검사 실행
-		        const emailValidationResult = validateEmail();
-		        const passwordValidationResult = validatePassword();
-		
-		        // 2. 하나라도 유효하지 않으면 폼 제출 중지 및 alert 실행
-		        if (emailValidationResult !== 2 || passwordValidationResult !== 2) {
-		            event.preventDefault(); // 폼 제출 중지
-		
-		            // ---비어 있을 때 alert 메시지 (우선순위 높음) ---
-		            if (emailValidationResult === 0) {
-		                alert('이메일을 입력해주세요.');
-		                emailInput.focus();
-		                return;
-		            }
-		
-		            if (passwordValidationResult === 0) {
-		                alert('비밀번호를 입력해주세요.');
-		                passwordInput.focus();
-		                return;
-		            }
-		
-		            // --- 🚨 형식 오류 alert 메시지 (빈 값이 아닐 때) ---
-		            if (emailValidationResult === 1) {
-		                alert('이메일 형식이 올바르지 않습니다.');
-		                emailInput.focus();
-		                return;
-		            }
-		
-		            // 비밀번호는 빈 값이 아니면 유효성 검사를 통과하도록 요청했으므로,
-		            // 별도의 길이/형식 오류 alert는 필요 없습니다.
-		            return;
-		        }
-		        // 모든 유효성 검사를 통과하면 폼이 정상적으로 제출됩니다.
-		    });
-		
-		    // blur 이벤트는 span에만 오류 메시지를 표시
-		    emailInput.addEventListener('blur', validateEmail);
-		    passwordInput.addEventListener('blur', validatePassword);
-		});
-</script>
+<!-- 유저 로그인.js -->
+<script src="/js/user_login.js"></script>
 </body>
 </html>

@@ -33,15 +33,16 @@ public class MovieController {
 	//메인홈
 	@GetMapping("/")
 	public String Home(Principal principal, Model model) {
-		
 		 if (principal != null) {
 	            // principal.getName()은 UserDetailsService에서 반환한 getUsername() 값,
-	            //로그인한 사용자의 이메일이 됩니다.
-	            String loggedInUserEmail = principal.getName(); 
+	            //로그인 한 사용자의 이메일
+	            String loggedInUserEmail = principal.getName();
+	            
 	            // 이메일에서 '@' 앞의 아이디 부분만 표시하고 싶다면:
 	            // String username = loggedInUserEmail.split("@")[0];
 	            model.addAttribute("username", loggedInUserEmail);
 	        }
+		 //사용자 리뷰리스트를 최신순으로 메인에 보내줌
 		 List<UserReviewDTO> recentReviews = userReviewService.getRecentReviews();
 		 model.addAttribute("recentReviews" , recentReviews);
 		 return "index/index";
@@ -69,7 +70,6 @@ public class MovieController {
 		
 		//좋아요 상태 조회 로직 추가
 		boolean isLiked = false;
-		
 		
 		//로그인 했을 때만 좋아요 상태를 조회합니다.
 		if(userDetails != null) {

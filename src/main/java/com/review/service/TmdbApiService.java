@@ -102,4 +102,21 @@ public class TmdbApiService {
 	        return Collections.emptyList();
 	    }
 	}
-}	
+	
+		public String getMovieTitle(Long apiId) {
+			// /movie/{movie_id}
+			String path = "/movie/" + apiId;
+			
+			//API 호출 및 응답 처리
+			return webClient.get()
+					.uri(uriBuilder -> uriBuilder
+							.path(path)
+							.queryParam("language" , "ko-KR")
+							.build())
+					.header("Authorization", "Bearer " + bearerToken)
+					.retrieve()	
+					.bodyToMono(movieDTO.class)
+					.map(movieDTO::getTitle)
+					.block();
+			}
+	}	

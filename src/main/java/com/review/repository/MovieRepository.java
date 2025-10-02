@@ -10,5 +10,6 @@ import com.review.entity.movieEntity;
 @Repository
 public interface MovieRepository extends JpaRepository<movieEntity ,Long> {
 	Optional<movieEntity> findByApiId(Long apiId); 
+	
 	Optional<movieEntity> findByMovieId(Long movieId);
 }

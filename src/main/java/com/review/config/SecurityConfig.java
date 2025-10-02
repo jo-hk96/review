@@ -24,7 +24,7 @@ public class SecurityConfig {
 		            authorizeRequests
 		            	//로그인 없이 모두 허용할 경로 정의
 		                .requestMatchers("/",
-		                		"/css/**","/js/**",
+		                		"/css/**","/js/**","images/**",
 		                		"/detail/**",
 				                "/UserJoinForm",
 		                        "/UserJoin","/MoviesList","/TopRate"

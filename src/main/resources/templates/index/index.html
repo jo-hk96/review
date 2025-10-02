@@ -29,22 +29,30 @@
 
 
 <body>
-	<!--익명사용자(비로그인상태)isAnonymous() -->
-	<!--사용자(로그인상태)isAuthenticated() -->
+	<body>
+	<!--익명사용자(비로그인상태)isAnonymous -->
+	<!--사용자(로그인상태)isAuthenticated -->	  
+        <div id="header" th:fragment="header">                  
+	        <a href="/" class="logo">
+	           <img th:src="@{/images/logo.png}" alt ="로고">
+	        </a>   
+       	<div sec:authorize="isAuthenticated()" class = "headerLeft">
+       	
+       		<!-- ROLE_ADMIN일 경우 -->
+		    <span sec:authorize="hasRole('ROLE_ADMIN')">
+		        관리자 : <span sec:authentication="principal.pname"></span>
+		        		 [<span sec:authentication="principal.nickname"></span>]
+		        <b><a href="/Admin/AdminPage">사이트관리</a></b>
+		    </span>
+		    
+		    <!-- ROLE_ADMIN이 아닐경우 -->
+		    <span sec:authorize="!hasRole('ROLE_ADMIN')">
+		        <span sec:authentication="principal.pname"></span>
+		        [<span sec:authentication="principal.nickname"></span>]
+		    </span>
+	    </div>
 	
-	<div id ="header" th:fragment = "header">
-			<div sec:authorize="isAuthenticated()">
-			    안녕하세요, 
-			    <span sec:authorize="hasRole('ROLE_ADMIN')">
-			        관리자 (<span sec:authentication="principal.nickname"></span>)님!
-			        <b><a href="/Admin/AdminPage">관리자 페이지</a></b>
-			      	
-			    </span>
-			    <span sec:authorize="!hasRole('ROLE_ADMIN')">
-			        <span sec:authentication="principal.nickname"></span>님!
-			    </span>
-			</div>
-			
+	    <div class="headerRight">
 			<div class ="userIndex" sec:authorize="isAnonymous()">
 				<a href = "/UserLoginForm">로그인</a>
 			</div>
@@ -53,12 +61,13 @@
 				<a href = "/UserMypage">내정보</a>
 				<a href = "/logout">로그아웃</a>
 			</div>
-			
-		    <form action="/MoviesList" method="GET">
-			    영화 검색 : 
-			    <input type ="text" id = 'movieSearch' name = "movieSearch" placeholder="영화 제목을 입력하세요"> 
-			    <button type = "submit">검색</button>
-			</form>
+		    <div>
+			     <form action ="/MoviesList" method ="get" > 
+			    	영화 검색 : <input type ="text" id = 'movieSearch' name = "movieSearch" placeholder="영화 제목을 입력하세요">
+			    	<button type = "submit">검색</button>
+			    </form>
+		    </div>
+         </div>
 	</div>
 	
 	
@@ -88,10 +97,11 @@
 	<h2>최신 리뷰</h2>
 	<div class="review-container">
 		  <div class="review-card" th:each ="review : ${recentReviews}">
-		    <p>[[${review.comment}]]</p>
-		    <span class="rating">⭐⭐⭐⭐</span>
+		  	<p><b>영화 제목 : [[${review.title}]] </b></p>
+		    <p>작성자: [[${review.nickname}]]</p>
+		    <p>리뷰 : [[${review.comment}]]</p>
+		    <p class="rating">[[${review.rating}]]</p>
 		    <div class="footer">
-		      <span>작성자: [[${review.nickname}]]</span>
 		    </div>
 		    <div>
 		      <span>[[${review.regDate}]]</span>
@@ -99,10 +109,7 @@
 		  </div>	  
 	</div>
 	<p th:if ="${recentReviews.isEmpty()}">아직 작성된 리뷰가 없습니다.</p>
-	
 </div>
-
-
 
 	<!-- -----------------------푸터--------------------------- -->
     <div id = "footer" th:fragment = "footer">
@@ -116,55 +123,11 @@
         </p>
         <p>주소:못골번영로 56번길 8<br>© 2025 ReviewPlus.All Rights Reserved.</p>
     </div>
-    
     <!-- --------------------------------------------------------------------- -->
-	<script>
-		async function handleMovieSearch(event){
-			//폼의 기본 제출(페이지이동)을 막음
-			event.preventDefault();
-			
-			//검색 입력 필드의 값을 가져옴
-			const searchInput = document.getElementById('movieSearch');
-			const query = searchInput.value.trim();
-			const movieListContainer = document.getElementById('movieListContainer');
-			
-			//검색어가 비어 있으면 경고 후 목록을 비움
-			if(!query){
-				alert("검색어를 입력해 주세요.");
-				movieListContainer.innerHTML = ''; //기존 목록을 비움
-				return;
-			}
-			
-			//백엔드 API URL을 정확히 'query' 파라미터로 설정함
-			const url = `/api/movies/search?query=${encodeURIComponent(query)}`;
-			
-			try{
-				const response = await fetch(url);
-				
-				if(response.ok){
-					const searchResults = await response.json();
-					
-					//기존 목록을 비우고 새로운 결과를 렌더링
-					movieListContainer.innerHTML = '';
-					
-					if(searchResults && searchResults.length > 0 ){
-						renderMovies(searchResults); // 렌더링함수 호출
-					}else{
-						movieListContainer.innerHTML = '<p>일치하는 영화 검색 결과가 없습니다.</p>'
-					}
-				}else {
-					// 서버 응답 오류 처리
-					console.error("검색 API 응답 오류:", response.status);
-					movieListContainer.innerHTML = `<p>검색 중 오류가 발생했습니다(코드: ${response.status}).</p>`;
-					}
-				}catch(error){
-					//네트워크 연결 실패 등 오류 처리
-					console.error("네트워크 오류:", error);
-					movieListContainer.innerHTML = '<p>서버 연결에 실패했습니다.</p>';
-				}
-				
-			}
-	</script>
+		
+ <!-- 영화검색.js -->	
+ <script src="js/movie_search.js"></script>
+	
  <!--영화 슬라이더 -->
  <script src="js/now_playing.js" type="module"></script>
  <script src="js/top_rate.js" type="module"></script>

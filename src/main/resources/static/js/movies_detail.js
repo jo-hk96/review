@@ -116,9 +116,8 @@
 	            </div>
 	        </section>
 	        
-	        
 	        <hr style="margin: 40px 0;">
-	        <h2>감독 / 주요 출연진</h2>
+	        <h2>감독 / 주요배우</h2>
 	        <div style="display: flex; gap: 15px; overflow-x: auto;">
 	            ${directorHTML} ${castHTML || '<p>출연진 정보가 없습니다.</p>'}
 	        </div>
