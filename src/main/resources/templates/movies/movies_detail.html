@@ -7,26 +7,21 @@
     <link rel="stylesheet" href="/css/movies_detail.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/header.css">
-
 </head>
 <body>
-
-	<!-- header -->
-	<header th:insert="index/index :: header"></header>
-
+	<!-- 헤더 -->
+	<div th:insert = "index/index :: header"></div>
+		<!-- 영화 상세 정보 -->
 	<main>
 		<section id="movie-detail-container">
+			<h2>영화 상세 정보</h2>
 			<p>상세정보 불러오는중</p>
 		</section>
-
-
          <hr>
-
 		<section class="movie-actions">
 			<div class="rating-display">
 				<h3>영화 별점 (평균)</h3>
 			</div>
-
 			<div class="like-action">
 				<button
 					id="likeButton"
@@ -41,18 +36,14 @@
 				</button>
 			</div>
 		</section>
-
 		<section class="movie-reviews">
-		
 		<hr>
-
 			<div sec:authorize="isAuthenticated()" class="review-form-container">
 				<h2>내 리뷰 작성</h2>
 				<form id="review-form">
 					<p>
 						<strong>닉네임:</strong> <span sec:authentication="principal.nickname" id="nickname"></span>
 					</p>
-
 					<div class="form-group">
 						<label for="review-comment">평가:</label>
 						<textarea id="review-comment" rows="5" cols="30" name="comment" placeholder="리뷰를 작성해 주세요."></textarea>
@@ -87,29 +78,32 @@
 					</p>
 
 					<article th:each="review : ${reviews}" id="reviews" class="review-item">
-						<header class="review-header">
-							<strong>작성자:</strong>&nbsp;&nbsp;
-							<span th:if="${review.userEntity != null}"
-								  th:text="${review.userEntity.nickname}">닉네임</span>
-							<span th:if="${review.userEntity == null}" class="deleted-user">탈퇴한 사용자</span>
-						</header>
+    <header class="review-header">
+        <strong>작성자:</strong>
+        <span th:if="${review.userEntity != null}" th:text="${review.userEntity.nickname}">닉네임</span>
+        <span th:if="${review.userEntity == null}" class="deleted-user">탈퇴한 사용자</span>
+    </header>
 
-						<div class="review-content">
-							<div class="review-rating-info">
-								<strong>별점:</strong>
-								<span th:if="${review.rating != null}"
-									  th:text="${#strings.repeat('★', review.rating)}"
-									  class="review-stars"></span>
-							</div>
-							<p class="review-text" th:text="${review.comment}">리뷰 내용</p>
-						</div>
-						
-						<footer class="review-footer">
-							작성일: <time th:if="${review.regDate != null}"
-										 th:datetime="${#temporals.format(review.regDate, 'yyyy-MM-dd HH:mm')}"
-										 th:text="${#temporals.format(review.regDate, 'yyyy-MM-dd HH:mm')}">2025-01-01 00:00</time>
-						</footer>
-					</article>
+    <div class="review-content">
+        <div class="review-rating-info">
+            <strong>별점:</strong>
+            <span th:if="${review.rating != null}" th:text="${#strings.repeat('★', review.rating)}" class="review-stars"></span>
+        </div>
+        <p class="review-text" th:text="${review.comment}">리뷰 내용</p>
+    </div>
+
+    <footer class="review-footer">
+        작성일: <time th:if="${review.regDate != null}" th:datetime="${#temporals.format(review.regDate, 'yyyy-MM-dd HH:mm')}" th:text="${#temporals.format(review.regDate, 'yyyy-MM-dd HH:mm')}">2025-01-01 00:00</time>
+
+        <!-- 수정 및 삭제 버튼 추가 -->
+        <div class="review-actions">
+            <button type="button" class="edit-btn" onclick="editReview'(${review_id})'">수정</button>
+            <button type="button" class="delete-btn" onclick="deleteReview'(${review_id})'">삭제</button>
+        </div>
+    </footer>
+</article>
+
+
 				</div>
 			</div>
 		</section>
@@ -118,6 +112,62 @@
 	<footer th:insert="index/index :: footer"></footer>
 
 	<script>
+        // toggleLike 함수
+        async function toggleLike(buttonElement){
+            //... 기존 코드
+            const apiId = buttonElement.getAttribute('data-api-id');
+            const isCurrentlyLiked = buttonElement.getAttribute('data-liked') === 'true';
+
+            //좋아요 API URL 설정
+            const url = `/api/MovieLike/${apiId}`;
+
+            try{
+                const response = await fetch(url,{
+                    method : 'POST',
+                    headers: {
+                        'Content-Type' : 'application/json'
+
+                    },
+                });
+
+                if(response.ok){
+                    //서버응답(좋아요 상태:true/false) 받기
+                    const isLiked = await response.json();
+                    //HTML 요소(버튼)의 상태 업데이트(사용자 피드백)
+                    updateLikeBtnState(buttonElement, isLiked);
+                }else if(response.status === 401){
+                    //비로그인 사용자 처리
+                    alert("로그인 후 이용가능합니다.");
+                    window.location.href = '/login' //로그인 페이지로 리다이렉트
+                }else {
+                    alert("오류발생");
+                    console.error("좋아요 API 오류:" , response.status);
+
+                }
+            }catch(error){
+                console.error("네트워크 오류:", error);
+                alert("서버 연결 실패.");
+            }
+        }
+
+        //버튼 상태 변경
+        function updateLikeBtnState(buttonElement, isLiked){
+            //data-liked 속성 값 변경
+            buttonElement.setAttribute('data-liked', isLiked);
+
+            if(isLiked){
+                //좋아요 상태: 하트와 '취소' 텍스트로 변경
+                buttonElement.innerHTML = '♥ 좋아요 취소';
+                buttonElement.classList.add ('liked');// CSS 클래스 추가
+            }else {
+                //취소 상태: 빈 하트 '하기' 텍스트로 변경
+                buttonElement.innerHTML = '♡ 좋아요 하기';
+                buttonElement.classList.remove('liked'); //CSS 클래스 제거
+            }
+        }
+    </script>
+	
+<script>
 	async function toggleLike(buttonElement){
 		//버튼에서 영화ID와 현재 상태를 가져옴
 		const apiId = buttonElement.getAttribute('data-api-id');
@@ -171,6 +221,12 @@
 		}
 	}
 	
+	// /js/movies_review.js 파일에 있다고 가정한 함수 (실제 파일의 구조에 맞게 적용하세요)
+
+	/**
+	 * 서버에서 새로운 리뷰 정보를 받은 후, DOM에 리뷰를 추가하고 '리뷰 없음' 메시지를 처리합니다.
+	 * @param {object} newReview 서버에서 받은 새로운 리뷰 객체
+	 */
 	function appendNewReviewToDOM(newReview) {
 	    const reviewListContainer = document.getElementById('review-list');
 	    
@@ -206,10 +262,75 @@
 
 	    reviewListContainer.appendChild(newReviewArticle);
 	}
-    </script>
+</script>
 
+<script>
+
+//리뷰 수정 함수
+async function editReview(reviewId) {
+    // 수정할 리뷰를 찾아서 내용을 폼에 채워 넣는 로직
+    const reviewText = document.querySelector(`#review-${reviewId} .review-text`);
+    const reviewComment = reviewText.textContent;
+
+    // 리뷰 수정 폼을 띄운 후, 사용자 입력을 받음
+    const newComment = prompt("리뷰를 수정하세요:", reviewComment);
+
+    if (newComment !== null) {
+        try {
+            const response = await fetch(`/api/review/${reviewId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ comment: newComment })
+            });
+
+            if (response.ok) {
+                // 수정된 리뷰 내용을 DOM에 반영
+                reviewText.textContent = newComment;
+                alert("리뷰가 수정되었습니다.");
+            } else {
+                alert("리뷰 수정에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("서버 오류:", error);
+            alert("서버 연결 실패.");
+        }
+    }
+}
+
+// 리뷰 삭제 함수
+async function deleteReview(reviewId) {
+    // 사용자에게 삭제 여부 확인
+    const confirmDelete = confirm("정말로 이 리뷰를 삭제하시겠습니까?");
+    if (confirmDelete) {
+        try {
+            const response = await fetch(`/api/review/${reviewId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                // 삭제된 리뷰 항목을 DOM에서 제거
+                const reviewElement = document.getElementById(`review-${reviewId}`);
+                reviewElement.remove();
+                alert("리뷰가 삭제되었습니다.");
+            } else {
+                alert("리뷰 삭제에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("서버 오류:", error);
+            alert("서버 연결 실패.");
+        }
+    }
+}
+</script>
 	<script src="/js/movies_review.js"></script>
 	<script src="/js/movies_detail.js"></script>
 </body>
 </html>
+<!-- index/index 파일에 있는 "footer" 태그조각를 가져옴  -->
+
 

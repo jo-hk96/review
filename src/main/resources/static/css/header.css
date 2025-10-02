@@ -10,7 +10,7 @@
     */
     grid-template-columns: auto 1fr auto;
     /* 높이 및 기본 스타일 */
-    height: 60px;
+    height: 100px;
     background-color: black;
     align-items: center; /* 세로 중앙 정렬 */
     padding: 0 20px;
@@ -22,6 +22,7 @@
     background-color: rgb(192, 192, 192 , 0.5);
     padding: 15px;
     box-sizing: border-box;
+    font-size:20px;
 }
 
 /* 왼쪽 영역 스타일 (로고와 메뉴 정렬) */
@@ -92,5 +93,11 @@
 
 .logo {
  margin-right: 30px;
+}
+
+#movieSearch{
+	width:350px;
+	height:30px;
+	
 }
 

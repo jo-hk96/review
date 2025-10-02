@@ -164,17 +164,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 약화 */
 }
 
-/* 리뷰 폼 내에서 버튼 위치 조정 */
-/* 폼 안에 있는 버튼이 오른쪽으로 정렬되게 하고 싶다면 (선택 사항) */
-/*
-.review-form-container form {
-    text-align: right; 
-}
-#submit-review-btn {
-    display: inline-block; 
-}
-*/
-
 /* [수정된] 영화 상세 정보 컨테이너 스타일 */
 #movie-detail-container {
     background-color: #ffffff; /* 흰색 배경 유지 */
@@ -208,7 +197,7 @@ h2 {
 
 .movie-actions {
     display: flex;
-    justify-content: space-between; /* 양 끝 정렬 */
+   /*  justify-content: space-between;  */  /* 양 끝 정렬 */
     align-items: center;
     padding: 15px 0;
     margin-bottom: 20px;
@@ -386,7 +375,7 @@ h2 {
 
 .review-header {
     display: flex;
-    /* justify-content: space-between; */
+   /*  justify-content: space-between; */
     align-items: center;
     padding-bottom: 10px;
     border-bottom: 1px solid #f0f0f0;
@@ -436,6 +425,44 @@ h2 {
     padding-top: 5px;
     border-top: 1px solid #f9f9f9;
 }
+
+/* 리뷰 액션 버튼 영역 */
+.review-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+}
+
+/* 공통 버튼 스타일 */
+.review-actions button {
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* 수정 버튼 */
+.review-actions .edit-btn {
+    background-color: #4CAF50; /* 녹색 */
+    color: white;
+}
+
+.review-actions .edit-btn:hover {
+    background-color: #45a049;
+}
+
+/* 삭제 버튼 */
+.review-actions .delete-btn {
+    background-color: #f44336; /* 빨간색 */
+    color: white;
+}
+
+.review-actions .delete-btn:hover {
+    background-color: #da190b;
+}
+
 
 
 

@@ -63,7 +63,8 @@
 			</div>
 		    <div>
 			     <form action ="/MoviesList" method ="get" > 
-			    	영화 검색 : <input type ="text" id = 'movieSearch' name = "movieSearch" placeholder="영화 제목을 입력하세요">
+			    	 검색 : <input type ="text" id = 'movieSearch' name = "movieSearch" 
+			    	 			placeholder="영화 제목을 입력해주세요. ex)반지,반지의,반지의 제왕">
 			    	<button type = "submit">검색</button>
 			    </form>
 		    </div>
@@ -102,10 +103,11 @@
 		    <p>리뷰 : [[${review.comment}]]</p>
 		    <p class="rating">[[${review.rating}]]</p>
 		    <div class="footer">
-		    </div>
-		    <div>
-		      <span>[[${review.regDate}]]</span>
-		    </div>
+		  </div>
+		  
+		   <div>
+		     <span>[[${review.regDate}]]</span>
+		   </div>
 		  </div>	  
 	</div>
 	<p th:if ="${recentReviews.isEmpty()}">아직 작성된 리뷰가 없습니다.</p>
