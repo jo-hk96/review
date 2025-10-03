@@ -22,9 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordStrongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     
-    // ===================================================
-    // ## 유효성 검사 헬퍼 함수
-    // ===================================================
 
     // 메시지를 출력하고 색상을 변경하는 헬퍼 함수
     function displayMessage(messageElement, message, color) {

@@ -31,14 +31,18 @@ public class UserReviewApiController {
 	//사용자 내정보 좋아요 목록
 	@GetMapping("/api/user/likedMovies")
 	public List<movieDTO> getLikedMovies(@AuthenticationPrincipal CustomUserDetails cud){
-		
 		//로그인된 사용자 정보를 기반으로 좋아요 목록을 DB/Service에서 가져옴
-		Long userId = ((CustomUserDetails) cud).getUserId();
+		Long userId = (cud.getUserId());
 		return movieService.getLikeMoviesByUserId(userId);
 	}
 	
-	
-	
+	//사용자 리뷰 작성 목록
+	@GetMapping("/api/user/ReviewMovie")
+	public List<UserReviewDTO> getReviewMovies(@AuthenticationPrincipal CustomUserDetails cud){
+		//로그인 된 사용자의ID를 추출합니다.
+		Long userId = cud.getUserId();
+		return userReviewService.getReviewsByUserId(userId);
+	}
 	
 	
 	//유저들의 영화 리뷰 목록

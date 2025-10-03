@@ -34,7 +34,7 @@
 	<!--사용자(로그인상태)isAuthenticated -->	  
         <div id="header" th:fragment="header">                  
 	        <a href="/" class="logo">
-	           <img th:src="@{/images/logo.png}" alt ="로고">
+	           <img th:src="@{/images/logo.png}" alt ="로고" >
 	        </a>   
        	<div sec:authorize="isAuthenticated()" class = "headerLeft">
        	
@@ -65,7 +65,7 @@
 			     <form action ="/MoviesList" method ="get" > 
 			    	 검색 : <input type ="text" id = 'movieSearch' name = "movieSearch" 
 			    	 			placeholder="영화 제목을 입력해주세요. ex)반지,반지의,반지의 제왕">
-			    	<button type = "submit">검색</button>
+			    	<button type = "submit" hidden>검색</button>
 			    </form>
 		    </div>
          </div>
@@ -100,8 +100,11 @@
 		  <div class="review-card" th:each ="review : ${recentReviews}">
 		  	<p><b>영화 제목 : [[${review.title}]] </b></p>
 		    <p>작성자: [[${review.nickname}]]</p>
-		    <p>리뷰 : [[${review.comment}]]</p>
-		    <p class="rating">[[${review.rating}]]</p>
+		    <h2>"[[${review.comment}]]"</h2>
+		    <p class="rating">
+		    	<!--  -->
+	            <span th:text="${#strings.repeat('⭐', #numbers.formatInteger(review.rating, 0))}"></span>
+        	</p>
 		    <div class="footer">
 		  </div>
 		  

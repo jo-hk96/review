@@ -18,10 +18,22 @@
 			    
 			    <button type = "submit" >로그인</button>
 			</form>
-	<div class ="userIndex" sec:authorize="isAnonymous()">
-	<a href = "/UserJoinForm" class="btn-join">회원가입</a> </div>
 
-	<div th:insert="index/index :: footer"></div>
+		<!-- 회원 수정 후 /로그인 페이지 메시지 TEXT 출력 -->
+		<div th:if="${sucMsg}">
+	    	<p th:text="${sucMsg}" style="color: green; font-weight: bold; font-size:20px;"></p>
+		</div>
+		
+		<div class ="userIndex" sec:authorize="isAnonymous()">
+			<a href = "/UserJoinForm" class="btn-join">회원가입</a> 
+		</div>
+	
+
+	
+
+
+<!-- 푸터 -->
+<div th:insert="index/index :: footer"></div>
 
 <!-- 유저 로그인.js -->
 <script src="/js/user_login.js"></script>

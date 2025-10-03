@@ -17,7 +17,6 @@ public interface UserReviewRepository extends JpaRepository<userReviewEntity, Lo
 	@Query(value = "SELECT * FROM USER_REVIEW r WHERE r.API_ID = :apiId ORDER BY r.REGDATE DESC", 
 	           nativeQuery = true)
 	    List<userReviewEntity> findReviewsByApiIdNative(@Param("apiId") Long apiId);
-	
-	
 	    List<userReviewEntity> findTop5ByOrderByRegDateDesc();
+	    List<userReviewEntity> findByUserEntity_UserId(Long userId);
 }

@@ -1,3 +1,4 @@
+
 //별점 클릭 이벤트 핸들러
 document.querySelectorAll('.rating-area .star').forEach(star => {
     // 클릭 이벤트: 숨겨진 input의 value를 업데이트하고 'on' 클래스 적용

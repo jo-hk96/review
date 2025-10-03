@@ -1,4 +1,3 @@
-// user_LikeListBtn.js 파일
 
 // ⭐️ 1. 좋아요 목록을 가져오는 AJAX 함수 (TMDB API 호출) ⭐️
 function loadLikedMovies(){
@@ -29,57 +28,57 @@ function loadLikedMovies(){
 			console.error('영화 좋아요 목록 에러:', error);
 			likedMoviesContainer.innerHTML = '<p style = "color:red;">데이터 로딩 오류. 다시시도해주세요.</p>';	
 		});
-}
-
-// ⭐️ 2. 목록을 모달에 렌더링하는 함수 ⭐️
-function renderLikeMovies(movies) {
-    const likedMoviesContainer = document.getElementById('likedMoviesContainer');
-    const emptyMessage = document.getElementById('emptyMessage');
-    
-    if (!likedMoviesContainer || !emptyMessage) return;
-
-    if(movies && movies.length > 0){
-        let html = '<ul>';
-        movies.forEach(movie =>{
-            // DTO 구조에 맞춰 영화 제목과 개봉일 정보를 사용합니다.
-            html += `<li><strong>${movie.title}</strong> (${movie.release_date})</li>`; 
-        });
-        html += '</ul>'; 
-        
-        likedMoviesContainer.innerHTML = html;
-        emptyMessage.style.display = 'none';
-        }else{
-            // 좋아요 목록이 비어있을 경우
-            likedMoviesContainer.innerHTML ='';
-            emptyMessage.style.display = 'block';
-        }
-}
-
-
-// ⭐️ 3. 버튼 클릭 핸들러 (openLikeModal) ⭐️
-function openLikeModal(){
-    const likeModal = document.getElementById('likeModal');
-    
-    if(likeModal){
-        likeModal.style.display = 'block';
-        loadLikedMovies(); 
-    }else{
-        console.error("모달을 찾을수없습니다.");
-    }
-}
+	}
+	
+	// ⭐️ 2. 목록을 모달에 렌더링하는 함수 ⭐️
+	function renderLikeMovies(movies) {
+	    const likedMoviesContainer = document.getElementById('likedMoviesContainer');
+	    const emptyMessage = document.getElementById('emptyMessage');
+	    
+	    if (!likedMoviesContainer || !emptyMessage) return;
+	
+	    if(movies && movies.length > 0){
+	        let html = '<ul>';
+	        movies.forEach(movie =>{
+	            // DTO 구조에 맞춰 영화 제목과 개봉일 정보를 사용합니다.
+	            html += `<li><strong>${movie.title}</strong> (${movie.release_date})</li>`; 
+	        });
+	        html += '</ul>'; 
+	        
+	        likedMoviesContainer.innerHTML = html;
+	        emptyMessage.style.display = 'none';
+	        }else{
+	            // 좋아요 목록이 비어있을 경우
+	            likedMoviesContainer.innerHTML ='';
+	            emptyMessage.style.display = 'block';
+	        }
+		}
 
 
-// ⭐️ 4. 이벤트 리스너 등록 (DOMContentLoaded) ⭐️
-document.addEventListener('DOMContentLoaded', function() {
-    const likeModal = document.getElementById('likeModal');
-    const closeBtn = document.querySelector('.close-btn');
-    if (!likeModal || !closeBtn) return; 
-    closeBtn.onclick = function() {
-        likeModal.style.display = 'none';
-    };	
-    window.onclick = function(event) {
-        if (event.target === likeModal) {
-            likeModal.style.display = 'none';
-        }
-    };	
-});
+	//버튼 클릭 핸들러 (openLikeModal)
+	function openLikeModal(){
+	    const likeModal = document.getElementById('likeModal');
+	    
+	    if(likeModal){
+	        likeModal.style.display = 'block';
+	        loadLikedMovies(); 
+	    }else{
+	        console.error("모달을 찾을수없습니다.");
+	    }
+	}
+	
+	
+	//이벤트 리스너 등록 (DOMContentLoaded)
+	document.addEventListener('DOMContentLoaded', function() {
+	    const likeModal = document.getElementById('likeModal');
+	    const closeBtn = document.querySelector('.close-btn');
+	    if (!likeModal || !closeBtn) return; 
+	    closeBtn.onclick = function() {
+	        likeModal.style.display = 'none';
+	    };	
+	    window.onclick = function(event) {
+	        if (event.target === likeModal) {
+	            likeModal.style.display = 'none';
+	        }
+	    };	
+	});

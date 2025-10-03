@@ -23,7 +23,8 @@ public class UserReviewDTO {
 	    private String regDate;     // 포맷된 작성일 (응답에 필수)
 		private Long apiId;
 		private String title;
-	    
+		
+		
 	    public static UserReviewDTO fromEntity(userReviewEntity entity) {
 	        // 엔티티를 DTO로 변환하는 로직:
 	        return UserReviewDTO.builder()

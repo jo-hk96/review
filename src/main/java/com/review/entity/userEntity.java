@@ -66,13 +66,13 @@ public class userEntity implements Serializable{
 		//DB에 최초 저장(INSERT)될 때 현재 시간을 자동으로 기록
 		@CreationTimestamp
 		@JsonFormat(pattern = "yy/MM/dd HH:mm:ss")
-		@Column(name = "CREATED_AT", nullable = false, updatable = false) // ⭐️ updatable = false 설정 ⭐️
+		@Column(name = "CREATED_AT", nullable = false, updatable = false) //updatable = false 설정
 		private LocalDateTime createdAt; // 가입 날짜 및 시간
 		
 		
 		@Builder.Default
 		@OneToMany(mappedBy = "userEntity", // ReviewEntity에서 UserEntity를 참조하는 필드 이름
-		           cascade = CascadeType.REMOVE, // ⭐ 회원 삭제 시, 이 회원의 리뷰도 함께 삭제 ⭐
+		           cascade = CascadeType.REMOVE, //회원 삭제 시, 이 회원의 리뷰도 함께 삭제
 		           orphanRemoval = true) 
 		private List<userReviewEntity> reviews = new ArrayList<>(); 
 		

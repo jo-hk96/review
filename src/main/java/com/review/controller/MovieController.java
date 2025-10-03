@@ -42,6 +42,7 @@ public class MovieController {
 	            // String username = loggedInUserEmail.split("@")[0];
 	            model.addAttribute("username", loggedInUserEmail);
 	        }
+		 
 		 //사용자 리뷰리스트를 최신순으로 메인에 보내줌
 		 List<UserReviewDTO> recentReviews = userReviewService.getRecentReviews();
 		 model.addAttribute("recentReviews" , recentReviews);

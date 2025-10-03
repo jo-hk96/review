@@ -47,6 +47,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 	        return userEntity.getNickname(); 
 	    }
 	    
+	   
+	    
 	    //생일
 	    public String getBirthdate() {
 	    	return userEntity.getBirthdate(); 

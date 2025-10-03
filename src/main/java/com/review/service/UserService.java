@@ -8,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
+
 import com.review.DTO.UserDTO;
 import com.review.DTO.UserEditDTO;
 import com.review.config.CustomUserDetails;
@@ -90,15 +92,41 @@ public class UserService implements UserDetailsService {
 			throw new IllegalArgumentException("현재 비밀번호가 일치하지 않습니다.");
 		}
 		
-		
+	
 		//닉네임이 null이 아니거나 비어있지 않다면 수정
-		if(userDto.getNickname() != null && !userDto.getNickname().isEmpty()) {
-			user.setNickname(userDto.getNickname());
-		}
-		
+		String newNickname = userDto.getNickname();
+
+	    if(newNickname != null && !newNickname.isEmpty()) {
+	        // 현재 닉네임과 다르고, DB에 이미 존재하면 예외 발생
+	        if(!newNickname.equals(user.getNickname()) && checkNicknameDuplication(newNickname)) {
+	            throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
+	        }
+	        user.setNickname(newNickname);
+	        
+	    }
+	    
+	    //생년월일 수정 처리
+	    String newBirthdate = userDto.getBirthdate();
+	    if (newBirthdate != null) {
+	        user.setBirthdate(newBirthdate);
+	    }
+	    
 		//새 비밀번호가 null이 아니거나 비어 있지 않다면
 		String newPwd = userDto.getNewPassword();
+		String confirmPwd = userDto.getConfirmNewPassword();
+		
 			if(newPwd != null && !newPwd.isEmpty()) {
+				if (newPwd.length() < 8) {
+			        throw new IllegalArgumentException("비밀번호는 최소 8자 이상이어야 합니다.");
+			    }
+				if (confirmPwd == null || !newPwd.equals(confirmPwd)) {
+					throw new IllegalArgumentException("비밀번호가 다릅니다.");
+				}
+				
+				// 새 비밀번호가 현재 비밀번호와 같으면 예외 발생
+		        if(passwordEncoder.matches(newPwd, user.getPassword())) {
+		            throw new IllegalArgumentException("현재 비밀번호와 같습니다.");
+		        }
 				
 				//새비밀번호 암호화
 				String encpwd = passwordEncoder.encode(newPwd);
@@ -109,6 +137,7 @@ public class UserService implements UserDetailsService {
 				//@Transactional 자동 save 없으면 적어야댐
 				//userRepository.save(user);
 			}
+
 		
 	}
 	

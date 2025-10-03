@@ -1,5 +1,3 @@
-	
-	
 		let currentMovieIndex = 0;
 		let currentPage = 1;
 		let isLoading = false;

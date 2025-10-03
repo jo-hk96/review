@@ -1,22 +1,28 @@
 package com.review.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import com.review.DTO.UserDTO;
 import com.review.DTO.UserEditDTO;
 import com.review.config.CustomUserDetails;
 import com.review.repository.UserRepository;
 import com.review.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 public class UserController {
@@ -76,9 +82,7 @@ public class UserController {
 	
 
 	
-	
 	//로그인폼 security에서 자동으로 비교해서 로그인해줌 
-	//개편하누~
 	@GetMapping("/UserLoginForm")
 	public String userLoginForm() {
 		return "user/user_login";
@@ -98,14 +102,29 @@ public class UserController {
 		return "user/user_edit";
 	}
 	
-	
 	//회원정보수정
 	@PostMapping("/UserEdit")
-	public String userEdit(@AuthenticationPrincipal CustomUserDetails cud, @ModelAttribute UserEditDTO userDto) {
+	public String userEdit(
+			@AuthenticationPrincipal CustomUserDetails cud, 
+			@ModelAttribute UserEditDTO userDto,
+			//Request, Reponse 를 주입 한다
+			RedirectAttributes re, HttpServletRequest request,HttpServletResponse response) {
+		
 		//userid 가져오기
 		Long userid = cud.getUserId();
-		userService.updateUser(userid, userDto);
-		return "redirect:/UserMypage";
+		try {
+	        userService.updateUser(userid, userDto);
+	        //로그아웃 핸들러
+	        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+	        //현재 인증 정보와 요청/응답을 사용해 로그아웃 처리
+	        // 세션 무효화 및 시큐리티 컨텍스트 클리어
+	        logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+	       re.addFlashAttribute("sucMsg","수정 하신 정보가 변경되었습니다.다시 로그인 해주세요.");
+	    } catch (IllegalArgumentException e) {
+	        re.addFlashAttribute("errorMessage", e.getMessage());
+	        return "redirect:/UserEditForm";  // 수정 폼으로 다시 이동
+	    }
+	    return "redirect:/UserLoginForm";  // 정상 처리 후 페이지 이동
 	}
 	
 	

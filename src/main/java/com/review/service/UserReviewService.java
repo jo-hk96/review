@@ -27,18 +27,17 @@ public class UserReviewService{
     private final MovieService movieService;
     private final TmdbApiService tmdbApiService;
     
+    
+    
+    
     @Transactional // 데이터 변경 작업(저장)이므로 트랜잭션 관리 어노테이션 사용
     public userReviewEntity saveReview(UserReviewDTO userReviewDTO , Long apiId ) {
-    	
-    	 // 2. UserEntity 찾기 (유저의 ID를 확보)
+    	// 2. UserEntity 찾기 (유저의 ID를 확보)
         // 닉네임이 유니크하다면 findByNickname()을 사용하거나, 로그인 정보를 통해 User ID를 직접 가져와야 함.
 	    userEntity user = userRepository.findByNickname(userReviewDTO.getNickname())
 	    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자 닉네임입니다."));
-	    
 	    //api_id로 영화 제목 조회
 	    String movieTitle = tmdbApiService.getMovieTitle(userReviewDTO.getApiId());
-	    
-	    
 	    //userReviewEntity 에서 리뷰 정보를 저장
         userReviewEntity newReview = userReviewEntity.builder()
         		.userEntity(user)          // 2번에서 찾은 User Entity
@@ -47,16 +46,21 @@ public class UserReviewService{
                 .apiId(userReviewDTO.getApiId())
                 .title(movieTitle)
                 .build();
-        
-
         //Repository를 통해 데이터베이스에 최종 저장
         return userReviewRepository.save(newReview);
     }
+    
+    
+    
+    
+    
     //영화 리뷰 가져오기
     public List<userReviewEntity> getReviewsByMovieId(Long apiId) {
         //apiId를 조회해서 반환
         return userReviewRepository.findReviewsByApiIdNative(apiId);
     }
+    
+    
     
     //메인에 사용자 리뷰목록을 최신순으로 5개만 보여줌
     public List<UserReviewDTO> getRecentReviews(){
@@ -65,6 +69,18 @@ public class UserReviewService{
     			.map(UserReviewDTO::fromEntity)
     			.collect(Collectors.toList());
     }
+    
+    
+    public List<UserReviewDTO> getReviewsByUserId(Long userId){
+    	//Repository를 사용해 DB에서 userId로 리뷰 Entity목록을 조회
+    	List<userReviewEntity> reviewsEntities = userReviewRepository.findByUserEntity_UserId(userId);
+    	
+    	//entity목록을 DTO목록으로 바꿔 반환
+    	return reviewsEntities.stream()
+    			.map(UserReviewDTO::fromEntity)
+    			.collect(Collectors.toList());
+    }
+    
 }
 	    
 	
