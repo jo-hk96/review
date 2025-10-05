@@ -1,13 +1,13 @@
 package com.review.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.review.entity.movieEntity;
 import com.review.entity.userReviewEntity;
 
 @Repository
@@ -19,4 +19,7 @@ public interface UserReviewRepository extends JpaRepository<userReviewEntity, Lo
 	    List<userReviewEntity> findReviewsByApiIdNative(@Param("apiId") Long apiId);
 	    List<userReviewEntity> findTop5ByOrderByRegDateDesc();
 	    List<userReviewEntity> findByUserEntity_UserId(Long userId);
+	    List<userReviewEntity> findByApiIdOrderByRegDateDesc(Long apiId);
+	    List<userReviewEntity> findByApiId(Long apiId);
+		Optional<userReviewEntity> findByReviewIdAndUserEntity_UserId(Long reviewId, Long userId);
 }

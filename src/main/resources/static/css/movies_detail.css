@@ -1,4 +1,17 @@
 	
+	
+	
+	#editReviewModal {
+	display: none; 
+	position: fixed; 
+	top: 0; 
+	left: 0; 
+	width: 100%; 
+	height: 100%; 
+	background-color: rgba(0,0,0,0.5); 
+	z-index: 100;
+	}
+	
 	/* =======리뷰작성 디자인======= */
 	.rating-area {
 	    font-size: 2em; /* 별 크기 설정 */
@@ -52,8 +65,6 @@
 	body {
     background-color: white;
     color: #333;
-    font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-    
     align-items: center;
 }
 	
@@ -113,13 +124,6 @@
     border-color: #cc0000;
 }
 
-/* 폰트 크기를 좀 더 조정하고 싶다면 */
-/*
-.like-btn {
-    font-size: 15px; 
-}
-*/
-
 /* 리뷰 등록 버튼 기본 스타일 */
 #submit-review-btn {
     /* 색상 및 배경 */
@@ -161,7 +165,6 @@
 /* [수정된] 영화 상세 정보 컨테이너 스타일 */
 #movie-detail-container {
     background-color: #ffffff; /* 흰색 배경 유지 */
-    padding: 30px; 
     border-radius: 12px;
     
     /* 1. 경계선 강조: 얇지만 진한 색상 */
@@ -170,7 +173,7 @@
     /* 2. 그림자 강화: 더 뚜렷한 입체감 */
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12); /* 그림자를 더 강하게 하여 주요 섹션임을 강조 */
     
-    margin-top: 130px; /* 상단 여백 추가 (원래 스타일에서 부족했다면) */
+    margin-top: 100px; /* 상단 여백 추가 (원래 스타일에서 부족했다면) */
 }
 
 
@@ -276,29 +279,13 @@ h2 {
     color: #333;
 }
 
-/* 텍스트 영역 스타일 */
-#review-comment {
-    width: 100%;
-    max-width: 100%;
-    min-height: 100px;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
-    font-size: 15px;
-    transition: border-color 0.3s;
-}
 
-#review-comment:focus {
-    border-color: #007bff;
-    outline: none;
-}
 
 /* 별점 선택 영역 */
 .rating-area {
     display: flex;
     font-size: 28px;
-    color: #ccc; /* 빈 별은 회색 */
+    color: #ccc; /* 기본 회색 */
     gap: 5px;
     margin-top: 5px;
 }
@@ -308,10 +295,15 @@ h2 {
     transition: color 0.2s;
 }
 
-/* 선택되었거나 마우스 오버된 별점 색상 */
-.rating-area:hover .star,
-.rating-area .star[aria-checked="true"] {
-    color: #ffc107; /* 황금색 */
+/* 선택된 별 */
+.rating-area .star.on {
+    color: gold;
+}
+
+/* 호버 중인 별과 그 이전 별 */
+.rating-area .star:hover,
+.rating-area .star:hover ~ .star {
+    color: gold;
 }
 
 /* 리뷰 등록 버튼 스타일 (강조) */
@@ -455,5 +447,10 @@ h2 {
 }
 
 
+.review-box{
+	font-size : 20px;
+	
+	
+}
 
 

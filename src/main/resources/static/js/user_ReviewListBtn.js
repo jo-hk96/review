@@ -5,13 +5,12 @@
     const fullStars = Math.floor(rating); 
     
     return '⭐'.repeat(fullStars);
-}
+	}
 
 	//좋아요 목록을 가져오는 AJAX 함수 (TMDB API 호출)
 	function loadUserReviews(){
 		const ReviewMoviesContainer = document.getElementById('ReviewMoviesContainer');
 		const emptyMessage = document.getElementById('emptyMessage');
-	    
 	    if (!ReviewMoviesContainer || !emptyMessage) {
 	        console.error("리뷰 모달의 컨테이너 요소를 찾을 수 없습니다.");
 	        return;
@@ -36,7 +35,7 @@
 			console.error('영화 리뷰 목록 에러:', error);
 			ReviewMoviesContainer.innerHTML = '<p style = "color:red;">데이터 로딩 오류. 다시시도해주세요.</p>';	
 		});
-}
+	}
 
 	//목록을 모달에 렌더링하는 함수
 	function renderReviewMovies(movies) {
@@ -46,22 +45,50 @@
 	    if (!ReviewMoviesContainer || !emptyReviewMessage) return;
 	
 	    if(movies && movies.length > 0){
-	        let html = '<ul class="review-list">';
+			
+	        let html = '<div>';
 	        movies.forEach(review =>{
-			const stars = generateStars(review.rating);
-	           html += `
-                <li class="review-item">
-                    <div class="review-header">
-                    	<hr>
-                        <strong class="movie-title">${review.title}</strong> 
-                        <span class="review-rating">${stars}</span>
-                    </div>
-                    <p class="review-comment">${review.comment}</p>
-                    <small class="review-date">작성일: ${review.regDate ? new Date(review.regDate).toLocaleDateString() : '날짜정보 없음'}</small>
-                </li>
-           		`;
-        	});
-        html += '</ul>';
+				const stars = generateStars(review.rating);
+				// apiId 또는 id 필드를 사용한다고 가정
+        		const movieId = review.apiId || review.id;
+        		const reviewAnchor = review.reviewId ? `#review-${review.reviewId}` : '';
+        		
+        		
+		   if (movieId) {
+           html += `
+            <a href="http://localhost:9090/detail/${movieId}${reviewAnchor}" 
+               class="review-link-wrapper" 
+               style="text-decoration: none; color: inherit; display: block;">
+                
+                <ul class="review-list" style="border:1px solid black; margin-bottom: 10px; padding: 10px;"> 
+                    <li class="review-item">
+                        <div class="review-header">
+                            <strong class="movie-title">${review.title}</strong> 
+                            <span class="review-rating">${stars}</span>
+                        </div>
+                        <p class="review-comment">${review.comment}</p>
+                        <small class="review-date">작성일: ${review.regDate ? new Date(review.regDate).toLocaleDateString() : '날짜정보 없음'}</small>
+                    </li>
+                </ul> 
+            </a>
+            `;
+	        } else {
+	             // ID가 없을 경우 (안전 장치): 링크 없이 단순 리스트로 표시
+	             html += `
+	                <ul class="review-list" style="border:1px solid black; margin-bottom: 10px; padding: 10px;"> 
+	                    <li class="review-item">
+	                        <div class="review-header">
+	                            <strong class="movie-title">${review.title}</strong> 
+	                            <span class="review-rating">${stars}</span>
+	                        </div>
+	                        <p class="review-comment">${review.comment}</p>
+	                        <small class="review-date">작성일: ${review.regDate ? new Date(review.regDate).toLocaleDateString() : '날짜정보 없음'}</small>
+	                    </li>
+	                </ul> 
+	             `;
+	        }
+		    });
+		    html += '</div>';
 	        ReviewMoviesContainer.innerHTML = html;
 	        emptyReviewMessage.style.display = 'none';
 	        }else{
@@ -70,16 +97,12 @@
 	            emptyReviewMessage.style.display = 'block';
 	        }
 	}
-	
 	//버튼 클릭 핸들러 (openLikeModal)
 	function openReviewModal(){
 	    const ReviewModal = document.getElementById('ReviewModal');
 	    
 	    if(ReviewModal){
 	        ReviewModal.style.display = 'block';
-	        
-	        document.body.classList.add('modal-open');
-	        
 	        loadUserReviews();
 	    }else{
 	        console.error("모달을 찾을수없습니다.");
@@ -94,13 +117,11 @@
 	    
 	    closeBtn2.onclick = function() {
 	        ReviewModal.style.display = 'none';
-	        document.body.classList.remove('modal-open');
 	    };
 	    
 	    window.onclick = function(event) {
 	        if (event.target === ReviewModal) {
 	            ReviewModal.style.display = 'none';
-	             document.body.classList.remove('modal-open');
 	        }
 	    };
 	});

@@ -51,7 +51,6 @@ public class MovieService {
     			.map(movieLike -> movieLike.getApiId())
     			.collect(Collectors.toList());
     	
-    	
     	//api를 통해 영화 상세 정보 조회 및 매핑
     	//각 ID별로 API를 호출하여 상세 정보를 가져와야 함
     	List<movieDTO> likedMovies = likedTmdbIds.stream()

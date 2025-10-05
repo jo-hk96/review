@@ -6,6 +6,20 @@ body {
   color: #222;
 }
 
+#menu-list{
+	margin-top:20px; 
+	display:none; 
+	top:100px; 
+	right:30px; 
+	background:white; 
+	border:1px solid #ccc; 
+	padding:15px; 
+	box-shadow:0 2px 8px rgba(0,0,0,0.2); 
+	z-index:100; 
+	position: fixed;
+}
+
+
 /* 메뉴 버튼 */
 .menu-btn {
   position: fixed;
@@ -292,7 +306,7 @@ h3 {
 
 .modal-content-Review{
 	
-	 display: flex; 
+	display: flex; 
     flex-direction: column; 
     background-color: #fefefe;
     margin: 10% auto; /* 상하 10%, 좌우 자동(중앙) */
@@ -310,7 +324,16 @@ h3 {
 	flex-grow: 1;
 	overflow-y : auto; 
 	padding-right: 15px;
-	margin-top: 10px; 
+	margin-top: 5px; 
+}
+
+
+#likedMoviesContainer{
+	flex-grow: 1;
+	overflow-y : auto; 
+	padding-right: 15px;
+	margin-top: 5px; 
+	
 }
 
 /* 닫기 버튼 */
@@ -332,6 +355,12 @@ h3 {
 
 .close-btn:hover,
 .close-btn:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+.close-btn2:hover,
+.close-btn2:focus {
     color: #000;
     text-decoration: none;
 }

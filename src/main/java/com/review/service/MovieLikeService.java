@@ -48,7 +48,6 @@ public class MovieLikeService {
 		Optional<MovieLike> existingLike = movieLikeRepository.findById(likeId);
 		
 		if(existingLike.isPresent()) {
-			
 			//좋아요 했으면 : Movie_like DB에서 삭제
 			movieLikeRepository.delete(existingLike.get());
 			return false; //좋아요 취소됨
@@ -60,6 +59,7 @@ public class MovieLikeService {
 			newLike.setId(likeId);
 			newLike.setUserEntity(userEntity);
 			newLike.setMovieEntity(movieEntity);
+			
 			
 			movieLikeRepository.save(newLike);//DB에 저장됨
 			return true; //좋아요 설정됨

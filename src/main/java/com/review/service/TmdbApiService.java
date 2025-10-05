@@ -1,18 +1,22 @@
 package com.review.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import com.review.DTO.SearchResponseDTO;
+import com.review.DTO.TmdbResponseDTO;
 import com.review.DTO.movieDTO;
 
 @Service
@@ -21,7 +25,8 @@ public class TmdbApiService {
 	
 	private final WebClient webClient;
 	private final String bearerToken;
-	
+	private final String BASE_URL = "https://api.themoviedb.org/3/movie/";
+	private final RestTemplate restTemplate = new RestTemplate();
 	
 	//properties 에 있는 tmdb.api.base-url :api url , tmdb.api.bearer-token : bearer token
 	public TmdbApiService(WebClient.Builder webClientBuilder,
@@ -119,4 +124,40 @@ public class TmdbApiService {
 					.map(movieDTO::getTitle)
 					.block();
 			}
-	}	
+	
+
+
+	public TmdbResponseDTO getMoviesByCategory(String category, int page) {
+		 // 1. URL 생성 (토큰은 URL에 포함하지 않습니다.)
+	    String url = String.format(
+	        "%s%s?language=ko-KR&page=%d", 
+	        BASE_URL, category, page
+	    );
+
+	    // 2. ⭐⭐ HTTP 헤더에 토큰 설정 (인증) ⭐⭐
+	    HttpHeaders headers = new HttpHeaders();
+	    headers.setBearerAuth(bearerToken); // 네 토큰 변수명을 사용해야 함 (예: tmdbToken)
+	    headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+	    
+	    HttpEntity<String> entity = new HttpEntity<>(headers); // 요청 본문 없이 헤더만 설정
+
+	    try {
+	        // 3. ⭐⭐ exchange() 사용: 요청을 보내고 응답을 DTO로 받습니다. ⭐⭐
+	        ResponseEntity<TmdbResponseDTO> response = restTemplate.exchange(
+	            url, 
+	            HttpMethod.GET, 
+	            entity, // 토큰이 담긴 헤더 포함
+	            TmdbResponseDTO.class
+	        );
+	        
+	        // 4. 응답 본문을 반환
+	        return response.getBody(); 
+
+	    } catch (HttpStatusCodeException e) {
+	        // HTTP 상태 코드(예: 401 Unauthorized)를 출력하여 디버깅합니다.
+	        System.err.println("TMDB API 호출 실패 (상태 코드: " + e.getStatusCode() + "): " + e.getResponseBodyAsString());
+	        // 실패 시 빈 DTO를 반환하여 JavaScript에 빈 리스트를 보냅니다.
+	        return new TmdbResponseDTO(); 
+	    }
+	}
+}

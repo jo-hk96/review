@@ -17,15 +17,30 @@
 			  return 5;
 			}
 		
+		
+		
+		//숫자에 맞게 별을 그려주는 함수
+		function generateOurStars(rating5) {
+	    if (rating5 === null || rating5 === undefined || rating5 === 0) return 'N/A';
+	    const fullStars = Math.floor(rating5);
+	    return '⭐'.repeat(fullStars);
+		}
+		
+		
 		function renderMovies(newMovies) {
 		  newMovies.forEach(movie => {
 		    const posterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
 		    
+		    
+		    //json 영화 정보에 있는 id 필드(영화 고유 ID)를 들고와 변수에 담음
 		    const movieId = movie.id; 
-		    
-		    //영화 카드 눌럿을때 가는 경로
+		    //영화 평균 별점을 들고옴
+		   	const ourRating = movie.ourAverageRating; 
+		    //영화 카드 눌럿을때 movieId를 가지고 Api 컨트롤러로 보냄
     		const detailUrl = `/detail/${movieId}`;
-		    
+		     //const userStars = generateOurStars(ourRating);
+	   		const scoreText = ourRating > 0 ? ourRating.toFixed(1) : 'N/A';
+		    const userStars = generateOurStars(ourRating);
 		    const card = document.createElement('div');
 		    card.className = 'movie-card2';
 		    card.innerHTML = `
@@ -33,6 +48,7 @@
 			      <img src="${posterUrl}" alt="${movie.title} 포스터">
 				      <div class="movie-info2">
 					        <h2>${movie.title}</h2>
+					        ${scoreText !== 'N/A' ? `<h2>${userStars}${scoreText}</h2>` : `<h2>평점없음</h2>`}
 					        <p>외부평점: ${movie.vote_average.toFixed(1)} / 10</p>
 					        <p>최초개봉일: ${movie.release_date}</p>
 				      </div>
@@ -80,8 +96,9 @@
             };
 		
 		  try {
-		    const url = `https://api.themoviedb.org/3/movie/now_playing?language=ko-KO&page=${page}`;
-		    const response = await fetch(url, options);
+		    const currentCategory = 'now_playing'; 
+    		const url = `/api/movies/list?category=${currentCategory}&page=${page}`;
+		    const response = await fetch(url,options);
 		    const data = await response.json();
 		
 		    totalPages = data.total_pages;

@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" 
                   xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+                  
+ 
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/top_rate.css">
@@ -8,114 +10,101 @@
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/scroll-to-top.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <title>영화 정보 보기</title>
 </head>
-
-<style>
-		.review-container {
-		  display: flex; /* 자식 요소를 가로로 나열 */
-		  flex-wrap: wrap; /* 공간이 부족하면 다음 줄로 넘어가게 함 */
-		  gap: 20px; /* 카드 사이의 간격 */
-		  justify-content: center; /* 리뷰 카드를 가운데 정렬 (선택 사항) */
-		}
-		.review-card {
-		  width: 250px;
-		  border: 1px solid #ddd; /* 10x를 1px로 수정 */
-		  border-radius: 12px;
-		  padding: 12px;
-		  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
-		}
-</style>
-
-
 <body>
 	<body>
 	<!--익명사용자(비로그인상태)isAnonymous -->
 	<!--사용자(로그인상태)isAuthenticated -->	  
-        <div id="header" th:fragment="header">                  
+    <div id="header" th:fragment="header">                  
 	        <a href="/" class="logo">
 	           <img th:src="@{/images/logo.png}" alt ="로고" >
 	        </a>   
        	<div sec:authorize="isAuthenticated()" class = "headerLeft">
        	
-       		<!-- ROLE_ADMIN일 경우 -->
-		    <span sec:authorize="hasRole('ROLE_ADMIN')">
-		        관리자 : <span sec:authentication="principal.pname"></span>
-		        		 [<span sec:authentication="principal.nickname"></span>]
-		        <b><a href="/Admin/AdminPage">사이트관리</a></b>
-		    </span>
-		    
-		    <!-- ROLE_ADMIN이 아닐경우 -->
-		    <span sec:authorize="!hasRole('ROLE_ADMIN')">
-		        <span sec:authentication="principal.pname"></span>
-		        [<span sec:authentication="principal.nickname"></span>]
-		    </span>
+	       		<!-- ROLE_ADMIN일 경우 -->
+			    <span sec:authorize="hasRole('ROLE_ADMIN')">
+			        관리자 : <span sec:authentication="principal.nickname"></span>
+			        <b><a href="/Admin/AdminPage">사이트관리</a></b>
+			    </span>
+			    
+			    <!-- ROLE_ADMIN이 아닐경우 -->
+			    <span sec:authorize="!hasRole('ROLE_ADMIN')">
+			       <b><span sec:authentication="principal.nickname" ></span></b>
+			    </span>
 	    </div>
 	
 	    <div class="headerRight">
-			<div class ="userIndex" sec:authorize="isAnonymous()">
-				<a href = "/UserLoginForm">로그인</a>
-			</div>
-			
-			<div class ="userIndex"  sec:authorize="isAuthenticated()">
-				<a href = "/UserMypage">내정보</a>
-				<a href = "/logout">로그아웃</a>
-			</div>
-		    <div>
-			     <form action ="/MoviesList" method ="get" > 
-			    	 검색 : <input type ="text" id = 'movieSearch' name = "movieSearch" 
-			    	 			placeholder="영화 제목을 입력해주세요. ex)반지,반지의,반지의 제왕">
-			    	<button type = "submit" hidden>검색</button>
-			    </form>
-		    </div>
+				<div class ="userIndex" sec:authorize="isAnonymous()">
+					<a href = "/UserLoginForm">로그인</a>
+				</div>
+				
+				<div class ="userIndex"  sec:authorize="isAuthenticated()">
+					<a href = "/UserMypage">내정보</a>
+					<a href = "/logout"  onclick = "return confirm('로그아웃 하시겠습니까?')">로그아웃</a>
+				</div>
+				
+			    <div>
+				    <form action="/MoviesList" method="get" class="search-form-container"> 
+					        <input type="text" id="movieSearch" name="movieSearch" 
+					               placeholder="영화 제목을 입력해주세요. ex)반지,반지의,반지의 제왕,The Lord ,Lord of">
+					        
+					        <button type="submit" class="search-icon-btn">
+					            <i class="fa-solid fa-magnifying-glass" style ="color:gray;"></i>
+					        </button>
+				    </form>
+				</div>
          </div>
 	</div>
 	
+	<div id = "indexMovieList">
+	  	 <!-- 개봉중인 영화  -->
+		 <div class="slider-container2">
+	  		 	<h1><a href ="/MoviesList?category=now_playing">현재상영중</a></h1>
+			    <button id="prev-btn2" class="nav-btn2">&lt;</button> 
+			  	  <div id="movie-list2"></div>
+			    <button id="next-btn2" class="nav-btn2">&gt;</button> 
+		 </div>
+	 	 <div id="loading-indicator2">데이터를 불러오는 중...</div>
 	
-<div id = "indexMovieList">
-  	 <!-- 개봉중인 영화  -->
-	 <div class="slider-container2">
-  		 	<h1><a href ="/MoviesList">현재상영중</a></h1>
-		    <button id="prev-btn2" class="nav-btn2">&lt;</button> 
-		  	  <div id="movie-list2"></div>
-		    <button id="next-btn2" class="nav-btn2">&gt;</button> 
-	 </div>
- 	 <div id="loading-indicator2">데이터를 불러오는 중...</div>
-     	
-	  <!--최고평점-->
-	  <div class="slider-container">
-	  		<h1><a href ="/MoviesList">최고평점</a></h1>
-		    <button id="prev-btn" class="nav-btn">&lt;</button> 
-		    	<div id="movie-list"></div>
-		    <button id="next-btn" class="nav-btn">&gt;</button> 
-	  </div>
-	  <div id="loading-indicator">데이터를 불러오는 중...</div>
-  		<hr>
-</div>
-
-	
-<div class = "slider-container2">	
-	<h2>최신 리뷰</h2>
-	<div class="review-container">
-		  <div class="review-card" th:each ="review : ${recentReviews}">
-		  	<p><b>영화 제목 : [[${review.title}]] </b></p>
-		    <p>작성자: [[${review.nickname}]]</p>
-		    <h2>"[[${review.comment}]]"</h2>
-		    <p class="rating">
-		    	<!--  -->
-	            <span th:text="${#strings.repeat('⭐', #numbers.formatInteger(review.rating, 0))}"></span>
-        	</p>
-		    <div class="footer">
+		<hr>     	
+		  <!--최고평점-->
+		  <div class="slider-container">
+		  		<h1><a href ="/MoviesList?category=top_rated">최고평점</a></h1>
+			    <button id="prev-btn" class="nav-btn">&lt;</button> 
+			    	<div id="movie-list"></div>
+			    <button id="next-btn" class="nav-btn">&gt;</button> 
 		  </div>
-		  
-		   <div>
-		     <span>[[${review.regDate}]]</span>
-		   </div>
-		  </div>	  
+		  <div id="loading-indicator">데이터를 불러오는 중...</div>
+	  		<hr>
 	</div>
-	<p th:if ="${recentReviews.isEmpty()}">아직 작성된 리뷰가 없습니다.</p>
-</div>
 
+
+	<!--  Url 앵커 : #review-' + ${review.reviewId} -->
+	<div class = "slider-container2">	
+			<h2>최신 리뷰</h2>
+			<div class="review-container">
+				  	<a class="review-card" 
+			           th:each ="review : ${recentReviews}"
+			           th:href="@{/detail/{apiId}(apiId=${review.apiId})} + '#review-' + ${review.reviewId}"
+			           style="text-decoration: none; color: black;"> 
+							  	<h3>[[${review.title}]]</h3><br>
+							    <p>작성자: [[${review.nickname}]]</p>
+							    <h2 style = " text-overflow: ellipsis;">"[[${review.comment}]]"</h2>
+								    <p class="rating">
+							            <span th:text="${#strings.repeat('⭐', #numbers.formatInteger(review.rating, 0))}"></span>
+						        	</p>
+							    <div class="footer"></div>
+							    
+							   <div>
+							     <span>[[${review.regDate}]]</span>
+							   </div>
+					</a>	   
+				</div>
+	</div>
+		<p th:if ="${recentReviews.isEmpty()}">아직 작성된 리뷰가 없습니다.</p>
 	<!-- -----------------------푸터--------------------------- -->
     <div id = "footer" th:fragment = "footer">
         <p><strong>ReviewPlus</strong></p>
@@ -129,7 +118,15 @@
         <p>주소:못골번영로 56번길 8<br>© 2025 ReviewPlus.All Rights Reserved.</p>
     </div>
     <!-- --------------------------------------------------------------------- -->
-		
+
+
+
+<button id="scrollToTopBtn" style="display: none;" th:fragment ="scroll-to-top">
+    <i class="fas fa-arrow-up fa-lg"></i>
+</button>
+
+
+	
  <!-- 영화검색.js -->	
  <script src="js/movie_search.js"></script>
 	
@@ -137,5 +134,7 @@
  <script src="js/now_playing.js" type="module"></script>
  <script src="js/top_rate.js" type="module"></script>
  
+ <!-- 맨위로가기 -->
+ <script src = "/js/scroll-to-top.js"></script>
 </body>
 </html>

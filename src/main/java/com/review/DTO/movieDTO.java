@@ -5,11 +5,15 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.review.entity.MovieLike;
+import com.review.entity.movieEntity;
 
+import lombok.Builder;
 import lombok.Data;
 
 
 @Data
+@Builder
 public class movieDTO {
 	private Long movieId; // 영화 고유 ID
 		
@@ -38,10 +42,15 @@ public class movieDTO {
 	    @JsonProperty("poster_path")
 	    private String posterPath; 
 	    
+	    
+	    private double ourAverageRating;
+	    
 	    //개봉날짜
 	    //DB의 MOVIE_RELEASEDATE
 	    @JsonProperty("release_date")
 	    @JsonFormat(pattern = "yyyy-MM-dd")
 	    private LocalDate releaseDate; 
+	    
+	    
 	
 }

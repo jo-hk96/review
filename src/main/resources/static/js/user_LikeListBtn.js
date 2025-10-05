@@ -41,7 +41,12 @@ function loadLikedMovies(){
 	        let html = '<ul>';
 	        movies.forEach(movie =>{
 	            // DTO 구조에 맞춰 영화 제목과 개봉일 정보를 사용합니다.
-	            html += `<li><strong>${movie.title}</strong> (${movie.release_date})</li>`; 
+	            html += `
+	            <li>
+	            	  <a href="/detail/${movie.id}">
+	            		<strong>${movie.title}</strong> (${movie.release_date})
+	            	  </a>
+	            </li>`; 
 	        });
 	        html += '</ul>'; 
 	        

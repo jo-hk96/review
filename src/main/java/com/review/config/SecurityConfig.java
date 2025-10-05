@@ -27,7 +27,7 @@ public class SecurityConfig {
 		                		"/css/**","/js/**","images/**",
 		                		"/detail/**",
 				                "/UserJoinForm",
-		                        "/UserJoin","/MoviesList","/TopRate"
+		                        "/UserJoin","/MoviesList","/TopRate","/api/**"
 				                ).permitAll()
 		                //ROLE_ADMIN만 허용 시큐리티에서 자동으로 ROLE_ 을 앞에 붙혀줌
 		                //hasAuthority 를 붙이면 ROLE_ 접두사를 붙이지 않음

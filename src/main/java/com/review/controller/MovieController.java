@@ -42,29 +42,39 @@ public class MovieController {
 	            // String username = loggedInUserEmail.split("@")[0];
 	            model.addAttribute("username", loggedInUserEmail);
 	        }
-		 
 		 //사용자 리뷰리스트를 최신순으로 메인에 보내줌
 		 List<UserReviewDTO> recentReviews = userReviewService.getRecentReviews();
 		 model.addAttribute("recentReviews" , recentReviews);
 		 return "index/index";
 	}
 	
-	//영화리스트
-			@GetMapping("/MoviesList")
-			public String handleMovieListing(@RequestParam(value = "movieSearch",required = false) String query, Model model){
-				//검색어 query를 담아서 list페이지에 넘김
-				model.addAttribute("searchQuery" ,query);
-				
-				return "movies/movies_list";
-			}
+	
+	
+		//영화검색,카테고리 변경
+		@GetMapping("/MoviesList")
+		public String handleMovieListing(@RequestParam(value = "movieSearch",required = false) String query,
+					@RequestParam(value = "category",required = false) String category,Model model){
+			//검색어 query를 담아서 list페이지에 넘김
+			model.addAttribute("searchQuery" ,query);
+			model.addAttribute("selectedCategory" ,category);
+			return "movies/movies_list";
+		}
+
+			
+	
 			
 	
 	//영화 상세 정보
-	@GetMapping("/detail/{movieId}")
-	public String getMovieDetail(@PathVariable("movieId") Long id , 
+	@GetMapping("/detail/{apiId}")
+	public String getMovieDetail(@PathVariable("apiId") Long id , 
 						@AuthenticationPrincipal CustomUserDetails userDetails ,Model model){
 		
 		System.out.println("넘어온 영화 ID: " + id);
+		
+		//userReviewService에서 평균 별점을 가지고옴
+		//double averageRating = userReviewService.getAverageRatingByApiId(id);
+		
+		//System.out.println( id + "의 대한"  +"평균 별점:" + averageRating);
 		
 		//리뷰 목록 가져오기
 		List<userReviewEntity> existingReviews = userReviewService.getReviewsByMovieId(id);
@@ -83,8 +93,11 @@ public class MovieController {
 		model.addAttribute("apiId", id );
 		model.addAttribute("isLiked", isLiked);
 		model.addAttribute("reviews", existingReviews );
+		//model.addAttribute("averageRating" , averageRating);
 		return "movies/movies_detail";
 	}
+	
+	
 	
 	
 	

@@ -3,12 +3,29 @@ body{
 	padding:0;
 }
 
-
-
 #indexMovieList{
 	margin-top:80px;
 }
-
 #MovieList{
 	margin-top:140px;
+}
+
+/* 메인 최신리뷰 카드 */
+.review-container {
+	  display: flex; /* 자식 요소를 가로로 나열 */
+	  flex-wrap: wrap; /* 공간이 부족하면 다음 줄로 넘어가게 함 */
+	  gap: 20px; /* 카드 사이의 간격 */
+	  justify-content: center; /* 리뷰 카드를 가운데 정렬 (선택 사항) */
+	}
+	.review-card {
+	  width: 250px;
+	  border: 1px solid #ddd; /* 10x를 1px로 수정 */
+	  border-radius: 12px;
+	  padding: 12px;
+	  box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+	}
+	
+.review-card:hover{
+	background-color: rgba(5,2,2,0.1);
+	
 }

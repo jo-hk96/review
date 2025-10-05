@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/header.css">
     <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/scroll-to-top.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
 </head>
 <style>
 	#movie-categories-select{
@@ -21,31 +23,49 @@
 
 <div th:insert = "index/index :: header"></div>
 
-<div id = "MovieList">
-		<!-- 영화 선택 카테고리  -->
-		<div id="movie-categories-select" style="margin-bottom: 20px;">
-		    <label for="category-select">카테고리 선택:</label>
-		    <select id="category-select">
-		        <option value="now_playing">현재상영중</option>
-		        <option value="popular">인기순</option>
-		        <option value="top_rated" selected>최고평점</option>
-		        <option value="upcoming">개봉예정</option>
-		        </select>
-		</div>
-		
-		
-	 <div id="movie-list2" class = "movie-list-container" th:attr="data-search-query=${searchQuery}"></div>
-		<div id="loading-indicator2">
-		    영화 로드 중...
-		</div>
+	<div id = "MovieList">
+			<!-- 영화 선택 카테고리  -->
+			<div id="movie-categories-select" style="margin-bottom: 20px;">
+			    <label for="category-select">카테고리 선택:</label>
+			    <select id="category-select">
+			        <option value="now_playing">현재상영중</option>
+			        <option value="popular">인기</option>
+			        <option value="top_rated">최고평점</option>
+			        <option value="upcoming">개봉예정</option>
+			        </select>
+			</div>
+			
+		 <div id="movie-list2" class = "movie-list-container" th:attr="data-search-query=${searchQuery}"></div>
+			<div id="loading-indicator2">
+			    영화 로드 중...
+			</div>
 	</div>
-	
-	
 	<input type="hidden" id="searchQueryInput" th:value="${searchQuery}">
 	
+	
+	<!-- 푸터 -->
 	<div th:insert="index/index :: footer"></div>
-		
+	<!-- 맨위로가기 -->
+	<button th:insert = "index/index :: scroll-to-top"></button>
  <script src ="/js/movies_list.js"></script>
+ <script src ="/js/scroll-to-top.js"></script>
  
+	<script th:inline="javascript">
+	    // 서버의 값을 할당
+	    currentCategory = '[[${selectedCategory}]]'; 
+	    
+	    //앞뒤 "" 따옴표 제거
+	    if (currentCategory.startsWith('"') && currentCategory.endsWith('"')) {
+	        currentCategory = currentCategory.substring(1, currentCategory.length - 1);
+	    }
+	    
+	    // 만약 서버에서 값이 넘어오지 않았다면 (즉, '[[${selectedCategory}]]' 문자열 그대로 들어왔다면)
+	    // 안전을 위해 기본값 'popular'로 다시 설정합니다.
+	    if (currentCategory.startsWith('[[') || !currentCategory) {
+	        currentCategory = 'popular';
+	    }
+	    console.log("초기 카테고리 설정 완료:", currentCategory);
+	</script>
+
 </body>
 </html>

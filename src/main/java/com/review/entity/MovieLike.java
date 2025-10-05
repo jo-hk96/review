@@ -1,5 +1,9 @@
 package com.review.entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -16,6 +20,12 @@ public class MovieLike {
     
     @Column(name = "NICKNAME" , nullable = false)
     private String nickname;
+    
+    
+    //nullable : null 삽입 방지 , updatable :수정 방지
+    @CreationTimestamp //현재시간이 자동으로 insert 됨
+    @Column(name = "LIKED_AT" ,nullable = false , updatable = false)
+    private LocalDateTime likeAt;
     
     @ManyToOne
     @MapsId("userId") // MovieLikeId의 memberId와 매핑

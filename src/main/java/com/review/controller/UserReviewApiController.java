@@ -6,15 +6,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.review.DTO.UserReviewDTO;
 import com.review.DTO.movieDTO;
 import com.review.config.CustomUserDetails;
 import com.review.entity.userReviewEntity;
+import com.review.repository.UserReviewRepository;
 import com.review.service.MovieService;
 import com.review.service.UserReviewService;
 
@@ -28,6 +34,12 @@ public class UserReviewApiController {
 	@Autowired
 	private MovieService movieService;
 	
+	@Autowired
+	private UserReviewRepository userReviewRepository;
+	
+	
+	
+	
 	//사용자 내정보 좋아요 목록
 	@GetMapping("/api/user/likedMovies")
 	public List<movieDTO> getLikedMovies(@AuthenticationPrincipal CustomUserDetails cud){
@@ -35,6 +47,8 @@ public class UserReviewApiController {
 		Long userId = (cud.getUserId());
 		return movieService.getLikeMoviesByUserId(userId);
 	}
+	
+	
 	
 	//사용자 리뷰 작성 목록
 	@GetMapping("/api/user/ReviewMovie")
@@ -45,7 +59,7 @@ public class UserReviewApiController {
 	}
 	
 	
-	//유저들의 영화 리뷰 목록
+	//영화 리뷰 등록
 	@PostMapping("/api/userReview")
 	public ResponseEntity<?> createReview (@RequestBody UserReviewDTO reviewDto,Long apiId){
 		
@@ -59,5 +73,50 @@ public class UserReviewApiController {
 	    return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
 	}
 	
+	
+	
+	@GetMapping("/api/reviews")
+	public ResponseEntity<List<UserReviewDTO>> getReviewsByMovieId(@RequestParam("apiId") Long apiId) {
+	    
+	    // 1. 서비스 호출: DB에서 해당 apiId를 가진 모든 리뷰 목록을 가져옴
+	    //    (UserReviewService에 이 메소드가 정의되어 있어야 합니다.)
+	    List<UserReviewDTO> reviews = userReviewService.getReviewsByMovieApiId(apiId); 
+	    
+	    //프론트엔드는 이 JSON 배열을 받아 화면에 리뷰 목록을 그립니다.
+	    return ResponseEntity.ok(reviews);
+	}
+	
+	
+
+	// ⭐⭐ 1. DELETE API: 리뷰 삭제 ⭐⭐
+	// URL: /api/userReview/{reviewId}
+	@DeleteMapping("api/userReview/{reviewId}")
+	public ResponseEntity<Void> deleteReview(@PathVariable Long reviewId, @AuthenticationPrincipal CustomUserDetails cud) {
+	    
+	    // 1. 서비스 호출: 리뷰 ID와 현재 로그인한 사용자 ID를 함께 전달하여 권한 확인 및 삭제
+	    userReviewService.deleteReview(reviewId, cud.getUserId()); 
+	    
+	    // 2. HTTP 204 No Content 반환 (삭제 성공 시 보통 응답 본문 없이 상태 코드만 보냄)
+	    return ResponseEntity.noContent().build();
+	}
+	
+	
+
+	// ⭐⭐ 2. PUT/PATCH API: 리뷰 수정 ⭐⭐
+	// URL: /api/userReview/{reviewId}
+	@PatchMapping("api/userReview/{reviewId}")
+	public ResponseEntity<UserReviewDTO> updateReview(
+	        @PathVariable Long reviewId, 
+	        @RequestBody UserReviewDTO updateDto, // 클라이언트가 보낸 원본 DTO
+	        @AuthenticationPrincipal CustomUserDetails cud) {
+	    
+	    // 1. 서비스 호출: 리뷰 ID, 수정 내용, 사용자 ID를 전달하여 수정 처리
+	    // 서비스에서 DB를 업데이트하고 최신 정보가 담긴 DTO를 반환합니다.
+	    UserReviewDTO updatedReview = userReviewService.updateReview(reviewId, updateDto, cud.getUserId());
+	    
+	    // 2. HTTP 200 OK와 함께 수정된 리뷰 데이터를 반환
+	    return ResponseEntity.ok(updatedReview);
+	}
+
 	
 }

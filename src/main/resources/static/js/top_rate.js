@@ -17,12 +17,29 @@
 			  return 5;
 			}
 		
+		//숫자에 맞게 별을 그려주는 함수
+		function generateOurStars(rating5){
+			//rating5에 들어갈 평점이 null, undefined , 0 중에 하나라도 참일경우 N/A 으로 리턴
+			//아닐경우 .repaet 돌림
+			if(rating5 === null || rating5 === undefined || rating5 === 0) return 'N/A';
+			const fullStars = Math.floor(rating5);
+			return '⭐'.repeat(fullStars);
+		}
+		
+		//영화 API Controller에서 받아온 정보를 HTML형식으로 바꾼다
 		function renderMovies(newMovies) {
 		  newMovies.forEach(movie => {
 		    const posterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
 		    
+		    //영화 고유 id 담아서 보내기
 		    const movieId = movie.id; 
     		const detailUrl = `/detail/${movieId}`;
+		    //영화 별점 받아서 변수저장
+		    const ourRating = movie.ourAverageRating;
+		    //toFixed(1) 해당 숫자만큼 소수점 아래 반올림해서 보여주고
+		    //아니라면 n/a를 보여줌
+		    const scoreText = ourRating > 0 ? ourRating.toFixed(1) : 'N/A';
+		  	const userStars = generateOurStars(ourRating);
 		    
 		    const card = document.createElement('div');
 		    card.className = 'movie-card';
@@ -31,6 +48,8 @@
 			      <img src="${posterUrl}" alt="${movie.title} 포스터">
 			      <div class="movie-info">
 			        <h2>${movie.title}</h2>
+			        ${scoreText !== 'N/A' ? `<h2>${userStars}${scoreText}</h2>` : `<h2>평점없음</h2>`}
+			        
 			        <p>외부평점: ${movie.vote_average.toFixed(1)} / 10</p>
 			        <p>최초개봉일: ${movie.release_date}</p>
 			      </div>
@@ -69,15 +88,16 @@
 		  document.getElementById('loading-indicator').style.display = 'block';
 		
 		  const options = {
-  method: 'GET',
-  headers: {
-    accept: 'application/json',
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmEwZmM1NDdkZGI5ZDA3ZGQ0ODhkZmRmOTEzZmZiZCIsIm5iZiI6MTc1ODc1ODkyMy44MzUsInN1YiI6IjY4ZDQ4ODBiNTRjYWJjY2VjYzRhOTFjNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.xDFPD2BRvK_XT3ITjx-q9u31nL4PJ-Y0w8MsLeNgiyg'
-  }
-};
+			  method: 'GET',
+			  headers: {
+			    accept: 'application/json',
+			    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmEwZmM1NDdkZGI5ZDA3ZGQ0ODhkZmRmOTEzZmZiZCIsIm5iZiI6MTc1ODc1ODkyMy44MzUsInN1YiI6IjY4ZDQ4ODBiNTRjYWJjY2VjYzRhOTFjNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.xDFPD2BRvK_XT3ITjx-q9u31nL4PJ-Y0w8MsLeNgiyg'
+			  }
+			};
 
 		  try {
-		    const url = `https://api.themoviedb.org/3/movie/top_rated?language=ko-KR&page=${page}`;
+			const currentCategory2 = 'top_rated';
+		    const url = `/api/movies/list?category=${currentCategory2}&page=${page}`;
 		    const response = await fetch(url, options);
 		    const data = await response.json();
 		

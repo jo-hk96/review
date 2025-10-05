@@ -1,4 +1,8 @@
     
+    
+    
+    
+    
     //함수정의
     document.addEventListener('DOMContentLoaded', () => {
         // 1. 현재 URL 경로를 가져옴 (예: "/detail/1007734")
@@ -32,7 +36,52 @@
     });
     
     
-    // 3. 영화 상세 정보를 HTML로 표시하는 함수
+    
+      function fetchMovieDetail(movieId) {
+			    const options = {
+			        method: 'GET',
+			        headers: {
+			            accept: 'application/json',
+			            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmEwZmM1NDdkZGI5ZDA3ZGQ0ODhkZmRmOTEzZmZiZCIsIm5iZiI6MTc1ODc1ODkyMy44MzUsInN1YiI6IjY4ZDQ4ODBiNTRjYWJjY2VjYzRhOTFjNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.xDFPD2BRvK_XT3ITjx-q9u31nL4PJ-Y0w8MsLeNgiyg' 
+			        }
+			    };
+			    
+			    // 영화 상세 정보 요청 URL
+			    const detailUrl = `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KO`;
+			    // 출연진/제작진 정보 요청 URL
+			    const creditsUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KO`;
+			 	const ourRatingUrl = `/api/detail/${movieId}`; 
+			    // Promise.all로 두 요청을 병렬로 처리
+			     Promise.all([
+		        fetch(detailUrl, options).then(res => res.json()), // 0: TMDB 상세
+		        fetch(creditsUrl, options).then(res => res.json()), // 1: TMDB 크레딧
+		        // 네 서버 API는 options 없이 호출 (토큰 필요 없음)
+		        fetch(ourRatingUrl).then(res => res.json()) // 2: 네 서버 평점
+		        
+			    ])
+			    .then(([detailData, creditsData, ourData]) => { 
+        				
+        				const averageRatingValue  = ourData.averageRating;
+				        // ourRatingValue는 이제 Map이 아니라 순수한 숫자 값(double)입니다.
+				        const combinedData = {
+				            ...detailData, 
+				            credits: creditsData,
+				            ourAverageRating: averageRatingValue  
+				        };
+			        //combinedData 변수를 renderMovieDetail 함수에 전달
+			        renderMovieDetail(combinedData); 
+			    })
+			    .catch(err => {
+			        console.error("API 호출 실패:", err);
+			        document.getElementById('movie-detail-container').innerHTML = `
+			            <p>영화 정보를 불러오는 데 실패했습니다. (${err.message})</p>
+			        `;
+			    });
+	}
+    
+    
+    
+    	// 3. 영화 상세 정보를 HTML로 표시하는 함수
    
 	//수정된 renderMovieDetail 함수 (감독, 배우 추가 로직 포함)
 	function renderMovieDetail(data) {
@@ -83,11 +132,10 @@
 	    `).join('');
 	    
 	    // ----------------------------------------------------
-	    
 	    detailContainer.innerHTML = `
 	         <div class="backdrop-header" 
 	             style="background-image: url('${backdropImage}'); 
-	                    height: 400px; 
+	                    height: 600px; 
 	                    background-size: cover; 
 	                    background-position: center;
 	                    display: flex; align-items: flex-end; padding: 20px; 
@@ -95,13 +143,12 @@
 	                    ${backdropImage}">
 	            <header>
 	                <h1>${data.title}</h1>
-	                <p><strong>원제:</strong> (${data.original_title})</p>
-	                <p>⭐️ ${data.vote_average.toFixed(1)} / 10</p>
+	                <p>(${data.original_title})</p>
 	            </header>
 	        </div>
 	
-	        <section style="display: flex; gap: 30px; margin-top: 20px;">
-	            <img src="${basePosterUrl}${data.poster_path}" alt="${data.title} 포스터" style="width: 300px; border-radius: 8px;">
+	        <section style="display: flex; gap: 30px; margin-top: 20px; padding: 15px;">
+	            <img src="${basePosterUrl}${data.poster_path}" alt="${data.title} 포스터" style="width: 400px; border-radius: 8px;">
 	            <div style="flex-grow: 1;">
 	                <h2>줄거리</h2>
 	                <p>${data.overview || '줄거리 정보 없음'}</p>
@@ -113,50 +160,62 @@
 	                <p><strong>장르:</strong> ${genres}</p>
 	                <p><strong>기획/제작:</strong> ${production_companies}</p>
 	                <p><strong>태그라인:</strong> <em>${data.tagline || '태그 정보 없음'}</em></p>
+	                <p><strong>외부평점:⭐</strong>  ${data.vote_average.toFixed(1)} / 10</p>
+	                <p id="average-rating-display"></p>
 	            </div>
 	        </section>
 	        
 	        <hr style="margin: 40px 0;">
 	        <h2>감독 / 주요배우</h2>
-	        <div style="display: flex; gap: 15px; overflow-x: auto;">
+	        <div style="display: flex; gap: 15px; overflow-x: auto; padding: 15px;">
 	            ${directorHTML} ${castHTML || '<p>출연진 정보가 없습니다.</p>'}
 	        </div>
 	    `;
+	    const averageRatingValue = data.ourAverageRating || 0;
+	    displayAverageRating(averageRatingValue);
 	}
-	    
-	   function fetchMovieDetail(movieId) {
-	    const options = {
-	        method: 'GET',
-	        headers: {
-	            accept: 'application/json',
-	            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyYmEwZmM1NDdkZGI5ZDA3ZGQ0ODhkZmRmOTEzZmZiZCIsIm5iZiI6MTc1ODc1ODkyMy44MzUsInN1YiI6IjY4ZDQ4ODBiNTRjYWJjY2VjYzRhOTFjNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.xDFPD2BRvK_XT3ITjx-q9u31nL4PJ-Y0w8MsLeNgiyg' 
+
+
+    
+    
+    
+    
+    	//영화 상세 정보 리뷰플러스 평점 HTML 
+		function displayAverageRating(rating){
+			const displayElement = document.getElementById('average-rating-display');
+			
+			
+			//average-rating-display 가 없 	을경우
+			if(!displayElement){
+				console.error("평균 별점을 표시할 요소를 찾을 수 없습니다 average-rating-display")
+				return;
+			}
+			
+			//리뷰가없거나 점수가 0일경우
+			   if (rating <= 0 || isNaN(rating)) {
+	            displayElement.innerHTML = `
+	                <div style="padding: 10px; border: 1px dashed #ccc;">
+	                    평점이 없습니다.
+	                </div>`;
+	            return;
 	        }
-	    };
-	    
-	    // 1. 영화 상세 정보 요청 URL
-	    const detailUrl = `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KO`;
-	    // 2. 출연진/제작진 정보 요청 URL (네가 추가하려던 그 부분!)
-	    const creditsUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KO`;
-	
-	    // Promise.all로 두 요청을 병렬로 처리
-	    Promise.all([
-	        fetch(detailUrl, options).then(res => res.json()),
-	        fetch(creditsUrl, options).then(res => res.json())
-	    ])
-	    .then(([detailData, creditsData]) => {
-	        // 두 결과를 하나의 객체로 합친다
-	        const combinedData = {
-	            ...detailData, // 상세 정보
-	            credits: creditsData // 출연진/제작진 정보 추가
-	        };
-	        
-	        // 합쳐진 데이터를 렌더링 함수에 전달
-	        renderMovieDetail(combinedData); 
-	    })
-	    .catch(err => {
-	        console.error("API 호출 실패:", err);
-	        document.getElementById('movie-detail-container').innerHTML = `
-	            <p>영화 정보를 불러오는 데 실패했습니다. (${err.message})</p>
-	        `;
-	    });
-	}
+			    // 별점 문자열 생성 로직 (정수 별만 표시)
+		        // Math.floor(4.5) -> 4개의 ⭐
+		        const fullStars = Math.floor(rating);
+		        const starString = '⭐'.repeat(fullStars);
+		        
+		        // 최종 HTML 내용을 구성하여 삽입
+		        displayElement.innerHTML = `
+		            <div style="display: flex; align-items: center; gap: 10px;">
+		                <strong>리뷰플러스 평균 별점:</strong>
+		                <span style=" color: gold;">
+		                    ${starString}
+		                </span>
+		                <span>
+		                    (${rating.toFixed(1)} / 5점)
+		                </span>
+		            </div>
+		        `;
+		    }
+    
+    
