@@ -1,0 +1,13 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id:  ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope: # 기본 값 openid,profile,email => profile, email 로 설정 변경
+              - openid                                                   # 1. openid
+              - https://www.googleapis.com/auth/userinfo.email         # 2. 이메일
+              - https://www.googleapis.com/auth/userinfo.profile       # 3. 프로필
+              - https://www.googleapis.com/auth/user.birthday.read  
