@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" 
+                  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>  
     <meta charset="UTF-8">
     <title>관리자 페이지</title>
    
@@ -9,21 +10,21 @@
 	<h3>회원 목록</h3>
 		<table>
 			<tr>
-				<th>회원 번호:</th>
+				<th>회원 번호</th>
+				<th>닉네임</th>
+				<th>이름</th>
+				<th>이메일</th>
+				<th>가입일</th>
 			</tr>
-			<tr>
-				<th>닉네임:</th>
-			</tr>
-			<tr>	
-				<th>이름:</th>
-			</tr>
-			<tr>	
-				<th>이메일:</th>
-			</tr>
-			<tr>	
-				<th>가입일:</th>
+			<tr th:each = "user : ${allUser}">
+				<td th:text ="${user.userId}"></td>
+				<td>
+				<a th:href="@{/admin/userDetail/{userId}(userId=${user.userId})}" th:text ="${user.nickname}"></a>
+				</td>
+				<td th:text ="${user.pname}"></td>
+				<td th:text ="${user.email}"></td>
+				<td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></td>
 			</tr>
 		</table>
-	<h3>최근 리뷰 내역</h3>
-</body>
+	<h3>최근 리뷰 내역</h3>	
 </html>

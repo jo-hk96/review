@@ -8,7 +8,6 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.review.DTO.TmdbResponseDTO;
 import com.review.DTO.movieDTO;
 import com.review.config.CustomUserDetails;
-import com.review.entity.userReviewEntity;
 import com.review.service.MovieLikeService;
 import com.review.service.TmdbApiService;
 import com.review.service.UserReviewService;
@@ -52,7 +50,6 @@ public class MovieApiController {
 	    // 영화 비동기 검색
 	    @GetMapping("/api/movies/search") 
 	    public List<movieDTO> searchMovieByApi(@RequestParam("query") String query) {
-	        
 	        List<movieDTO> searchResults = tmdbApiService.searchMovies(query); 
 	        
 	        //공통메서드호출

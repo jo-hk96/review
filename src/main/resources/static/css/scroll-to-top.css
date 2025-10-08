@@ -17,8 +17,8 @@
     border-radius: 10px; 
     background-color:gray;
     font-size: 18px;
-    opacity: 0.6; /* 투명도 */
-    transition: opacity 0.3s; /* 마우스 호버 시 부드러운 전환 */
+    opacity: 0.6; 
+    transition: opacity 0.3s;
      
 }
 

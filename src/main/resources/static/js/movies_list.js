@@ -4,7 +4,7 @@ let isLoading = false;
 let totalPages = 500; // 기본 카테고리
 let movieListContainer;
 let loadingIndicator;
-let currentCategory = 'popular'; 
+let currentCategory; 
 // ==================== 검색 실행 ====================
 async function fetchAndRenderSearchResults(query) {
     if (!query) return;
@@ -27,7 +27,8 @@ async function fetchAndRenderSearchResults(query) {
         console.error("검색 오류:", error);
         movieListContainer.innerHTML = '<p>검색 서버와 연결할 수 없습니다.</p>';
     } finally {
-        if (loadingIndicator) loadingIndicator.style.display = 'none';
+	   isLoading = false;
+       loadingIndicator.style.display = 'none';
     }
 }
 
@@ -40,13 +41,13 @@ function generateOurStars(rating5) {
 
 function renderMovies(newMovies) {
     newMovies.forEach(movie => {
-       		//api 컨트롤러에서 보낸 평점을 받음 
-          const ourRating = movie.ourAverageRating; // <--- 이 값이 정상적으로 들어와야 함!
+       	  //api 컨트롤러에서 보낸 평점을 받음 
+          const ourRating = movie.ourAverageRating;
           const movieId = movie.id;
           const detailUrl = `/detail/${movieId}`; 
              const posterUrl = movie.poster_path
             ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-            : '/img/no-poster.png'; // fallback 이미지 처리 포함
+            : '/images/Jake_the_Dog_character.png'; // fallback 이미지 처리 포함
 
         // 평점을 별 아이콘과 포맷된 텍스트로 준비
         const userStars = generateOurStars(ourRating);
@@ -81,7 +82,7 @@ function renderMovies(newMovies) {
 }
 
 // ==================== 목록 API 호출 ====================
-async function loadMovies(page) { // ⭐ page 파라미터 다시 사용 ⭐
+async function loadMovies(page) { 
 
  	const pageToLoad = page > 0 ? page : 1; 
     if (isLoading || page > totalPages) return;
@@ -102,7 +103,7 @@ async function loadMovies(page) { // ⭐ page 파라미터 다시 사용 ⭐
         renderMovies(newMovies); 
     } catch (err) {
         console.error("API 호출 중 오류 발생:", err);
-        movieListContainer.innerHTML = '<p>영화 목록을 불러오는 중 서버 오류가 발생했습니다.</p>';
+        movieListContainer.innerHTML = '<p>영화 목록 로드 오류 발생</p>';
     } finally {
         isLoading = false;
         loadingIndicator.style.display = 'none';
@@ -118,92 +119,74 @@ function handleInfiniteScroll() {
         if (currentPage < totalPages && !isLoading) {
             console.log(`[Infinite Scroll] 페이지 ${currentPage + 1} 로드 시작`);
             loadMovies(currentPage + 1);
-        } else if (currentPage >= totalPages && !isLoading && loadingIndicator.textContent !== '마지막 페이지입니다.') {
+        } 
+        // 에러 방지 및 마지막 페이지 표시 로직 수정 (loadingIndicator 존재 확인)
+        else if (currentPage >= totalPages && !isLoading && loadingIndicator && loadingIndicator.textContent !== '마지막 페이지입니다.') {
             loadingIndicator.textContent = '마지막 페이지입니다.';
             loadingIndicator.style.display = 'block';
         }
     }
 }
 
+//3. 카테고리 변경 함수 (전역 - HTML onclick 이벤트용)
 function changeCategory(newCategory) {
-    // 검색 모드가 아닐 때만 카테고리 변경을 허용 (선택적)
-    // 이 로직이 필요하다면 유지합니다.
-    const searchQueryInput = document.getElementById('searchQueryInput');
-    if (searchQueryInput && searchQueryInput.value) {
-        console.warn("검색 모드에서는 카테고리 변경이 제한됩니다.");
-        return; 
-    }
-    
     console.log(`카테고리 변경: ${currentCategory} -> ${newCategory}`);
     
-    // 1) 새로운 카테고리 값으로 전역 변수 업데이트
+    // 1) 상태 초기화 및 업데이트
     currentCategory = newCategory;
-    
-    // 2) 페이지 상태 초기화
     currentPage = 1;
-    totalPages = 1; // totalPages도 초기화
+    totalPages = 1; 
     
-    // 3) 기존 목록을 비우고 다시 로드
+    // 2) 기존 목록 비우기
     if (movieListContainer) movieListContainer.innerHTML = ''; 
     
-    // 4) 로드 시작
+    // 3) 새 목록 로드 시작
     loadMovies(currentPage); 
-    
-    // 무한 스크롤 이벤트 리스너가 붙어 있지 않다면 다시 붙임
-    window.removeEventListener('scroll', handleInfiniteScroll);
-    window.addEventListener('scroll', handleInfiniteScroll);
 }
-
-
-
 
 
 // ==================== 카테고리 변경 ====================
 document.addEventListener('DOMContentLoaded', () => {
-    // 필수 요소 초기화
-    movieListContainer = document.getElementById('movie-list2'); // ⭐ ID를 'movie-list'로 가정
+    
+    // 1. 필요한 DOM 요소들을 찾아서 전역 변수에 할당합니다.
+    movieListContainer = document.getElementById('movie-list2'); 
     loadingIndicator = document.getElementById('loading-indicator2');
 
     if (!movieListContainer || !loadingIndicator) {
         console.error("ERROR: 필수 HTML 요소를 찾을 수 없어 JS 실행을 중단합니다.");
         return;
     }
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    // URL 파라미터가 없거나 'now_playing' 같은 값이 있을 경우 currentCategory에 할당
+    const urlCategory = urlParams.get('category');
+    
+    // 서버에서 받은 selectedCategory s가 있다면 그걸 최우선으로, 없으면 URL 파라미터, 없으면 'popular'
+    // Thymeleaf 변수를 직접 쓰지 못하므로, HTML에 숨겨진 input 태그 등으로 값을 받아와야 함
+    const initialCategoryElement = document.getElementById('initial-category-value');
+    const thymeleafCategory = initialCategoryElement ? initialCategoryElement.value : null;
 
+    currentCategory = thymeleafCategory || urlCategory || 'popular'; 
+
+    
+    // 3. 검색 모드와 기본 목록 모드 분기 로직 (기존 로직 유지)
     const searchQueryElement = document.getElementById('searchQueryInput');
     const G_SEARCH_QUERY = searchQueryElement ? searchQueryElement.value : '';
     const categorySelect = document.getElementById('category-select');
-
-
-    // 1. 카테고리 드롭다운 초기 상태 설정
     if (categorySelect) {
-        // 서버에서 받은 값으로 드롭다운 초기 선택 설정
         categorySelect.value = currentCategory;
-        
-        // 카테고리 변경 이벤트 설정
         categorySelect.addEventListener('change', (event) => {
             changeCategory(event.target.value);
         });
     }
-
-    // 2. 검색 모드와 기본 목록 모드 분기
-    if (typeof G_SEARCH_QUERY !== 'undefined' && G_SEARCH_QUERY) {
-        // 검색 모드
-        console.log("검색 모드 실행, 쿼리:", G_SEARCH_QUERY);
-        fetchAndRenderSearchResults(G_SEARCH_QUERY);
-
-        // 카테고리 선택 UI 숨기기
-        const categorySelectDiv = document.getElementById('movie-categories-select');
-        if (categorySelectDiv) {
-            categorySelectDiv.style.display = 'none';
-        }
+    if (G_SEARCH_QUERY) {
+		console.log("검색 모드 실행, 쿼리:", G_SEARCH_QUERY);
+		 fetchAndRenderSearchResults(G_SEARCH_QUERY);
+		
     } else {
-          // ⭐ 기본 목록 모드 실행. 이제 카테고리 구분은 없습니다. ⭐
         console.log("기본 목록 모드 실행.");
         window.addEventListener('scroll', handleInfiniteScroll);
-    }
-    
-     if (!(typeof G_SEARCH_QUERY !== 'undefined' && G_SEARCH_QUERY)) {
-        // ⭐ 카테고리가 아닌 기본 목록을 로드합니다. ⭐
-        loadMovies();
+        loadMovies(currentPage); 
     }
 });

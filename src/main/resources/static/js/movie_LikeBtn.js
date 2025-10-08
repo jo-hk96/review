@@ -1,6 +1,5 @@
-  // toggleLike 함수
+  		// toggleLike 함수
         async function toggleLike(buttonElement){
-            //... 기존 코드
             const apiId = buttonElement.getAttribute('data-api-id');
             const isCurrentlyLiked = buttonElement.getAttribute('data-liked') === 'true';
 
@@ -35,7 +34,6 @@
                 alert("서버 연결 실패.");
             }
         }
-
         //버튼 상태 변경
         function updateLikeBtnState(buttonElement, isLiked){
             //data-liked 속성 값 변경

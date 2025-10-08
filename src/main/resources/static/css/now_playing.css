@@ -1,44 +1,45 @@
 /* 전체 슬라이더 컨테이너 */
 .slider-container2 {
   position: relative;
-  width: 100%;            /* 부모 크기에 맞춤 */
-  max-width: 1500px;      /* 최대 넓이 제한 */
-  margin: 0 auto;         /* 가운데 정렬 */
-  overflow: hidden;       /* 슬라이드 영역 밖은 숨김 */
+  width: 100%;            
+  max-width: 1500px;     
+  margin: 0 auto;         
+  overflow: hidden;      
   padding: 15px;
   box-sizing: border-box;
 }
 
 /* 영화 카드들이 들어가는 영역 */
 #movie-list2 {
-  display: flex;                  /* 가로 배치 */
-  gap: 20px;                      /* 카드 간격 (JS gap 변수와 일치) */
+  display: flex;                  
+  gap: 20px;                      
   transition: transform 0.4s ease;
   will-change: transform;
+  
 }
 
 /* 각 영화 카드 */
 .movie-card2 {
-  flex: 0 0 calc(100% - 16px);   /* 기본 5개 보이지만 카드 폭 약간 더 크게 */
-  max-width: 280px;             /* 최대 크기 제한도 늘림 */
+  flex: 0 0 calc(100% - 16px);  
+  max-width: 350px;             
   border: 1px solid #ddd;
   border-radius: 12px;
   background: #fff;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* 그림자도 살짝 강조 */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15); 
   overflow: hidden; 
   transition: transform 0.2s;
 }
 
 .movie-card2:hover {
-    transform: translateY(-5px); /* 호버 시 살짝 떠오르는 효과 */
+    transform: translateY(-5px); 
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
 /* 카드 안의 포스터 */
 .movie-card2 img {
   width: 100%;
-  height: auto; /* 비율 유지 */
-  aspect-ratio: 2 / 3; /* 자동으로 2:3 비율 유지 */
+  height: auto;
+  aspect-ratio: 2 / 3;
   object-fit: cover;
 }
 
@@ -47,6 +48,7 @@
   padding: 5px;
   font-size: 15px;
   margin-left: 15px;
+  color:#36454F;
 }
 
 /* 이전/다음 버튼 */
@@ -73,25 +75,25 @@
 /* 반응형 브레이크포인트 */
 @media (max-width: 1200px) {
   .movie-card2 {
-    flex: 0 0 calc(27% - 16px); /* 4개 → 좀 더 크게 */
+    flex: 0 0 calc(27% - 16px);
     max-width: 280px;
   }
 }
 @media (max-width: 900px) {
   .movie-card2 {
-    flex: 0 0 calc(34% - 16px); /* 3개 */
+    flex: 0 0 calc(34% - 16px); 
     max-width: 300px;
   }
 }
 @media (max-width: 600px) {
   .movie-card2 {
-    flex: 0 0 calc(52% - 16px); /* 2개 */
+    flex: 0 0 calc(52% - 16px);
     max-width: 320px;
   }
 }
 @media (max-width: 400px) {
   .movie-card2 {
-    flex: 0 0 calc(100% - 16px); /* 1개 (최대 크기) */
+    flex: 0 0 calc(100% - 16px); 
     max-width: none;
   }
 }

@@ -26,6 +26,7 @@ public class UserService implements UserDetailsService {
 	private final UserRepository userRepository;
 
 	
+	
 	public userEntity findById(Long userId) {
 			return userRepository.findById(userId).orElseThrow(null);
 		}
@@ -105,11 +106,13 @@ public class UserService implements UserDetailsService {
 	        
 	    }
 	    
+	    
 	    //생년월일 수정 처리
 	    String newBirthdate = userDto.getBirthdate();
 	    if (newBirthdate != null) {
 	        user.setBirthdate(newBirthdate);
 	    }
+	    
 	    
 		//새 비밀번호가 null이 아니거나 비어 있지 않다면
 		String newPwd = userDto.getNewPassword();
@@ -138,8 +141,24 @@ public class UserService implements UserDetailsService {
 				//userRepository.save(user);
 			}
 
-		
 	}
+	   @Transactional
+	    public void completeRegistration(String email, String newNickname, String newBirthdate) {
+	        userEntity user = userRepository.findByEmail(email)
+	                              .orElseThrow(() -> new IllegalArgumentException ("로그인된 사용자를 찾을 수 없습니다."));
+
+	        // 2. 다른 필수 정보 업데이트
+	        user.setNickname(newNickname); // userEntity의 set메서드나 update메서드 필요
+	        user.setBirthdate(newBirthdate); 
+	        
+	        // 필수 정보 입력 상태를 '완료'로 변경 set으로 가져올때는 함수이름에서 Is빼고 가져옴
+	        user.setRequiredInfoMissing(false); 
+	        
+	        // userEntity의 변경된 필드들을 저장 (JPA Dirty Checking으로 자동 저장되거나 save 호출)
+	        userRepository.save(user); 
+	    }
+	
+	
 	
 	    
 }

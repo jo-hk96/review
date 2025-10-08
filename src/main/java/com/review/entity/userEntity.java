@@ -9,10 +9,13 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.review.Enum.SocialType;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,7 +52,7 @@ public class userEntity implements Serializable{
 	    private String email; //로그인 할 Email
 		
 		@Column(name = "PNAME" , nullable = false) 
-		private String pname; //로그인 할 Email
+		private String pname; //실제 이름
 		
 		@Column(name = "PASSWORD" , nullable = false) 
 	    private String password; //비번
@@ -60,8 +63,19 @@ public class userEntity implements Serializable{
 		@Column(name = "BIRTHDATE" , nullable = false)
 		private String birthdate; // 생일
 		
+		//사용자가 최초로그인시 회원수정을 했는지 true false 로 확인
+		@Column(name = "IRIM",nullable = false)
+		@Builder.Default // boolean의 기본값인 false로 만들지않기 위해 true를 초기값을 로둠
+		private boolean isRequiredInfoMissing = true;
+		
+		//소셜 로그인시 SocialType에 해당하는 문자열을 DB에 저장
+		@Enumerated(EnumType.STRING)
+		@Column(name = "SOCIAL_TYPE" , nullable = false)
+		private SocialType socialType;
+		
 		@Column(name = "ROLE") //관리자 권한
 		private String role; // 예: "ROLE_USER", "ROLE_ADMIN" 등의 문자열 저장
+		
 		
 		//DB에 최초 저장(INSERT)될 때 현재 시간을 자동으로 기록
 		@CreationTimestamp
@@ -76,4 +90,13 @@ public class userEntity implements Serializable{
 		           orphanRemoval = true) 
 		private List<userReviewEntity> reviews = new ArrayList<>(); 
 		
+		
+		
+		//소셜 로그인시 성함 , 생일이  DB에 업데이트댐
+		 public userEntity update(String name) {
+			 this.pname = name;
+			return this;
+		    }
+
+
 }

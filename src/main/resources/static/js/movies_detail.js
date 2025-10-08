@@ -132,7 +132,7 @@
 	    `).join('');
 	    
 	    // ----------------------------------------------------
-	    detailContainer.innerHTML = `
+	   const detailHtml = `
 	         <div class="backdrop-header" 
 	             style="background-image: url('${backdropImage}'); 
 	                    height: 600px; 
@@ -162,6 +162,7 @@
 	                <p><strong>태그라인:</strong> <em>${data.tagline || '태그 정보 없음'}</em></p>
 	                <p><strong>외부평점:⭐</strong>  ${data.vote_average.toFixed(1)} / 10</p>
 	                <p id="average-rating-display"></p>
+	                <div id="like-button-placeholder"></div>
 	            </div>
 	        </section>
 	        
@@ -171,14 +172,20 @@
 	            ${directorHTML} ${castHTML || '<p>출연진 정보가 없습니다.</p>'}
 	        </div>
 	    `;
+	    
+	    detailContainer.innerHTML = detailHtml; //수정된 템플릿 리터널을 html에 대입
+		//좋아요 버튼을 새로운 위치로 이동
+		const likeButtonSection = document.querySelector('.movie-actions'); // Thymeleaf가 만든 전체 좋아요 섹션
+		const placeholder = document.getElementById('like-button-placeholder'); // JS 템플릿 리터럴에 만든 새 영역
+		
+		if (likeButtonSection && placeholder) {
+		    // 템플릿 리터럴이 만든 새 영역 안으로 HTML에 이미 존재하는 좋아요 섹션 이동
+		    placeholder.appendChild(likeButtonSection);
+		}
 	    const averageRatingValue = data.ourAverageRating || 0;
 	    displayAverageRating(averageRatingValue);
 	}
 
-
-    
-    
-    
     
     	//영화 상세 정보 리뷰플러스 평점 HTML 
 		function displayAverageRating(rating){

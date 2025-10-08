@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 
 import com.review.DTO.UserDTO;
 import com.review.DTO.UserEditDTO;
@@ -137,5 +135,44 @@ public class UserController {
 		return "redirect:/logout";
 		
 	}
+	
+	
+	
+	//소셜 로그인시 실제이름,이메일을 들고 user_newjoin 폼으로 이동
+	@GetMapping("/SocialUserEditForm")
+	public String SocialUserJoinInfoForm(@AuthenticationPrincipal CustomUserDetails cud, Model model) {
+		
+		 model.addAttribute("email" , cud.getUsername());
+		 model.addAttribute("pname" , cud.getUserEntity().getPname());
+		 model.addAttribute("nickname", cud.getNickname());
+		 model.addAttribute("socialType", cud.getUserEntity().getSocialType()); 
+		    
+		return "user/user_socialEdit";
+	}
+	
+	
+	  // 2. POST: 폼 데이터 받아서 저장하고 플래그 false로 변경
+    @PostMapping("/SocialUserEdit")
+    public String completeRegistration(@AuthenticationPrincipal CustomUserDetails cud,
+                                       @RequestParam String newNickname,
+                                       @RequestParam String newBirthdate,
+                                       HttpServletRequest request,HttpServletResponse response,
+                                       RedirectAttributes re) {
+        
+        // 현재 로그인된 사용자의 이메일을 가져와서 해당 계정을 찾게 함
+        String email = cud.getUsername(); 
+        
+        // 서비스 레이어에서 DB 업데이트 처리
+        userService.completeRegistration(email, newNickname, newBirthdate);
+        
+        SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
+        //현재 인증 정보와 요청/응답을 사용해 로그아웃 처리
+        // 세션 무효화 및 시큐리티 컨텍스트 클리어
+        logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+        re.addFlashAttribute("socialEditMsg","회원가입이 완료 되었습니다.다시 로그인해주세요");
+        // 모든 정보 입력이 완료되었으니 홈으로 이동
+        return "redirect:/UserLoginForm";
+    }
+	
 	
 }

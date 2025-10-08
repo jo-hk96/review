@@ -25,19 +25,16 @@
 	    transition: color 0.2s;
 	}
 	
-	/* 마우스 오버되거나 'on' 클래스가 붙은 별에만 색상 적용 */
 	.rating-area:hover .star {
-	    color: gold; /* 마우스가 영역에 올라가면 기본 색상 지정 */
+	    color: gold; 
 	}
 	
-	/* 'on' 클래스가 붙거나, 그 이전 별들 */
 	.star.on {
 	    color: gold;
 	}
 	
-	/* 마우스가 특정 별 위에 있을 때, 그 별과 그 앞의 모든 별에 색상 적용 */
 	.rating-area .star:hover ~ .star {
-	    color: #ccc; /* 마우스가 지나간 뒤의 별은 다시 회색으로 */
+	    color: #ccc; 
 	}
 	
 	
@@ -73,22 +70,22 @@
 /* 좋아요 버튼의 기본 스타일 */
 .like-btn {
     /* 배경 및 테두리 */
-    background-color: #f0f0f0; /* 밝은 회색 배경 */
-    color: #333; /* 어두운 글자색 */
+    background-color: #f0f0f0; 
+    color: #333;
     border: 1px solid #ccc;
-    border-radius: 20px; /* 둥근 모서리 */
+    border-radius: 20px; 
     
     /* 패딩 및 폰트 */
     padding: 8px 15px;
     font-size: 14px;
     font-weight: bold;
     cursor: pointer; /* 마우스 오버 시 포인터 변경 */
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.1s; /* 부드러운 전환 효과 */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s, transform 0.1s; 
     
     /* 하트 아이콘과 텍스트 간격 */
     letter-spacing: 1px;
     line-height: 1;
-    display: inline-flex; /* 텍스트와 하트를 정렬하기 위해 사용 */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
 }
@@ -191,11 +188,9 @@ h2 {
 
 .movie-actions {
     display: flex;
-   /*  justify-content: space-between;  */  /* 양 끝 정렬 */
     align-items: center;
     padding: 15px 0;
     margin-bottom: 20px;
-    border-bottom: 1px dashed #ccc;
 }
 
 /* 별점 평균 표시 스타일 */
