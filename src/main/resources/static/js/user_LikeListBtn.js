@@ -30,7 +30,7 @@ function loadLikedMovies(){
 		});
 	}
 	
-	// ⭐️ 2. 목록을 모달에 렌더링하는 함수 ⭐️
+	//목록을 모달에 렌더링하는 함수
 	function renderLikeMovies(movies) {
 	    const likedMoviesContainer = document.getElementById('likedMoviesContainer');
 	    const emptyMessage = document.getElementById('emptyMessage');

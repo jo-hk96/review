@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.review.DTO.UserReviewDTO;
 import com.review.config.CustomUserDetails;
@@ -27,9 +26,6 @@ public class MovieController {
 	@Autowired
 	private MovieLikeService movieLikeService;
 	
-	//@Autowired
-	//private final TmdbApiService tmdbApiService;
-	
 	//메인홈
 	@GetMapping("/")
 	public String Home(Principal principal, Model model) {
@@ -37,9 +33,6 @@ public class MovieController {
 	            // principal.getName()은 UserDetailsService에서 반환한 getUsername() 값,
 	            //로그인 한 사용자의 이메일
 	            String loggedInUserEmail = principal.getName();
-	            
-	            // 이메일에서 '@' 앞의 아이디 부분만 표시하고 싶다면:
-	            // String username = loggedInUserEmail.split("@")[0];
 	            model.addAttribute("username", loggedInUserEmail);
 	        }
 		 //사용자 리뷰리스트를 최신순으로 메인에 보내줌
@@ -68,32 +61,21 @@ public class MovieController {
 	@GetMapping("/detail/{apiId}")
 	public String getMovieDetail(@PathVariable("apiId") Long id , 
 						@AuthenticationPrincipal CustomUserDetails userDetails ,Model model){
-		
-		System.out.println("넘어온 영화 ID: " + id);
-		
-		//userReviewService에서 평균 별점을 가지고옴
-		//double averageRating = userReviewService.getAverageRatingByApiId(id);
-		
-		//System.out.println( id + "의 대한"  +"평균 별점:" + averageRating);
+		System.out.println("영화ID: " + id);
 		
 		//리뷰 목록 가져오기
 		List<userReviewEntity> existingReviews = userReviewService.getReviewsByMovieId(id);
 		
-		//좋아요 상태 조회 로직 추가
 		boolean isLiked = false;
 		
-		//로그인 했을 때만 좋아요 상태를 조회합니다.
 		if(userDetails != null) {
 			Long userId = userDetails.getUserId();
-			
-			 // MovieLikeService의 getLikeStatus 메서드를 사용해 DB 조회
 	        isLiked = movieLikeService.getLikeStatus(userId, id); 
 		}
 		System.out.println(id + "의 대한 영화 리뷰 갯수 : " + existingReviews.size()); 
 		model.addAttribute("apiId", id );
 		model.addAttribute("isLiked", isLiked);
 		model.addAttribute("reviews", existingReviews );
-		//model.addAttribute("averageRating" , averageRating);
 		return "movies/movies_detail";
 	}
 	

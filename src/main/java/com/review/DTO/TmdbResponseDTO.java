@@ -16,11 +16,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TmdbResponseDTO {
-		
 	
-		//영화들의 전체 목록을 담기 위한 DTO
-	
-	 	@JsonProperty("total_pages") // JSON의 키 이름("total_pages")과 매핑
+	 	@JsonProperty("total_pages")
 	    private int total_pages; 
 	    
 	    @JsonProperty("total_results")

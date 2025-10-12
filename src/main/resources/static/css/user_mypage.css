@@ -277,15 +277,15 @@ h3 {
 
 /* 마이페이지 사용자 영화좋아요 목록 Modal창 디자인  */
 .modal {
-    display: none; /* 기본적으로 숨김 */
-    position: fixed; /* 고정 위치 */
-    z-index: 1000; /* 다른 요소 위에 띄우기 */
+    display: none;
+    position: fixed; 
+    z-index: 1000; 
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     overflow: hidden; 
-    background-color: rgba(0,0,0,0.7); /* 어두운 배경 */
+    background-color: rgba(0,0,0,0.7); 
 }
 
 /* 모달 내용 컨테이너 */
@@ -294,10 +294,10 @@ h3 {
 	 display: flex; 
     flex-direction: column; 
     background-color: #fefefe;
-    margin: 10% auto; /* 상하 10%, 좌우 자동(중앙) */
+    margin: 10% auto; 
     padding: 20px;
     border: 1px solid #888;
-    width: 600px; /* 모달 너비 */
+    width: 600px; 
     max-width: 600px;
     max-height: 70vh;
     border-radius: 8px;
@@ -320,7 +320,6 @@ h3 {
 }
 
 #ReviewMoviesContainer{
-	/* 내용이 넘칠 때만 수직 스크롤바가 생기도록 합니다. */
 	flex-grow: 1;
 	overflow-y : auto; 
 	padding-right: 15px;

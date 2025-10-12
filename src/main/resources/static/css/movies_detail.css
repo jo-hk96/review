@@ -1,6 +1,4 @@
 	
-	
-	
 	#editReviewModal {
 	display: none; 
 	position: fixed; 
@@ -117,33 +115,33 @@
 
 /* '좋아요'를 누른 상태의 마우스 오버 시 스타일 */
 .like-btn.liked:hover {
-    background-color: #cc0000; /* 더 진한 빨간색 */
+    background-color: #cc0000;
     border-color: #cc0000;
 }
 
 /* 리뷰 등록 버튼 기본 스타일 */
 #submit-review-btn {
     /* 색상 및 배경 */
-    background-color: #4CAF50; /* 눈에 띄는 녹색 (예시: 승인, 제출) */
-    color: white; /* 흰색 글자 */
+    background-color: #4CAF50; 
+    color: white;
     
     /* 테두리 및 모서리 */
     border: none;
-    border-radius: 8px; /* 부드러운 모서리 */
+    border-radius: 8px; 
     
     /* 패딩 및 폰트 */
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
-    text-transform: uppercase; /* 대문자 스타일로 강조 */
-    cursor: pointer; /* 마우스 오버 시 포인터 변경 */
+    text-transform: uppercase; 
+    cursor: pointer;
     
     /* 배치 및 효과 */
-    margin-top: 15px; /* 위쪽 여백 */
-    display: block; /* 블록 요소로 만들어 전체 너비를 사용하거나 정렬 용이하게 */
-    width: auto; /* 내용에 맞게 너비 조정 */
-    transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s; /* 부드러운 전환 효과 */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 약한 그림자 */
+    margin-top: 15px; 
+    display: block; 
+    width: auto;
+    transition: background-color 0.3s, transform 0.1s, box-shadow 0.3s; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 }
 
 /* 마우스 오버 시 스타일 (호버 효과) */

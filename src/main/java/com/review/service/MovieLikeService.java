@@ -1,11 +1,14 @@
 package com.review.service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.review.DTO.movieDTO;
+import com.review.DTO.movieLikeDTO;
 import com.review.entity.MovieLike;
 import com.review.entity.MovieLikeId;
 import com.review.entity.movieEntity;
@@ -59,8 +62,6 @@ public class MovieLikeService {
 			newLike.setId(likeId);
 			newLike.setUserEntity(userEntity);
 			newLike.setMovieEntity(movieEntity);
-			
-			
 			movieLikeRepository.save(newLike);//DB에 저장됨
 			return true; //좋아요 설정됨
 			
@@ -97,7 +98,7 @@ public class MovieLikeService {
 	//사용자ID ,영화 API ID를 받아서 해당 MovieLike 기록이 DB에 존재하는지 확인
 	public boolean getLikeStatus(Long userId, Long apiId) {
 	    
-	    // 1. MovieEntity 확보 (DB에 있어야만 좋아요를 누를 수 있음)
+	    //MovieEntity 확보 (DB에 있어야만 좋아요를 누를 수 있음)
 	    // MovieRepository를 사용해야 합니다.
 	    movieEntity movieEntity = movieRepository.findByApiId(apiId).orElse(null);
 	    
@@ -106,14 +107,21 @@ public class MovieLikeService {
 	        return false;
 	    }
 
-	    // 2. 좋아요 복합 키 생성
+	    //좋아요 복합 키 생성
 	    Long dbMovieId = movieEntity.getMovieId();
 	    MovieLikeId likeId = new MovieLikeId(userId, dbMovieId);
 
-	    // 3. MovieLikeRepository를 사용해 해당 복합 키가 DB에 존재하는지 확인
-	    // existsById()는 가장 효율적으로 존재 여부를 확인합니다.
+	    //MovieLikeRepository를 사용해 해당 복합 키가 DB에 존재하는지 확인
 	    return movieLikeRepository.existsById(likeId); 
 	}
 
+    	
+		//apiId해당 좋아요 목록
+		public List<movieLikeDTO> useMovieLikes(Long apiId) {
+			List<MovieLike> movieLikeUser = movieLikeRepository.findAllByApiId(apiId);
+			return movieLikeUser.stream()
+					.map(movieLikeDTO::fromEntity)
+					.collect(Collectors.toList());
+		}
 
 }

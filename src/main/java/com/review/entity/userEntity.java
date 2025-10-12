@@ -26,6 +26,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity //DB 테이블과 매핑
 @Table(name = "MOVIE_USER") //DB테이블 이름
@@ -83,13 +84,12 @@ public class userEntity implements Serializable{
 		@Column(name = "CREATED_AT", nullable = false, updatable = false) //updatable = false 설정
 		private LocalDateTime createdAt; // 가입 날짜 및 시간
 		
-		
+		//회원이 하나면 리뷰는 여러개 [일대다]
 		@Builder.Default
 		@OneToMany(mappedBy = "userEntity", // ReviewEntity에서 UserEntity를 참조하는 필드 이름
 		           cascade = CascadeType.REMOVE, //회원 삭제 시, 이 회원의 리뷰도 함께 삭제
-		           orphanRemoval = true) 
+		           orphanRemoval = true)
 		private List<userReviewEntity> reviews = new ArrayList<>(); 
-		
 		
 		
 		//소셜 로그인시 성함 , 생일이  DB에 업데이트댐

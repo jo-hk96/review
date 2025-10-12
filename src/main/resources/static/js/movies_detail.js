@@ -47,9 +47,9 @@
 			    };
 			    
 			    // 영화 상세 정보 요청 URL
-			    const detailUrl = `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KO`;
+			    const detailUrl = `https://api.themoviedb.org/3/movie/${movieId}?language=ko-KR`;
 			    // 출연진/제작진 정보 요청 URL
-			    const creditsUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KO`;
+			    const creditsUrl = `https://api.themoviedb.org/3/movie/${movieId}/credits?language=ko-KR`;
 			 	const ourRatingUrl = `/api/detail/${movieId}`; 
 			    // Promise.all로 두 요청을 병렬로 처리
 			     Promise.all([

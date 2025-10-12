@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,30 +20,29 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
 	
 	private final CustomOAuth2UserService customOAuth2UserService; 
-	
+	private final CustomSuccessHandler successHandler; 
 	@Value("${security.rememberme.key}")
 	 private String rememberMekey;
 	
 	@Bean
 	  public SecurityFilterChain filterChain(HttpSecurity http ,UserService userService) throws Exception {
 			
-			// 1. CSRF 보호 기능 비활성화 (API 서버나 간단한 앱에서 사용, 보안상 권장되지는 않음)
+			//CSRF
 		    http
 		        .csrf((csrfConfig) ->
 		            csrfConfig.disable()
 		        )
-		        // 2. HTTP 요청에 대한 인가(Authorization) 설정 시작
+		        //인가 설정
 		        .authorizeHttpRequests(authorizeRequests ->
 		            authorizeRequests
 		            	//로그인 없이 모두 허용할 경로 정의
 		                .requestMatchers("/",
 		                		"/css/**","/js/**","images/**",
 		                		"/detail/**",
-				                "/UserJoinForm",
+				                "/UserJoinForm","/UserLoginMain",
 		                        "/UserJoin","/MoviesList","/TopRate","/api/**"
 				                ).permitAll()
-		                //ROLE_ADMIN만 허용 시큐리티에서 자동으로 ROLE_ 을 앞에 붙혀줌
-		                //hasAuthority 를 붙이면 ROLE_ 접두사를 붙이지 않음
+		                //hasAuthority : ROLE_ADMIN
 		                .requestMatchers("/Admin/**").hasAnyRole("ADMIN")
 		                //위의 명시되지않은 모든 나머지요청은 로그인이 필요함
 		                .anyRequest().authenticated()
@@ -64,11 +62,14 @@ public class SecurityConfig {
 		          .loginProcessingUrl("/UserLogin") //로그인 데이터 처리할 경로
 		          .usernameParameter("email")
 		          .passwordParameter("password")
-		          .defaultSuccessUrl("/" , true) // 로그인 성공시
+		          .successHandler(successHandler) //회원 상태에 따라 페이지 이동
+		         // .defaultSuccessUrl("/" , true) // 로그인 성공시
 		          .failureForwardUrl("/UserLoginForm?error") // 로그인 실패시
 		          .permitAll()
 		        );
 		    
+		    
+		    //사용자 쿠키 등록
 		    http
 		    	.rememberMe(remember -> remember
 		    			.userDetailsService(userService)
@@ -78,6 +79,8 @@ public class SecurityConfig {
 		    			.key(rememberMekey)
 		    			);
 		    
+		    
+		    //OAuth2로그인
 		    http
 		    	.oauth2Login(oauth2 -> oauth2
 		    			.loginPage("/UserLoginForm")// 소셜 로그인 버튼을 보여줄 페이지
@@ -116,7 +119,7 @@ public class SecurityConfig {
 	  }
 
 
-	// 패스워드 암호화로 사용할 bean
+	//BCrypt패스워드 암호화
 	  @Bean
 	  public PasswordEncoder getPasswordEncoder() {
 		return new BCryptPasswordEncoder();

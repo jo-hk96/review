@@ -10,4 +10,5 @@ public class UserEditDTO {
     private String confirmNewPassword; //새 비밀번호 확인
     private String nickname; //닉네임
     private String birthdate; //생년월일
+	private String pname;
 }

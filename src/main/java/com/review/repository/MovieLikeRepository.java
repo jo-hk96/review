@@ -15,11 +15,12 @@ public interface MovieLikeRepository extends JpaRepository<MovieLike ,MovieLikeI
 	//특정 영화의 좋아요 개수를 세는 커스텀 쿼리
 	long countById_MovieId(Long movieId);
 	
-	//특정 사용자가 특정 영화를 좋아요 했는지 확인하는 메서드
+	//한 사용자가 어떤 영화를 좋아요 했는지 확인
 	boolean existsById_UserIdAndId_MovieId(Long userId , Long movieId);
 	
 	List<MovieLike> findById_UserId(Long userId);
 	
-	
+	//apiId의 해당하는 유저들의 좋아요
+	List<MovieLike> findAllByApiId(Long apiId);
 	
 }

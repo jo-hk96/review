@@ -47,9 +47,9 @@ public class TmdbApiService {
 			return webClient.get()
 					.uri("/movie/{apiId}?language=ko-KR" , apiId)
 					.header("Authorization", "Bearer " + trimmedToken)
-					.retrieve() //응답을 처리합니다.
-					.bodyToMono(movieDTO.class)// 응답 본문을 DTO로 변환
-					.block(); //비동기 호출을 동기식으로 블로킹 하여 결과를 기다림
+					.retrieve() 
+					.bodyToMono(movieDTO.class)
+					.block(); 
 			
 		}catch(WebClientResponseException e) {
 			//API에서 에러 응답
@@ -78,17 +78,16 @@ public class TmdbApiService {
 	    String trimmedToken = bearerToken.trim();
 	    
 	    try {
-	        // ⭐️⭐️ WebClient 호출: UriBuilder를 사용하여 한글 인코딩 문제를 해결합니다. ⭐️⭐️
 	        SearchResponseDTO responseDto = webClient.get()
 	            // .uri() 대신 .uriBuilder()를 사용합니다.
 	            .uri(uriBuilder -> uriBuilder
 	                .path("/search/movie")              // API 경로
-	                .queryParam("query", searchKeyword)         // ⭐️ 한글 검색어 안전하게 인코딩 ⭐️
+	                .queryParam("query", searchKeyword)        
 	                .queryParam("language", "ko-KR")    // 언어 설정
 	                .build())
 	            .header("Authorization", "Bearer " + trimmedToken)
 	            .retrieve()
-	            .bodyToMono(SearchResponseDTO.class) // ⭐️ 전체 응답을 SearchResponseDTO로 받습니다. ⭐️
+	            .bodyToMono(SearchResponseDTO.class) 
 	            .block();
 
 	        // 3. 결과 추출 후 반환
@@ -130,7 +129,7 @@ public class TmdbApiService {
 	public TmdbResponseDTO getMoviesByCategory(String category, int page) {
 		 // 1. URL 생성 (토큰은 URL에 포함하지 않습니다.)
 	    String url = String.format(
-	        "%s%s?language=ko-KR&page=%d", 
+	        "%s%s?language=ko-KR&page=%d&region=KR", 
 	        BASE_URL, category, page
 	    );
 
@@ -142,7 +141,7 @@ public class TmdbApiService {
 	    HttpEntity<String> entity = new HttpEntity<>(headers); // 요청 본문 없이 헤더만 설정
 
 	    try {
-	        // 3. ⭐⭐ exchange() 사용: 요청을 보내고 응답을 DTO로 받습니다. ⭐⭐
+	        // 3.exchange() 사용: 요청을 보내고 응답을 DTO로 받습니다.
 	        ResponseEntity<TmdbResponseDTO> response = restTemplate.exchange(
 	            url, 
 	            HttpMethod.GET, 
@@ -154,9 +153,7 @@ public class TmdbApiService {
 	        return response.getBody(); 
 
 	    } catch (HttpStatusCodeException e) {
-	        // HTTP 상태 코드(예: 401 Unauthorized)를 출력하여 디버깅합니다.
 	        System.err.println("TMDB API 호출 실패 (상태 코드: " + e.getStatusCode() + "): " + e.getResponseBodyAsString());
-	        // 실패 시 빈 DTO를 반환하여 JavaScript에 빈 리스트를 보냅니다.
 	        return new TmdbResponseDTO(); 
 	    }
 	}

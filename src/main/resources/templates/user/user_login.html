@@ -6,32 +6,15 @@
     <title>로그인폼</title>
     <link rel="stylesheet" href="/css/footer.css">
     <link rel="stylesheet" href="/css/user_login.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🎬</text></svg>">
 </head>
-<style>
-	#google-login {
-    display: inline-flex; 
-    align-items: center; 
-    text-align:center;
-    justify-content: center; 
-    padding: 5px 20px; 
-    border: 1px solid #ddd; 
-    text-decoration: none;
-    margin-top:20px;
-    color:black;
-    font-weight:bold;
-    width:350px;
-	}
-	
-	#google-login img {
-	    width: 50px;
-	    height: 50px;
-	}
-
-</style>
 <body>
 
 	<div id = "allLoginform">
-		<h1>로그인</h1>
+	<a href="/" class="logo">
+           <img th:src="@{/images/logo.png}" style ="width:150px;" alt ="로고" >
+        </a> 
+		<h2>로그인</h2>
 			<form action = "/UserLogin" method = "post" id="loginForm">
 			    <input type ="email" id="email" name="email" placeholder = "이메일을 입력해주세요.">
 			    <span id="emailError" style="color: red; font-size: 0.8em;"></span><br> 
@@ -44,19 +27,11 @@
 			    <input type ="checkbox" id="rememberMe" name="remember-me">
 			    <label for="rememberMe">7일 자동 로그인</label>
 			</form>
-			    <a href="/oauth2/authorization/google" id = "google-login" >
-				    <img src="/images/google.png" alt="구글 로그인">
-				    <span>구글로그인</span>
-				</a>
+			
 			<!-- 회원 수정 후 /로그인 페이지 메시지 TEXT 출력 -->
 			<div th:if="${sucMsg}">
 		    	<p th:text="${sucMsg}" style="color: green; font-weight: bold; font-size:20px;"></p>
 			</div>
-			
-			<div th:if="${socialEditMsg}">
-				<p th:text= "${socialEditMsg}" style="color: green; font-weight: bold; font-size:20px;"></p>
-			</div>
-			
 			
 			<div class ="userIndex" sec:authorize="isAnonymous()">
 				<a href = "/UserJoinForm" class="btn-join">회원가입</a> 

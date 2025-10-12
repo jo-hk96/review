@@ -79,27 +79,22 @@ public class MovieApiController {
 	    
 	    
 	    private List<movieDTO> applyUserRatings(List<movieDTO> tmdbMovies) {
-	        // 널 체크: 리스트가 null이면 빈 리스트를 반환하여 오류를 방지합니다.
 	        if (tmdbMovies == null) {
-	            return Collections.emptyList(); // java.util.Collections 임포트 필요
+	            return Collections.emptyList();
 	        }
 	        
-	        // TMDB에서 받은 영화 목록을 하나씩 순회합니다.
+	        // TMDB에서 받은 영화 목록을 하나씩 돔
 	        for (movieDTO movie : tmdbMovies) {
-	            // 1. 해당 영화의 TMDB ID (우리 DB에서는 apiId)를 가져옵니다.
+	            // Tmdb의 영화고유 Id를 가져옴
 	            Long apiId = movie.getApiId(); 
 	            
-	            // 2. ⭐ UserReviewService를 호출하여 우리 DB의 평균 평점을 계산합니다. ⭐
+	            // UserReviewService를 호출하여 우리 DB의 평균 평점을 계산합니다
 	            double userAvgRating = userReviewService.getAverageRatingByApiId(apiId); 
 	            
 	            // 3. MovieDTO의 필드에 계산된 평점을 설정합니다. 
 	            //    (movieDTO에 setOurAverageRating()이 있어야 함)
 	            movie.setOurAverageRating(userAvgRating);
-	            
-	            // 디버깅: 평점이 잘 합쳐졌는지 서버 콘솔로 확인하고 싶다면 아래 주석을 풀어봐.
-	            // System.out.println("통합 평점 - ID: " + apiId + ", Rating: " + userAvgRating);
 	        }
-	        
 	        // 평점이 합쳐진 최종 리스트를 반환합니다.
 	        return tmdbMovies;
 	    }

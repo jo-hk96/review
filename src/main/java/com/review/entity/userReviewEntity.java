@@ -54,6 +54,8 @@ public class userReviewEntity {
 		@Column(name = "MOVIE_TITLE" , nullable = false)
 		private String title; //영화 제목
 	
+		
+		//리뷰는 여러개 회원은 하나 [다대일]
 	    @ManyToOne(fetch = FetchType.LAZY)
 	    @JoinColumn(name = "USER_ID") // 실제 DB 컬럼명
 	    private userEntity userEntity; // user 엔티티와 연결

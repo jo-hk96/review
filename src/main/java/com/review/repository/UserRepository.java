@@ -13,9 +13,14 @@ import com.review.entity.userEntity;
 @Repository
 public interface UserRepository extends JpaRepository<userEntity, Long> {
 
+	
+	List<userEntity> findTop10ByOrderByCreatedAtDesc();
+	
 	//유저엔티티의 전체 사용자 목록
 	List<userEntity> findAllByOrderByUserIdAsc();
 	
+	//해당하는 UserId 사용자 정보
+	Optional<userEntity> findByUserId(Long userId);
 	
 	//이메일로 사용자 찾기
 	Optional<userEntity> findByEmail(String email); 
@@ -23,10 +28,13 @@ public interface UserRepository extends JpaRepository<userEntity, Long> {
 	//닉네임으로 사용자 찾기
 	Optional<userEntity> findByNickname(String nickname); 
 	
-	// 이메일 존재 여부만 boolean으로 확인 (더 효율적일 수 있음)
+	// 이메일 존재 여부만 boolean으로 확인
     boolean existsByEmail(String email); 
     
     // 닉네임 존재 여부만 boolean으로 확인
     boolean existsByNickname(String nickname);
+    
+    //회원 검색
+    List<userEntity> findByEmailContaining(String email);
 	
 }

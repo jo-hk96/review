@@ -78,12 +78,12 @@ public class OAuth2Attributes {
 	        return userEntity.builder()
 	                .pname(name) //name : 실제이름
 	                .email(email) // email : 이메일
+	                .nickname("reviewer_" + email.substring(0, email.indexOf('@'))) 
 	                .role("ROLE_USER") // 최초 가입 시 권한은 ROLE_USER로 설정
 	                .birthdate(finalBirthdate) //DTO에서 받은 값을 사용
 	                .password("oauth2_temp_password")
 	                .socialType(SocialType.GOOGLE)
 	                .isRequiredInfoMissing(true)
-	                .nickname("reviewer_" + email.substring(0, email.indexOf('@'))) 
 	                .build();
 	    }
 	}

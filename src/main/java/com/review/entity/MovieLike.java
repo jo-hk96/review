@@ -12,6 +12,8 @@ import lombok.Data;
 @Data
 public class MovieLike {
 
+	
+	
     @EmbeddedId // 복합 키를 사용
     private MovieLikeId id;
 
@@ -21,10 +23,10 @@ public class MovieLike {
     @Column(name = "NICKNAME" , nullable = false)
     private String nickname;
     
-    
     //nullable : null 삽입 방지 , updatable :수정 방지
-    @CreationTimestamp //현재시간이 자동으로 insert 됨
-    @Column(name = "LIKED_AT" ,nullable = false , updatable = false)
+    //현재시간이 자동으로 insert 됨
+    @CreationTimestamp 
+    @Column(name = "LIKE_AT" ,nullable = false , updatable = false)
     private LocalDateTime likeAt;
     
     @ManyToOne

@@ -141,13 +141,66 @@ public class UserService implements UserDetailsService {
 				//userRepository.save(user);
 			}
 
-	}
+		}
+	
+		//관리자 회원 정보 수정
+		@Transactional 
+		public void AdminupdateUser(Long userId , UserEditDTO userDto) {
+			
+			userEntity user = userRepository.findById(userId)
+					.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
+			
+				//닉네임이 null이 아니거나 비어있지 않다면 수정
+				String newNickname = userDto.getNickname();
+
+			    if(newNickname != null && !newNickname.isEmpty()) {
+			        // 현재 닉네임과 다르고, DB에 이미 존재하면 예외 발생
+			        if(!newNickname.equals(user.getNickname()) && checkNicknameDuplication(newNickname)) {
+			            throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
+			        }
+			        user.setNickname(newNickname);
+			        
+			    }
+			    
+			    //이메일 수정 처리
+			    String newEmail = userDto.getEmail();
+			    if(newEmail != null) {
+			    	user.setEmail(newEmail);
+			    }
+			    
+			    //이름 수정 처리
+			    String newPname = userDto.getPname();
+			    if (newPname != null) {
+			        user.setPname(newPname);
+			    }	
+			    
+			    //생년월일 수정 처리
+			    String newBirthdate = userDto.getBirthdate();
+			    if (newBirthdate != null) {
+			        user.setBirthdate(newBirthdate);
+			    }
+			    
+		}
+		
+		
+		
+		//관리자 회원 상태 수정
+		//자동으로 save해줌
+		@Transactional 
+		public void updateUserStatus(Long userId , String newStatus) {
+			
+			userEntity user = userRepository.findById(userId)
+							//IllegalArgumentException 유효하지않는 입력
+				.orElseThrow(() -> new IllegalArgumentException("존재하지않는 사용자입니다."));
+			user.setRole(newStatus); 
+		}
+
+	
 	   @Transactional
 	    public void completeRegistration(String email, String newNickname, String newBirthdate) {
 	        userEntity user = userRepository.findByEmail(email)
 	                              .orElseThrow(() -> new IllegalArgumentException ("로그인된 사용자를 찾을 수 없습니다."));
 
-	        // 2. 다른 필수 정보 업데이트
 	        user.setNickname(newNickname); // userEntity의 set메서드나 update메서드 필요
 	        user.setBirthdate(newBirthdate); 
 	        

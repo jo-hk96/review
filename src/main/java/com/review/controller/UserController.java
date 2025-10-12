@@ -56,6 +56,7 @@ public class UserController {
 	}
 	
 	
+	
 	//회원가입
 	 @PostMapping("/UserJoin")
 	    public String userJoin(UserDTO userDto , RedirectAttributes re) {
@@ -79,8 +80,13 @@ public class UserController {
 	    }
 	
 
-	
-	//로그인폼 security에서 자동으로 비교해서 로그인해줌 
+	//로그인 메인
+	@GetMapping("/UserLoginMain")
+	public String userLoginMain() {
+		return "user/user_loginMain";
+	}
+	 
+	 //로그인폼
 	@GetMapping("/UserLoginForm")
 	public String userLoginForm() {
 		return "user/user_login";
@@ -124,8 +130,8 @@ public class UserController {
 	    }
 	    return "redirect:/UserLoginForm";  // 정상 처리 후 페이지 이동
 	}
-	
-	
+		
+		
 	//회원정보 삭제
 	@PostMapping("/UserDelete")
 	//@AuthenticationPrincipal 통해 CustomUserDetails에 잇는 세션정보를 불러옴
@@ -151,7 +157,7 @@ public class UserController {
 	}
 	
 	
-	  // 2. POST: 폼 데이터 받아서 저장하고 플래그 false로 변경
+	  //폼 데이터 받아서 저장하고 플래그 false로 변경
     @PostMapping("/SocialUserEdit")
     public String completeRegistration(@AuthenticationPrincipal CustomUserDetails cud,
                                        @RequestParam String newNickname,
@@ -169,9 +175,9 @@ public class UserController {
         //현재 인증 정보와 요청/응답을 사용해 로그아웃 처리
         // 세션 무효화 및 시큐리티 컨텍스트 클리어
         logoutHandler.logout(request, response, SecurityContextHolder.getContext().getAuthentication());
-        re.addFlashAttribute("socialEditMsg","회원가입이 완료 되었습니다.다시 로그인해주세요");
+        re.addFlashAttribute("socialEditMsg","구글 회원가입이 완료 되었습니다.");
         // 모든 정보 입력이 완료되었으니 홈으로 이동
-        return "redirect:/UserLoginForm";
+        return "redirect:/UserLoginMain";
     }
 	
 	

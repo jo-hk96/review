@@ -57,7 +57,6 @@ body {
     font-size: 1em;
     font-weight: bold;
     margin: 5px 0 8px 0;
-    /* 제목이 길 경우 말줄임표 처리 */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -69,7 +68,7 @@ body {
     margin: 3px 0;
 }
 
-/* 6. 로딩 인디케이터 */
+/*로딩 글자 */
 #loading-indicator2 {
     text-align: center;
     padding: 20px;

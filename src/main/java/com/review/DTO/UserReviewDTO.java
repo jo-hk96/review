@@ -21,13 +21,18 @@ public class UserReviewDTO {
 	    private int rating;
 		private Long apiId;
 		private String title;
-		private String regDate;     // 포맷된 작성일 (응답에 필수)
+		private String regDate;     
 		private Long userId;
+		
+		
+		
+		
+		
+
 		
 	    public static UserReviewDTO fromEntity(userReviewEntity entity) {
 	    	  Long userId = null;
 	          
-	          // ⭐ 2. UserEntity가 Null이 아닐 때만 ID를 추출합니다. ⭐
 	          if (entity.getUserEntity() != null) {
 	              // UserEntity 객체 대신 Long 타입의 ID 값만 가져와서 저장
 	              userId = entity.getUserEntity().getUserId(); 
@@ -37,7 +42,7 @@ public class UserReviewDTO {
 	        return UserReviewDTO.builder()
 	        		.apiId(entity.getApiId())
 	                .reviewId(entity.getReviewId())
-	                .nickname(entity.getUserEntity().getNickname()) // ⭐ 관계를 통해 닉네임 확보
+	                .nickname(entity.getUserEntity().getNickname()) 
 	                .comment(entity.getComment())
 	                .rating(entity.getRating())
 	                .title(entity.getTitle())
