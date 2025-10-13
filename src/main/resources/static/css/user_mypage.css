@@ -92,6 +92,7 @@ h2 {
 }
 
 /* 테이블 */
+
 table {
   width: 100%;
   border-collapse: separate;
@@ -105,8 +106,16 @@ td {
   font-size: 18px;
   color: #2e3a59;
   border-radius: 12px;
-  box-shadow: 0 4px 14px rgb(46 58 89 / 0.06);
-  border: none;
+  box-shadow: 0 5px 16px rgba(46, 58, 89, 0.1);
+  border: 1.5px solid #e0e0e0; 
+  transition: all 0.3s ease;
+}
+
+/* 마우스를 올렸을 때 강조 */
+
+td:hover {
+	border-color: #4a90e2;
+	box-shadow: 0 6px 20px rgba(74, 144, 226, 0.15); /* 그림자를 더 강조 */
 }
 
 /* 제출 버튼 */ 
@@ -362,4 +371,55 @@ h3 {
 .close-btn2:focus {
     color: #000;
     text-decoration: none;
+}
+
+/* 나의 좋아요 버튼 스타일 */
+#showLikedMoviesBtn {
+    background-color: #f44336; /* 예시: 빨간색 계열 */
+    color: white;
+    padding: 10px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    display: block; /* 블록 요소로 만들어 줄 바꿈 */
+    width: 200px; /* 너비 지정 */
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#showLikedMoviesBtn:hover {
+    background-color: #d32f2f; /* 호버 시 더 어두운 색 */
+}
+
+/* 나의 리뷰 버튼 스타일 */
+#showReviewMoviesBtn {
+    background-color: #4CAF50; /* 예시: 초록색 계열 */
+    color: white;
+    padding: 10px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    display: block; /* 블록 요소로 만들어 줄 바꿈 */
+    width: 200px; /* 너비 지정 */
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#showReviewMoviesBtn:hover {
+    background-color: #388E3C; /* 호버 시 더 어두운 색 */
+}
+
+/* 두 버튼 사이의 간격 조정 (선택 사항) */
+.profile-main-box hr {
+    margin: 20px auto; /* hr 태그 위아래 여백 */
+    width: 80%;
+    border-color: #ccc;
 }

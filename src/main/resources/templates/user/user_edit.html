@@ -43,7 +43,6 @@ function toggleMenu() {
         
         
         <!-- 예외 메시지 출력 영역 -->
-        
         <form action="/UserEdit" method="post" class="user-edit-form">
             <div class="form-group">
                 <label for="email">이메일</label>
@@ -81,38 +80,29 @@ function toggleMenu() {
     
     <script>
     document.querySelector('.user-edit-form').addEventListener('submit', function(event) {
-        // 폼 제출의 기본 동작(페이지 새로고침)을 막습니다.
         event.preventDefault();
 
-        // 입력 필드의 값을 가져옵니다.
         const currentPassword = document.getElementById('currentPassword').value;
         const newPassword = document.getElementById('newPassword').value;
         const confirmNewPassword = document.getElementById('confirmNewPassword').value;
         const errorMessageDiv = document.getElementById('passwordMismatchError');
 
-        // 이전 오류 메시지를 초기화합니다.
         errorMessageDiv.textContent = '';
         errorMessageDiv.style.color = 'red';
 
-        // 사용자가 비밀번호 변경을 시도했는지 확인합니다.
-        // newPassword 또는 confirmNewPassword가 비어있지 않으면 비밀번호 변경 시도로 간주합니다.
         const isPasswordChangeAttempt = newPassword !== '' || confirmNewPassword !== '';
 
         if (isPasswordChangeAttempt) {
-            // 비밀번호 변경을 시도했다면, 현재 비밀번호가 반드시 입력되어야 합니다.
             if (currentPassword === '') {
                 errorMessageDiv.textContent = '비밀번호를 변경하려면 현재 비밀번호를 입력해야 합니다.';
-                return; // 폼 제출을 중단합니다.
+                return; 
             }
             
-            // 새 비밀번호와 비밀번호 확인이 일치하는지 확인합니다.
             if (newPassword !== confirmNewPassword) {
                 errorMessageDiv.textContent = '비밀번호와 비밀번호 확인이 일치하지 않습니다.';
-                return; // 폼 제출을 중단합니다.
+                return; 
             }
         }
-        // 위의 모든 클라이언트 측 검증을 통과했다면, 폼을 서버로 제출합니다.
-        // 닉네임만 변경하는 경우에도 이 부분에서 제출됩니다.
         this.submit();
     });
 </script>

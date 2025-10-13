@@ -47,7 +47,7 @@ function renderMovies(newMovies) {
           const detailUrl = `/detail/${movieId}`; 
              const posterUrl = movie.poster_path
             ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-            : '/images/Jake_the_Dog_character.png'; // fallback 이미지 처리 포함
+            : '/images/Jake_the_Dog_character.png'; //이미지가 없을경우 대체
 
         // 평점을 별 아이콘과 포맷된 텍스트로 준비
         const userStars = generateOurStars(ourRating);

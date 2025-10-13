@@ -4,8 +4,8 @@ spring:
       client:
         registration:
           google:
-            client-id: google id
-            client-secret: google secret
+            client-id: #
+            client-secret: #
             scope: # 기본 값 openid,profile,email => profile, email 로 설정 변경
               - openid                                                 # 1. openid
               - https://www.googleapis.com/auth/userinfo.email         # 2. 이메일

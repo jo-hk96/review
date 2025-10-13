@@ -35,98 +35,54 @@
 /*===========================  */
 
 
-/* 모달창  */
-.modal {
-   display: none; 
-   position: fixed; 
-   z-index: 1000; 
-   left: 0;
-   top: 0;
-   width: 100%; 
-   height: 100%; 
-   overflow: auto; 
-   background-color: rgba(0,0,0,0.4); 
+#tableMovie {
+  table-layout: fixed; 
+  width: 100%; 
 }
 
-/* 모달 내부  스타일 */
-.modal-content {
-	display: flex;            
-    flex-direction: column; 
-    gap:15px;
-    background-color: #fefefe;
-    margin: 10% auto; 
-    padding: 20px;
-    border: 1px solid #888;
-    width: 100%; 
-    max-width: 500px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+#tableMovie thead {
+  display: table;
+  width: calc(100% - 20px); 
+  table-layout: fixed; 
 }
 
-/* 닫기 버튼 스타일 */
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
+#tableMovie tbody {
+  display: block;
+  max-height: 400px;
+  overflow-y: scroll;
+  width: 100%; 
 }
 
-.close-button:hover,
-.close-button:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
+#tableMovie tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed; 
 }
 
-.alert {
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
-    border-radius: 4px;
+#tableMovie thead th:nth-child(1),
+#tableMovie tbody td:nth-child(1) {
+    width: 17%;
 }
 
-/* 성공 메시지 스타일 */
-.alert-success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-    width:120px;
+#tableMovie thead th:nth-child(2),
+#tableMovie tbody td:nth-child(2) {
+    width: 17%;
 }
 
-/* 에러 메시지 스타일 */
-.alert-danger {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
-    width:120px;
+#tableMovie thead th:nth-child(3),
+#tableMovie tbody td:nth-child(3) {
+    width: 20%; 
 }
-
-.alert-status{
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
-    width:350px;
+#tableMovie thead th:nth-child(4),
+#tableMovie tbody td:nth-child(4) {
+    width: 20%; 
 }
-
-
-/* 기본적으로 숨김 처리 */
-.UserStatus {
-    display: none; 
-    margin-top: 10px; /* 위에 있는 버튼과 간격 두기 */
-}
-
-/*버튼들을 보기 좋게 정렬 */
-.UserStatus button {
-    margin-right: 5px; 
-    width:100px;
-    
-}
-
-/* JavaScript가 이 클래스를 추가/제거해서 보여줄 거야 */
-.UserStatus.show {
-    display: block; /* Flex나 Block으로 설정해서 보이게 함 */
+#tableMovie thead th:nth-child(5),
+#tableMovie tbody td:nth-child(5) {
+    width: 20%;
 }
 </style>  
+
 
 <body>
 
@@ -183,15 +139,14 @@
 					</div>
 					
 					<!-- 회원상태변경 -->
-					
-				<form action = "/Admin/updateUserStatus" method = "post">
-					<input type ="hidden" name ="userId" th:value ="${userDetails.userId}">
-					<div id="userStatusContainer" class = "UserStatus">
-						<button type="submit" class="btn-detail" name="status" value="ROLE_ADMIN">관리자</button>
-						<button type="submit" class="btn-detail" name="status" value="ROLE_USER">일반회원</button>
-						<button type="submit" class="btn-detail" name="status" value="ROLE_DORMANT">휴면유저</button>
-					</div>
-				</form>	
+					<form action = "/Admin/updateUserStatus" method = "post">
+						<input type ="hidden" name ="userId" th:value ="${userDetails.userId}">
+						<div id="userStatusContainer" class = "UserStatus">
+							<button type="submit" class="btn-detail" name="status" value="ROLE_ADMIN">관리자</button>
+							<button type="submit" class="btn-detail" name="status" value="ROLE_USER">일반회원</button>
+							<button type="submit" class="btn-detail" name="status" value="ROLE_DORMANT">휴면유저</button>
+						</div>
+					</form>
 				
 				<!-- 회원수정 모달  -->
 				<div id="editUserModal" class="modal">
@@ -208,7 +163,7 @@
 				            <input type="text" id="editBirthdate" name = "birthdate" th:value="${userDetails.birthdate}"><br>
 				            <label for="editNickname">이메일:</label><br>
 				            <input type="text" id="editEmail" name = "email" th:value="${userDetails.email}"><br>
-				            <button type="submit">수정</button>
+				            <button type="submit" class="btn-modal-edit">수정</button>
 				        </form>
 				    </div>
 				</div>
@@ -233,7 +188,8 @@
 				
 			<!-- 회원 리뷰 목록 -->	
 		<div class="list-title">회원 리뷰 목록</div>
-				<table class="table">
+				<table class="table" id = "tableMovie">
+				<thead>
 					<tr>
 						<th>영화 제목</th>
 						<th>닉네임</th>
@@ -241,19 +197,22 @@
 						<th>평점</th>
 						<th>등록일</th>
 					</tr>
+				</thead>	
 				<!-- th:block  div 처럼 html 속성이 남는게 아닌 html자체 태그 없이 조건문 생성  -->
-				<th:block th:if="${!#lists.isEmpty(allUserReviews)}">	
-					<tr th:each = "userReviws : ${allUserReviews}"
-						th:data-url="@{/Admin/AdminReviewDetail/{reviewId}(reviewId=${userReviws.reviewId})}"
-						onclick="UserDetailLink(this);"
-						id = "UserReviewsList">
-						<td th:text = "${userReviws.title}"></td>
-						<td th:text = "${userReviws.nickname}"></td>
-						<td th:text = "${userReviws.comment}"></td>
-						<td th:text = "${userReviws.rating}"></td>
-						<td th:text = "${userReviws.regDate}"></td>
-					</tr>
-				</th:block>	
+				<tbody>
+					<th:block th:if="${!#lists.isEmpty(allUserReviews)}">	
+						<tr th:each = "userReviws : ${allUserReviews}"
+							th:data-url="@{/Admin/AdminReviewDetail/{reviewId}(reviewId=${userReviws.reviewId})}"
+							onclick="UserDetailLink(this);"
+							id = "UserReviewsList">
+							<td th:text = "${userReviws.title}"></td>
+							<td th:text = "${userReviws.nickname}"></td>
+							<td th:text = "${userReviws.comment}"></td>
+							<td th:text = "${userReviws.rating}"></td>
+							<td th:text = "${userReviws.regDate}"></td>
+						</tr>
+					</th:block>
+				</tbody>	
 					<tr th:if="${#lists.isEmpty(allUserReviews)}">
 					    <td colspan="5" style="text-align: center; color: black;">사용자의 리뷰가 없습니다.</td>
 					</tr>

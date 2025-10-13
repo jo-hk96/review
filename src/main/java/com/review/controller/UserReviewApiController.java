@@ -81,7 +81,6 @@ public class UserReviewApiController {
 	        @PathVariable Long reviewId, 
 	        @RequestBody UserReviewDTO updateDto, // 클라이언트가 보낸 원본 DTO
 	        @AuthenticationPrincipal CustomUserDetails cud) {
-	    
 	    UserReviewDTO updatedReview = userReviewService.updateReview(reviewId, updateDto, cud.getUserId());
 	    return ResponseEntity.ok(updatedReview);
 	}

@@ -92,7 +92,6 @@ public class UserController {
 		return "user/user_login";
 	}
 	
-	
 	//마이페이지
 	@GetMapping("/UserMypage")
 	public String userMypage() {

@@ -11,8 +11,6 @@
 		    const passwordError = document.getElementById('passwordError');
 		
 		
-		
-		
 			//이메일유효성 검사
 		    function validateEmail() {
 		        const emailValue = emailInput.value.trim();
@@ -29,8 +27,6 @@
 		        }
 		    }
 		
-		   
-		   
 		   
 		   //비밀번호 빈값검사
 		    function validatePassword() {

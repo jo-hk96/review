@@ -99,7 +99,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     
-    // 중복 검사 로직 함수 (Blur 시 사용)
 
     // 닉네임 중복 검사
     async function checkNicknameAvailability() {

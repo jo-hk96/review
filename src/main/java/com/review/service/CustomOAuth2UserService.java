@@ -26,7 +26,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 			String registrationId = userRequest.getClientRegistration().getRegistrationId();
 			OAuth2Attributes attributes = OAuth2Attributes.of(registrationId, oauth2User.getAttributes());
 			
-			
 			//DB에 사용자가 있으면 업데이트 없으면 저장
 	        userEntity user = saveOrUpdate(attributes);
 
@@ -37,7 +36,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	        
 			
 		    private userEntity saveOrUpdate(OAuth2Attributes attributes) {
-		        // 소셜 타입과 이메일로 기존 사용자를 찾습니다.
 		        userEntity user = userRepository.findByEmail(attributes.getEmail())
 		                .map(entity -> entity.update(attributes.getName())) // 이름 업데이트만 한다고 가정
 		                .orElse(attributes.toEntity());

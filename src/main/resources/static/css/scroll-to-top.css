@@ -1,5 +1,5 @@
 #scrollToTopBtn {
-	    /* 화면 오른쪽 아래에 고정 */
+   /* 화면 오른쪽 아래에 고정 */
     position: fixed; 
     bottom: 50px; 
     right: 50px; 
@@ -14,11 +14,11 @@
     color: white;
     cursor: pointer; 
     padding: 15px; 
-    border-radius: 10px; 
+    border-radius: 50px; 
     background-color:gray;
     font-size: 18px;
-    opacity: 0.6; 
-    transition: opacity 0.3s;
+    opacity: 1.0; 
+    transition: opacity 0.2s;
      
 }
 

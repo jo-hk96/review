@@ -6,7 +6,7 @@ body {
     background-color: #f8f8f8;
 }
 
-/* 2. 영화 목록 컨테이너 (핵심!) */
+/* 영화 목록 컨테이너  */
 #movie-list2 {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
@@ -16,19 +16,19 @@ body {
     padding: 0 20px;
 }
 
-/* 3. 개별 영화 카드 스타일 */
+/*개별 영화 카드 스타일 */
 .movie-card2 {
     width: 100%;
     text-align: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    overflow: hidden; /* 이미지 모서리 둥글게 처리 */
+    overflow: hidden;
     background-color: #fff;
     transition: transform 0.2s;
 }
 
 .movie-card2:hover {
-    transform: translateY(-5px); /* 호버 시 살짝 떠오르는 효과 */
+    transform: translateY(-5px); 
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -43,7 +43,7 @@ body {
     width: 100%;
     height: auto;
     display: block;
-    aspect-ratio: 2 / 3; /* 포스터 표준 비율 (가로 2: 세로 3) 유지 */
+    aspect-ratio: 2 / 3; 
     object-fit: cover;
 }
 

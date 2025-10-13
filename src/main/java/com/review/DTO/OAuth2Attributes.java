@@ -36,15 +36,12 @@ public class OAuth2Attributes {
 	    public static OAuth2Attributes of(String registrationId, Map<String, Object> attributes) {
 	        if ("naver".equals(registrationId)) {
 	        }
-	        // 지금은 Google만 처리합니다.
 	        return ofGoogle(attributes); 
 	    }
 	    
 	    @SuppressWarnings("unchecked")
 	    private static OAuth2Attributes ofGoogle(Map<String, Object> attributes) {
-	    	
 	    	String rawBirthdate = null;
-	    	
 	    	if (attributes.containsKey("birthdays")) {
 	            List<Map<String, Object>> birthdays = (List<Map<String, Object>>) attributes.get("birthdays");
 	            if (!birthdays.isEmpty()) {

@@ -9,55 +9,6 @@
     <title>리뷰플러스 관리자</title>
    
 </head>
-<style>
-	
-/* 모달창  */
-.modal {
-   display: none; 
-   position: fixed; 
-   z-index: 1000; 
-   left: 0;
-   top: 0;
-   width: 100%; 
-   height: 100%; 
-   overflow: auto; 
-   background-color: rgba(0,0,0,0.4); 
-}
-
-/* 모달 내부  스타일 */
-.modal-content {
-	display: flex;            
-    flex-direction: column; 
-    gap:15px;
-    background-color: #fefefe;
-    margin: 10% auto; 
-    padding: 20px;
-    border: 1px solid #888;
-    width: 100%; 
-    max-width: 500px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-/* 닫기 버튼 스타일 */
-.close-button {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close-button:hover,
-.close-button:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-
-</style>
-
-
 <body>
 	<div id="header" th:fragment = "header">
 		<div class="nav">
@@ -73,10 +24,6 @@
 			</ul>
 		</div>
 	</div>
-	
-	
-	
-	
 	<div class="list">
 		<!-- 유저리뷰삭제오류 -->
 		<div th:if="${sucReviewUpdate}">
@@ -143,7 +90,7 @@
 		            <label for="editRating">평점:</label><br>
 		            <input type="text" id="editRating" name = "rating" th:value="${urd.rating}"><br>
 		            
-		            <button type="submit">수정</button>
+		            <button type="submit" class="btn-modal-edit">수정</button>
 		        </form>
 		    </div>
 		</div>
@@ -174,7 +121,5 @@
         }
     }
 </script>	
-	
-	
 </body>
 </html>

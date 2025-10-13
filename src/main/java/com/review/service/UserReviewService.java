@@ -117,8 +117,6 @@ public class UserReviewService{
 	    // 1. 리뷰 ID로 Entity를 찾고, 작성자가 userId와 일치하는지 확인
 	    userReviewEntity review = userReviewRepository.findByReviewIdAndUserEntity_UserId(reviewId, userId)
 	        .orElseThrow(() -> new IllegalArgumentException("삭제할 리뷰를 찾을 수 없거나 권한이 없습니다."));
-	    
-	    // 2. 확인 후 삭제
 	    userReviewRepository.delete(review);
 	}
 
@@ -128,18 +126,13 @@ public class UserReviewService{
 	    // 1. 리뷰 ID로 Entity를 찾고, 작성자가 userId와 일치하는지 확인
 	    userReviewEntity review = userReviewRepository.findByReviewIdAndUserEntity_UserId(reviewId, userId)
 	        .orElseThrow(() -> new IllegalArgumentException("수정할 리뷰를 찾을 수 없거나 권한이 없습니다."));
-
-	    // 2. Entity 값 수정 (댓글과 별점)
 	    review.setComment(updateDto.getComment());
 	    review.setRating(updateDto.getRating());
-
-	    // 3. 수정된 Entity를 DTO로 변환하여 반환
-	    // (JPA는 @Transactional 내에서 변경을 감지하므로 save() 호출은 생략될 수 있음)
 	    return UserReviewDTO.fromEntity(review);
 	}
     
 	
-	//특정 영화에 대한(apiId)에 대한 평균평점을 계산
+		//특정 영화에 대한(apiId)에 대한 평균평점을 계산
 		public double getAverageRatingByApiId(Long apiId) {
 			
 			//특정 apiId에 해당하는 모든 리뷰를 DB에서 가져옴
@@ -148,7 +141,6 @@ public class UserReviewService{
 			if(reviews == null) {
 				return 0.0;
 			}
-			//stream을 이용해서 userReviewEntity의 있는 별점들의 합계를 계산
 			double totalRating = reviews.stream()
 					.mapToDouble(userReviewEntity::getRating)
 					.sum();
@@ -156,33 +148,29 @@ public class UserReviewService{
 			double averageRating = totalRating/reviews.size();
 			//평균 평점을 소수점 첫째 자리까지만 반환하도록 포맷
 			return Math.round(averageRating * 10.0) /10.0;
-			
+				
 	}
 		
 		
 		
-		//관리자 회원 리뷰 수정
-		@Transactional
-		public void userReviewUpdate(UserReviewDTO urd) {
-		userReviewEntity reviewEntity = userReviewRepository.findByReviewId(urd.getReviewId())
-								.orElseThrow(() -> new IllegalArgumentException("해당하는 리뷰가 없습니다"));
-			reviewEntity.setTitle(urd.getTitle());
-			reviewEntity.setRating(urd.getRating());
-			reviewEntity.setComment(urd.getComment());
-			//@Transactional 얘가 알아서 save해줌
-		}
+			//관리자 회원 리뷰 수정
+			@Transactional
+			public void userReviewUpdate(UserReviewDTO urd) {
+			userReviewEntity reviewEntity = userReviewRepository.findByReviewId(urd.getReviewId())
+									.orElseThrow(() -> new IllegalArgumentException("해당하는 리뷰가 없습니다"));
+				reviewEntity.setTitle(urd.getTitle());
+				reviewEntity.setRating(urd.getRating());
+				reviewEntity.setComment(urd.getComment());
+				//@Transactional 얘가 알아서 save해줌
+			}
+			
+			//관리자 회원 리뷰 삭제
+			@Transactional
+			public void userReviewDelete(UserReviewDTO urd) {
+				userReviewRepository.deleteByReviewId(urd.getReviewId());
+			}
+			
 		
-		//관리자 회원 리뷰 삭제
-		@Transactional
-		public void userReviewDelete(UserReviewDTO urd) {
-			userReviewRepository.deleteByReviewId(urd.getReviewId());
-			//@Transactional 얘가 알아서 save해줌
-		}
-		
-		
-		
-		
-	
 }
 	    
 	

@@ -16,12 +16,12 @@
         </a> 
 		<h2>로그인</h2>
 			<form action = "/UserLogin" method = "post" id="loginForm">
+				<span id="loginMsg" style="color: red;"></span>
 			    <input type ="email" id="email" name="email" placeholder = "이메일을 입력해주세요.">
 			    <span id="emailError" style="color: red; font-size: 0.8em;"></span><br> 
 			
 			    <input type = "password" name ="password" id="password"  placeholder = "비밀번호를 입력해주세요.">
 			    <span id="passwordError" style="color: red; font-size: 0.8em;"></span><br> 
-			    
 			    
 			    <button type = "submit" >리뷰플러스 로그인</button>
 			    <input type ="checkbox" id="rememberMe" name="remember-me">
@@ -38,6 +38,14 @@
 			</div>
 	</div>
 
+
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') === 'true') {
+        document.getElementById('loginMsg').innerHTML = '아이디와 비밀번호를 다시 확인해주세요.';
+    }
+</script>
 <!-- 푸터 -->
 <div th:insert="index/index :: footer"></div>
 

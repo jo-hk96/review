@@ -19,10 +19,8 @@ import com.review.DTO.UserEditDTO;
 import com.review.DTO.UserReviewDTO;
 import com.review.DTO.movieDTO;
 import com.review.DTO.movieLikeDTO;
-import com.review.entity.movieEntity;
 import com.review.entity.userEntity;
 import com.review.entity.userReviewEntity;
-import com.review.repository.MovieRepository;
 import com.review.repository.UserRepository;
 import com.review.repository.UserReviewRepository;
 import com.review.service.MovieLikeService;
@@ -134,7 +132,7 @@ public class adminController {
 									        ) {
 			userService.updateUserStatus(userId,newStatus);
 			String UserStatus = getStatusName(newStatus);
-			re.addFlashAttribute("sucStatus" ,"회원상태가" + UserStatus + "으로 변경되었습니다.");
+			re.addFlashAttribute("sucStatus" ,"회원상태" + UserStatus + " 변경되었습니다.");
 			return "redirect:/Admin/AdminUserDetail/" + userId;
 		}
 		private String getStatusName(String roleKey) {

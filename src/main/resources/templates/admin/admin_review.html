@@ -30,6 +30,56 @@
 		background-color: #f0f0f0;
 		transition: background-color 0.2s ease;
 	}
+	
+	
+	
+/* 테이블 스크롤,th td 칸 크기 지정  */	
+table {
+  table-layout: fixed; 
+  width: 100%; 
+}
+
+table thead {
+  display: table;
+  width: calc(100% - 20px); 
+  table-layout: fixed; 
+}
+
+table tbody {
+  display: block;
+  max-height: 400px;
+  overflow-y: scroll;
+  width: 100%; 
+}
+
+table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed; 
+}
+
+table thead th:nth-child(1),
+table tbody td:nth-child(1) {
+    width: 17%;
+}
+
+table thead th:nth-child(2),
+table tbody td:nth-child(2) {
+    width: 17%;
+}
+
+table thead th:nth-child(3),
+table tbody td:nth-child(3) {
+    width: 20%; 
+}
+table thead th:nth-child(4),
+table tbody td:nth-child(4) {
+    width: 20%; 
+}
+table thead th:nth-child(5),
+table tbody td:nth-child(5) {
+    width: 20%;
+}
 </style>  
 
 
@@ -48,9 +98,10 @@
 			</ul>
 		</div>
 	</div>
-	<div class="list">
-		
-		
+	
+	
+	
+	<div class="list" >
 			<!-- 유저리뷰삭제완료 -->
 			<div th:if="${sucReviewDelete}" class="alert alert-success">
 			    <p th:text="${sucReviewDelete}"></p>
@@ -60,8 +111,6 @@
 			<div th:if="${userReviewdelError}" class="alert alert-success">
 			    <p th:text="${userReviewdelError}"></p>
 			</div>
-				
-	
 	
 		<div class="list-title">전체 리뷰 목록</div>
 		<div class="searchbar-container">
@@ -70,7 +119,10 @@
 				<button class="search-btn" type="submit">검색</button>
 			</form>
 		</div>
+		
+		
 			<table class="table">
+			<thead>
 				<tr>
 					<th>리뷰 번호</th>
 					<th>회원 닉네임</th>
@@ -78,19 +130,22 @@
 					<th>리뷰 내용</th>
 					<th>등록일</th>
 				</tr>
+			</thead>
+			<tbody>	
 				<tr th:each = "review : ${recentReviews}"
 					th:data-url="@{/Admin/AdminReviewDetail/{reviewId}(reviewId=${review.reviewId})}"
 					onclick="UserDetailLink(this);"
-					id = "UserReviewsList">
+					id = "UserReviewsList" >
 					<td th:text ="${review.reviewId}"></td>
 					<td th:text ="${review.nickname}"></td>
 					<td th:text ="${review.title}"></td>
 					<td th:text ="${review.comment}"></td>
 					<td th:text ="${review.regDate}"></td>
 				</tr>
+			</tbody>	
 			</table>
+			
 	</div>
-
 <script>
 		function UserDetailLink(rowElement){
 			const url = rowElement.getAttribute('data-url');
@@ -99,6 +154,5 @@
 			}
 		}
 	</script>	
-	
 </body>
 </html>

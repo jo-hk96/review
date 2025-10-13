@@ -231,7 +231,7 @@ h2 {
 .review-form-container {
     background-color: #ffffff; /* 흰색 배경 유지 */
     padding: 30px; /* 패딩을 약간 늘려 여유 공간 확보 */
-    border-radius: 12px;
+    border-radius: 12px;  /* 버튼 꼭짓점을 뭉툭하게 */
     
     /* 1. 경계선 강조: 얇지만 진한 색상 */
     border: 1px solid #c0c0c0; /* 밝은 회색 대신 중간 톤의 회색 */
@@ -442,8 +442,173 @@ h2 {
 
 .review-box{
 	font-size : 20px;
-	
-	
+}
+
+/* --- 모달 오버레이 스타일 (전체 화면 배경) --- */
+#editReviewModal {
+    /* 모달이 항상 화면 중앙에 위치하도록 고정 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* 배경을 어둡고 투명하게 만들어 모달에 집중되도록 함 */
+    background-color: rgba(0, 0, 0, 0.6);
+    /* 모달 내용을 중앙에 배치 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* 기본적으로는 숨김 (JS로 'display: flex' 또는 'display: block'을 주어 보이게 해야 함) */
+    display: none; 
+    z-index: 1000; /* 다른 요소보다 위에 오도록 설정 */
+}
+
+/* --- 모달 내용 박스 스타일 --- */
+/* 원래 HTML 구조의 인라인 스타일을 대체하여 더 깔끔하게 만듭니다. */
+#editReviewModal > div {
+    background-color: #ffffff; /* 흰색 배경 */
+    width: 90%; /* 화면 너비에 맞춰 반응형으로 시작 */
+    max-width: 450px; /* 최대 너비 설정 */
+    padding: 30px;
+    border-radius: 12px; /* 부드러운 모서리 */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); /* 은은한 그림자 */
+    /* 모달 등장 시 애니메이션 효과를 위해 추가할 수도 있습니다. */
+    transform: scale(1);
+    transition: transform 0.3s ease-out;
+}
+
+#editReviewModal h3 {
+    text-align: center;
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #eee; /* 제목 아래 구분선 */
+    padding-bottom: 10px;
+}
+
+/* --- 폼 그룹 및 라벨 스타일 --- */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label,
+.form-group strong {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+    font-size: 1rem;
+}
+
+/* --- 댓글 입력창 스타일 --- */
+#editComment {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    resize: vertical; /* 수직으로만 크기 조절 가능 */
+    box-sizing: border-box; /* 패딩과 보더가 width에 포함되도록 */
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+#editComment:focus {
+    border-color: #007bff; /* 포커스 시 색상 변경 */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+/* --- 평점 (별점) 영역 스타일 --- */
+#editRatingArea {
+    display: flex;
+    gap: 5px; /* 별 사이 간격 */
+    font-size: 2rem; /* 별 크기 */
+    cursor: pointer;
+    justify-content: center; /* 별점 중앙 정렬 */
+}
+
+.rating-area .star {
+    color: #ccc; /* 비활성화된 별 색상 (회색) */
+    transition: color 0.2s;
+    user-select: none; /* 드래그 방지 */
+}
+
+.rating-area .star:hover,
+.rating-area .star[aria-checked="true"] {
+    color: #ffc107; /* 활성화 및 호버 시 색상 (노란색/금색) */
+}
+
+/* --- 버튼 스타일 --- */
+#editReviewModal button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    margin-left: 10px;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+#editReviewModal button:first-child {
+    margin-left: 0; /* 첫 번째 버튼은 왼쪽 마진 제거 */
+}
+
+#saveEditBtn {
+    background-color: #007bff; /* 파란색 계열의 '수정 완료' 버튼 */
+    color: white;
+}
+
+#saveEditBtn:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* 취소 버튼 */
+#editReviewModal button[onclick*='none'] {
+    background-color: #6c757d; /* 회색 계열의 '취소' 버튼 */
+    color: white;
+}
+
+#editReviewModal button[onclick*='none']:hover {
+    background-color: #5a6268;
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+/* 버튼들을 오른쪽으로 정렬 */
+#editReviewModal > div > button {
+    float: right;
+    margin-top: 10px;
+}
+
+/* 버튼 주변의 float 문제를 해결하기 위한 컨테이너 (필요하다면) */
+/* HTML 구조에 따라 이 스타일이 필요할 수도, 필요 없을 수도 있습니다. */
+/* 예: <div class="button-group"> 안에 버튼들을 넣고 이 div에 clear:both를 적용 */
+/* 현재 HTML 구조에는 별도의 버튼 그룹이 없으므로, 필요 시 추가해 주세요. */
+/* 임시로 버튼들을 감싸는 부모 요소에 clear fix를 적용합니다. */
+#editReviewModal > div::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* --- 반응형 디자인 --- */
+@media (max-width: 500px) {
+    #editReviewModal > div {
+        margin: 50px auto; /* 작은 화면에서 상하 마진 조정 */
+        padding: 20px;
+    }
+    
+    #editRatingArea {
+        font-size: 1.8rem; /* 작은 화면에서 별 크기 조정 */
+    }
+
+    #editReviewModal button {
+        width: 100%; /* 작은 화면에서 버튼 너비 100% */
+        margin: 5px 0 0 0 !important; /* 마진 정리 */
+        float: none !important; /* float 해제 */
+    }
 }
 
 

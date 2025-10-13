@@ -62,12 +62,9 @@ public class MovieController {
 	public String getMovieDetail(@PathVariable("apiId") Long id , 
 						@AuthenticationPrincipal CustomUserDetails userDetails ,Model model){
 		System.out.println("영화ID: " + id);
-		
 		//리뷰 목록 가져오기
 		List<userReviewEntity> existingReviews = userReviewService.getReviewsByMovieId(id);
-		
 		boolean isLiked = false;
-		
 		if(userDetails != null) {
 			Long userId = userDetails.getUserId();
 	        isLiked = movieLikeService.getLikeStatus(userId, id); 

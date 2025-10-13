@@ -24,10 +24,6 @@ public class UserReviewDTO {
 		private String regDate;     
 		private Long userId;
 		
-		
-		
-		
-		
 
 		
 	    public static UserReviewDTO fromEntity(userReviewEntity entity) {

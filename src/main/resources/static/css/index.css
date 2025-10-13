@@ -12,20 +12,20 @@ body{
 
 /* 메인 최신리뷰 카드 */
 .review-container {
-	  display: flex; /* 자식 요소를 가로로 나열 */
-	  flex-wrap: wrap; /* 공간이 부족하면 다음 줄로 넘어가게 함 */
-	  gap: 20px; /* 카드 사이의 간격 */
-	  justify-content: center; /* 리뷰 카드를 가운데 정렬 (선택 사항) */
+	  display: flex; 
+	  flex-wrap: wrap; 
+	  gap: 20px; 
+	  justify-content: center;
 	  
 }
 .review-card {
   width: 250px;
-  border: 1px solid #ddd; /* 10x를 1px로 수정 */
+  border: 1px solid #ddd; 
   border-radius: 12px;
   padding: 12px;
   box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
   overflow: hidden; 
-  height: 200px;          /* ⭐ 카드의 고정 높이 지정 (필요에 따라 조절) ⭐ */
+  height: 200px;          
   position: relative;
 }
 
@@ -72,8 +72,8 @@ body{
 .review-card hr {
 	position: absolute; 
     width: 100%; 
-    bottom: 40px; /* 원하는 간격 (예: 카드 바닥에서 40px 위) */
-    left: 0;      /* 왼쪽 끝에 붙여서 width: 100%가 제대로 작동하게 함 */
+    bottom: 40px; 
+    left: 0;      
     height: 1px; 
     border: none;
     background-color: #ddd;

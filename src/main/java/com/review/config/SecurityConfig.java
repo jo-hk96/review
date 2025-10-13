@@ -62,9 +62,8 @@ public class SecurityConfig {
 		          .loginProcessingUrl("/UserLogin") //로그인 데이터 처리할 경로
 		          .usernameParameter("email")
 		          .passwordParameter("password")
-		          .successHandler(successHandler) //회원 상태에 따라 페이지 이동
-		         // .defaultSuccessUrl("/" , true) // 로그인 성공시
-		          .failureForwardUrl("/UserLoginForm?error") // 로그인 실패시
+		          .successHandler(successHandler) //회원 상태에 따라 페이지 이동 (관리자,일반,휴면)
+		          .failureUrl("/UserLoginForm?error=true") // 로그인 실패시
 		          .permitAll()
 		        );
 		    
@@ -95,14 +94,12 @@ public class SecurityConfig {
 		    			        CustomUserDetails CustomUser = (CustomUserDetails) principal;
 		    			        userEntity user = CustomUser.getUserEntity();
 		    			        if(user.isRequiredInfoMissing()) {
-		    			            // ⭐ 이 곳에 필수 정보 입력 페이지 경로를 넣어주면 돼 ⭐
 		    			            response.sendRedirect("/SocialUserEditForm"); 
 		    			            return;
 		    			        }
 		    			    }
 		    			     response.sendRedirect("/"); // 정보가 모두 있다면 홈으로 이동
 		    			})
-		    			
 		    		);
 		    
 		    //로그아웃 처리
