@@ -1,6 +1,7 @@
 package com.review.service;
 
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.review.DTO.UserReviewDTO;
+import com.review.DTO.movieDTO;
 import com.review.entity.userEntity;
 import com.review.entity.userReviewEntity;
 import com.review.repository.UserRepository;
@@ -44,7 +46,20 @@ public class UserReviewService{
     }
     
     
-    
+    //리뷰 평점 평균 계산
+    public List<movieDTO> applyUserRatings (List<movieDTO> tmdbMovies) {
+        if (tmdbMovies == null) {
+            return Collections.emptyList();
+        }
+        // TMDB에서 받은 영화 목록을 하나씩 돔
+        for (movieDTO movie : tmdbMovies) {
+            // Tmdb의 영화고유 Id를 가져옴
+            Long apiId = movie.getApiId(); 
+            double userAvgRating = getAverageRatingByApiId(apiId); 
+            movie.setOurAverageRating(userAvgRating);
+        }
+        return tmdbMovies;
+    }
     
     
     //영화 리뷰 가져오기

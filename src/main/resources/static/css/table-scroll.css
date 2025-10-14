@@ -1,13 +1,13 @@
 
 .table thead {
   display: table;
-  width: calc(100% - 15px); 
+  width: 1100px;
   table-layout: fixed; 
 }
 
 .table tbody {
   display: block;
-  max-height: 400px;
+  max-height: 600px;
   overflow-y: scroll;
   width: 100%; 
 }
@@ -18,32 +18,50 @@
   table-layout: fixed; 
 }
 
-.table tbody th {
-  table-layout: fixed; 
+.table tbody::-webkit-scrollbar {
+    width: 10px; 
+}
+
+.table tbody::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 10px;
 }
 
 
-
-
-.table thead th:nth-child(1),
+/* 리뷰번호 */
+.table thead th:nth-child(1){
+    width: 11.8%;
+}
 .table tbody td:nth-child(1) {
-    width: 17%;
+	width:12%;
 }
 
-.table thead th:nth-child(2),
+/* 회원닉네임 */
+.table thead th:nth-child(2){
+    width: 16.8%;
+}
 .table tbody td:nth-child(2) {
     width: 17%;
 }
-
-.table thead th:nth-child(3),
+/* 영화제목 */
+.table thead th:nth-child(3){
+    width: 12.8%; 
+}
 .table tbody td:nth-child(3) {
-    width: 20%; 
+    width: 13%; 
 }
-.table thead th:nth-child(4),
+/* 리뷰내용 */
+.table thead th:nth-child(4){
+    width: 23.7%; 
+}
 .table tbody td:nth-child(4) {
-    width: 20%; 
+    width: 24%; 
 }
-.table thead th:nth-child(5),
+
+/* 등록일 */
+.table thead th:nth-child(5){
+    width: 20.5%;
+}
 .table tbody td:nth-child(5) {
     width: 20%;
 }

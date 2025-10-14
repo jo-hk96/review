@@ -3,6 +3,7 @@ package com.review.service;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +22,6 @@ import com.review.DTO.movieDTO;
 
 @Service
 public class TmdbApiService {
-
 	
 	private final WebClient webClient;
 	private final String bearerToken;
@@ -157,4 +157,7 @@ public class TmdbApiService {
 	        return new TmdbResponseDTO(); 
 	    }
 	}
+    
+	
+	
 }

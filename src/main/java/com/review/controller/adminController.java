@@ -151,11 +151,11 @@ public class adminController {
 			List<movieDTO> moviesList;
 		if(title == null || title.trim().isEmpty()) {
 			moviesList =  movieService.allMovie();
+			moviesList =  userReviewService.applyUserRatings(moviesList);
 		}else {
 			moviesList =  movieService.movieSearch(title);
 			model.addAttribute("searchTitle", title);
 		}
-		
 		model.addAttribute("moviesList", moviesList);
 		return "admin/admin_movie";
 	}
@@ -189,7 +189,6 @@ public class adminController {
 		model.addAttribute("recentReviews" , recentReviews);
 		return "admin/admin_review";
 	}
-	
 	
 	
 		//리뷰상세

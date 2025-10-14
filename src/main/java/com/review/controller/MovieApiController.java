@@ -49,7 +49,7 @@ public class MovieApiController {
 	    public List<movieDTO> searchMovieByApi(@RequestParam("query") String query) {
 	        List<movieDTO> searchResults = tmdbApiService.searchMovies(query); 
 	        //공통메서드호출
-	        return applyUserRatings(searchResults); 
+	        return userReviewService.applyUserRatings(searchResults); 
 	    }
 	    
 	    
@@ -58,34 +58,14 @@ public class MovieApiController {
 	            @RequestParam("category") String category, 
 	            @RequestParam("page") int page) {
 	        
-	        // 1. TMDB에서 특정 카테고리와 페이지의 목록을 가져옵니다.
-	        // (TmdbResponseDTO를 반환하고, 내부에는 total_pages와 List<movieDTO> results가 있음)
 	        TmdbResponseDTO tmdbResponse = tmdbApiService.getMoviesByCategory(category, page); 
-	        // 2. 평점을 통합합니다. (results 리스트만 추출)
 	        List<movieDTO> tmdbMovies = tmdbResponse.getResults(); 
-	        List<movieDTO> moviesWithRatings = applyUserRatings(tmdbMovies); 
-	        // 3. 통합된 리스트로 응답 DTO의 결과를 덮어씌웁니다.
+	        List<movieDTO> moviesWithRatings = userReviewService.applyUserRatings(tmdbMovies); 
 	        tmdbResponse.setResults(moviesWithRatings);
-	        // 4. total_pages와 평점 통합 리스트를 포함한 JSON을 클라이언트에게 반환합니다.
 	        return tmdbResponse; 
 	    }
 	    
 	    
-	    
-	    //리뷰 평점 평균 계산
-	    private List<movieDTO> applyUserRatings(List<movieDTO> tmdbMovies) {
-	        if (tmdbMovies == null) {
-	            return Collections.emptyList();
-	        }
-	        // TMDB에서 받은 영화 목록을 하나씩 돔
-	        for (movieDTO movie : tmdbMovies) {
-	            // Tmdb의 영화고유 Id를 가져옴
-	            Long apiId = movie.getApiId(); 
-	            double userAvgRating = userReviewService.getAverageRatingByApiId(apiId); 
-	            movie.setOurAverageRating(userAvgRating);
-	        }
-	        return tmdbMovies;
-	    }
 	    
 	    
 	    

@@ -38,6 +38,7 @@
 					<th>영화 ID</th>
 					<th>영화 제목</th>
 					<th>영화 설명</th>
+					<th>평점</th>
 					<th>개봉일</th>
 				</tr>
 			</thead>
@@ -48,6 +49,7 @@
 					<td th:text = "${mlist.apiId}"></td>
 					<td th:text = "${mlist.title}"></td>
 					<td th:text = "${#strings.isEmpty(mlist.overview) ? '줄거리없음' : mlist.overview}"></td>
+					<td th:text = "${mlist.ourAverageRating}"></td>
 					<td th:text = "${mlist.releaseDate}"></td>
 				</tr>
 			</tbody>	
