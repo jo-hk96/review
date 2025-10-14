@@ -23,6 +23,7 @@ import com.review.entity.userEntity;
 import com.review.entity.userReviewEntity;
 import com.review.repository.UserRepository;
 import com.review.repository.UserReviewRepository;
+import com.review.service.InquiryService;
 import com.review.service.MovieLikeService;
 import com.review.service.MovieService;
 import com.review.service.UserReviewService;
@@ -41,7 +42,7 @@ public class adminController {
 	private final UserService userService;
 	private final MovieService movieService;
 	private final MovieLikeService movieLikeService;
-	
+	private final InquiryService inquiryService;
 	
 	//권한없는 페이지 접속시
 	@GetMapping("/access-error")
@@ -227,6 +228,20 @@ public class adminController {
 			}
 			
 	
-	
-	
+	//휴면계정이메일 문의		
+	@PostMapping("/inquiry")
+	public String handleInquiry(@RequestParam("email")String email,
+								@RequestParam("subject") String subject,
+								@RequestParam("content") String content,
+								RedirectAttributes re) {
+		try {
+			inquiryService.sendInquiryEmail(email, subject,content);
+			re.addFlashAttribute("sucMail","계정문의접수가 완료되었습니다");
+		}catch(Exception e) {
+			//메일 전송 실패시
+			e.printStackTrace();
+			re.addFlashAttribute("failMail","메일 전송이 실패했습니다");
+		}
+		return "redirect:/UserDormant";
+	}
 }

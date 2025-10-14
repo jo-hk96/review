@@ -19,23 +19,22 @@
 	<!-- 홈 바로가기 버튼 -->
 		<form action="/" method="get" style="margin-bottom:10px;">
 		  	<button type="submit" class="home-btn">홈 바로가기</button>
-		 </form>
+		</form>
+		 
+	  <!-- 마이페이지 -->
+	  <form action="/UserMypage" method="Get" style="margin-bottom:10px;">
+	  	<button type="submit">마이페이지</button>
+	  </form>
+	  
 	   <!-- 탈퇴 버튼 -->
 	  <form th:action="@{/UserDelete}" method="post">
-	    <button type="submit" onclick="return confirm('정말 탈퇴 하시겠습니까?')">회원 탈퇴</button>
+	    <button type="submit" onclick="return confirm('정말 탈퇴 하시겠습니까?')"
+	    	style="background-color: red; color: white; border: none; padding: 10px 20px; cursor: pointer;"
+    	    onmouseover="this.style.backgroundColor='red'"
+    	    onmouseout="this.style.backgroundColor='#d34c4c'"
+	    >회원 탈퇴</button>
 	  </form>
 </div>
-<script>
-function toggleMenu() {
-    const menu = document.getElementById('menu-list');
-    if (menu.style.display === 'none' || menu.style.display === '') {
-        menu.style.display = 'block';
-    } else {
-        menu.style.display = 'none';
-    }
-}
-</script>
-
 </body>
 <body>
     <div class="user-edit-container">
@@ -75,8 +74,16 @@ function toggleMenu() {
     </div>
     <div th:insert="index/index :: footer"></div>
     
-    
-    
+    <script>
+		function toggleMenu() {
+		    const menu = document.getElementById('menu-list');
+		    if (menu.style.display === 'none' || menu.style.display === '') {
+		        menu.style.display = 'block';
+		    } else {
+		        menu.style.display = 'none';
+		    }
+		}
+	</script>
     
     <script>
     document.querySelector('.user-edit-form').addEventListener('submit', function(event) {

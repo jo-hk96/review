@@ -18,15 +18,20 @@
 	  <button type="submit" class="home-btn">홈 바로가기</button>
 	</form>
 	
-	   <!-- 탈퇴 버튼 -->
-	  <form th:action="@{/UserDelete}" method="post">
-	    <button type="submit" onclick="return confirm('정말 탈퇴 하시겠습니까?')">회원 탈퇴</button>
-	  </form>
-	  
 	  <!-- 내 정보 수정 -->
 	  <form action="/UserEditForm" method="Get" style="margin-bottom:10px;">
 	  	<button type="submit">내 정보 수정</button>
 	  </form>
+	   <!-- 탈퇴 버튼 -->
+	  <form th:action="@{/UserDelete}" method="post">
+	    <button type="submit" onclick="return confirm('정말 탈퇴 하시겠습니까?')"
+	    	style="background-color: red; color: white; border: none; padding: 10px 20px; cursor: pointer;"
+	    	    onmouseover="this.style.backgroundColor='red'"
+	    	    onmouseout="this.style.backgroundColor='#d34c4c'"
+	    >회원 탈퇴</button>
+	    	
+	  </form>
+	  
 </div>
 
 <script>
@@ -87,10 +92,6 @@
 					
 			</div>
 		</div>
-	<hr>
-	
-	
-	
 	<!-- 사용자 리뷰 목록 MODAL -->
 	<button id="showReviewMoviesBtn" onclick="openReviewModal()">
 	    리뷰 목록 보기

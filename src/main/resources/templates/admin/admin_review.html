@@ -5,91 +5,17 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/table-scroll.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🎬</text></svg>"></link>
     <title>리뷰플러스 관리자</title>
 </head>
-<style>
-	#UserReviewsList{
-		position: relative;
-		cursor:pointer;
-		
-	}
-	
-	#UserReviewsList:hover{
-		background-color: #f0f0f0;
-		transition: background-color 0.2s ease;
-	}
-	
-	
-	#UserList{
-		position: relative;
-		cursor:pointer;
-	}
-	
-	#UserList:hover{
-		background-color: #f0f0f0;
-		transition: background-color 0.2s ease;
-	}
-	
-	
-	
-/* 테이블 스크롤,th td 칸 크기 지정  */	
-table {
-  table-layout: fixed; 
-  width: 100%; 
-}
-
-table thead {
-  display: table;
-  width: calc(100% - 20px); 
-  table-layout: fixed; 
-}
-
-table tbody {
-  display: block;
-  max-height: 400px;
-  overflow-y: scroll;
-  width: 100%; 
-}
-
-table tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed; 
-}
-
-table thead th:nth-child(1),
-table tbody td:nth-child(1) {
-    width: 17%;
-}
-
-table thead th:nth-child(2),
-table tbody td:nth-child(2) {
-    width: 17%;
-}
-
-table thead th:nth-child(3),
-table tbody td:nth-child(3) {
-    width: 20%; 
-}
-table thead th:nth-child(4),
-table tbody td:nth-child(4) {
-    width: 20%; 
-}
-table thead th:nth-child(5),
-table tbody td:nth-child(5) {
-    width: 20%;
-}
-</style>  
-
-
 <body>
 	<div id="header" th:fragment = "header">
 		<div class="nav">
 			<ul class="nav1">
 				<li><a href="/"><img src="/images/logo.png" alt="logo" class="logoimg"></a></li>
 				<li><a href="/Admin/AdminHome">관리자 홈</a></li>
-				<li class="emphasis-color"><a href="/logout">로그아웃</a></li>
+				<li><a href="/logout">로그아웃</a></li>
 			</ul>
 			<ul class="nav2">
 				<li><a href="/Admin/AdminUser">회원관리</a></li>
@@ -98,10 +24,9 @@ table tbody td:nth-child(5) {
 			</ul>
 		</div>
 	</div>
-	
-	
-	
-	<div class="list" >
+	<div class="list">
+		
+		
 			<!-- 유저리뷰삭제완료 -->
 			<div th:if="${sucReviewDelete}" class="alert alert-success">
 			    <p th:text="${sucReviewDelete}"></p>
@@ -111,6 +36,8 @@ table tbody td:nth-child(5) {
 			<div th:if="${userReviewdelError}" class="alert alert-success">
 			    <p th:text="${userReviewdelError}"></p>
 			</div>
+				
+	
 	
 		<div class="list-title">전체 리뷰 목록</div>
 		<div class="searchbar-container">
@@ -119,9 +46,7 @@ table tbody td:nth-child(5) {
 				<button class="search-btn" type="submit">검색</button>
 			</form>
 		</div>
-		
-		
-			<table class="table">
+			<table class="table" >
 			<thead>
 				<tr>
 					<th>리뷰 번호</th>
@@ -135,7 +60,7 @@ table tbody td:nth-child(5) {
 				<tr th:each = "review : ${recentReviews}"
 					th:data-url="@{/Admin/AdminReviewDetail/{reviewId}(reviewId=${review.reviewId})}"
 					onclick="UserDetailLink(this);"
-					id = "UserReviewsList" >
+					id = "UserReviewsList">
 					<td th:text ="${review.reviewId}"></td>
 					<td th:text ="${review.nickname}"></td>
 					<td th:text ="${review.title}"></td>
@@ -144,8 +69,8 @@ table tbody td:nth-child(5) {
 				</tr>
 			</tbody>	
 			</table>
-			
 	</div>
+
 <script>
 		function UserDetailLink(rowElement){
 			const url = rowElement.getAttribute('data-url');
@@ -154,5 +79,6 @@ table tbody td:nth-child(5) {
 			}
 		}
 	</script>	
+	
 </body>
 </html>

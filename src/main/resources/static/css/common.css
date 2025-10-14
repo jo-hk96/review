@@ -38,3 +38,37 @@ a:active {
 li a {
 	text-decoration: none;
 }
+
+
+
+/* ================== 반응형 =================*/
+/* 1281px 이상의 큰 모니터 */
+@media (min-width: 1281px) {
+  
+}
+/* 일반적인 노트북, PC 화면 */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  
+  /* CSS */
+  
+}
+/* 아이패드, 태블릿 PC */
+@media (min-width: 768px) and (max-width: 1024px) {
+  
+  /* CSS */
+  
+}
+/* 아이패드, 태블릿 PC - 가로 모드 */
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+  
+  /* CSS */
+  
+}
+/* 일반적인 스마트폰 화면 */
+@media (min-width: 481px) and (max-width: 767px) {
+	
+}
+/* 작은 스마트폰 화면 */
+@media (min-width: 320px) and (max-width: 480px) {
+  
+}

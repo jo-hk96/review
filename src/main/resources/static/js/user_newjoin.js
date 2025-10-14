@@ -7,6 +7,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const passwordInput = document.getElementById('password');
     const birthdateInput = document.getElementById('birthdate');
 
+// user_newjoin.js 파일에 추가/수정
+
+// 비밀번호 확인 관련 DOM 요소 가져오기
+const password = document.getElementById('password');
+const passwordConfirm = document.getElementById('passwordConfirm');
+const passwordConfirmCheckResult = document.getElementById('passwordConfirmCheckResult');
+const joinForm = document.getElementById('joinForm');
+
+// 비밀번호 확인 유효성 검사 함수 호출
+password.addEventListener('keyup', checkPasswordMatch);
+passwordConfirm.addEventListener('keyup', checkPasswordMatch);
+// 폼 제출 시 최종 확인
+joinForm.addEventListener('submit', validateForm);
+
     // 메시지 출력 영역 요소들을 가져옵니다.
     const pnameCheckResult = document.getElementById('pnameCheckResult');
     const nicknameCheckResult = document.getElementById('nicknameCheckResult');
@@ -21,8 +35,54 @@ document.addEventListener('DOMContentLoaded', function() {
     // 비밀번호 정규식 (최소 8자, 대문자, 소문자, 숫자, 특수문자 포함)
     const passwordStrongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
+    // 비밀번호와 비밀번호 확인이 일치하는지 확인하는 함수
+function checkPasswordMatch() {
+    const passwordValue = password.value;
+    const confirmValue = passwordConfirm.value;
     
+    // 비밀번호 필드 또는 확인 필드 둘 중 하나라도 비어 있으면 메시지 출력 안 함 (다른 유효성 검사에서 처리)
+    if (passwordValue === '' && confirmValue === '') {
+        passwordConfirmCheckResult.textContent = '';
+        return false;
+    }
 
+    if (passwordValue !== confirmValue) {
+        passwordConfirmCheckResult.textContent = '❌ 비밀번호가 일치하지 않습니다.';
+        return false;
+    } else {
+        // 비밀번호 필드에 이미 유효성 검사 결과가 있다면, 일치 시에는 이 메시지를 비워둡니다.
+        // 또는, '✔️ 비밀번호가 일치합니다.' 메시지를 표시할 수도 있습니다. (선택)
+        if (passwordValue.length > 0 && confirmValue.length > 0) {
+            passwordConfirmCheckResult.textContent = '✔️ 비밀번호가 일치합니다.';
+            passwordConfirmCheckResult.style.color = 'blue'; // 일치 시 파란색으로 변경
+            return true;
+        } else {
+            passwordConfirmCheckResult.textContent = '';
+            return false;
+        }
+    }
+}
+
+// (만약 기존 user_newjoin.js에 폼 유효성 검사 함수가 있다면)
+// 폼 제출 처리 함수 (예시)
+function validateForm(event) {
+    let isValid = true;
+    
+    // ... 다른 모든 유효성 검사 로직 (이름, 닉네임, 이메일 등) ...
+    
+    // **비밀번호 일치 검사 추가**
+    if (!checkPasswordMatch()) {
+        passwordConfirmCheckResult.textContent = '❌ 비밀번호가 일치하는지 확인해 주세요.';
+        passwordConfirmCheckResult.style.color = 'red';
+        isValid = false;
+    }
+
+    // ... 다른 유효성 검사들 (예: 비밀번호 길이/형식 검사) ...
+    
+    if (!isValid) {
+        event.preventDefault(); // 유효성 검사 실패 시 폼 제출 막기
+    }
+}
     // 메시지를 출력하고 색상을 변경하는 헬퍼 함수
     function displayMessage(messageElement, message, color) {
         messageElement.textContent = message;
@@ -99,6 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     
+    // 중복 검사 로직 함수 (Blur 시 사용)
 
     // 닉네임 중복 검사
     async function checkNicknameAvailability() {

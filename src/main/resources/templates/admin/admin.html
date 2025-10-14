@@ -6,31 +6,7 @@
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/common.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🎬</text></svg>"></link>
-    <title>리뷰플러스 관리자</title>
-
-<style>
-	#UserReviewsList{
-		position: relative;
-		cursor:pointer;
-		
-	}
-	
-	#UserReviewsList:hover{
-		background-color: #f0f0f0;
-		transition: background-color 0.2s ease;
-	}
-	
-	
-	#UserList{
-		position: relative;
-		cursor:pointer;
-	}
-	
-	#UserList:hover{
-		background-color: #f0f0f0;
-		transition: background-color 0.2s ease;
-	}
-</style>    
+    <title>리뷰플러스 관리자</title>  
 </head>
 <body>
 	<div id="header" th:fragment = "header">
@@ -38,7 +14,7 @@
 			<ul class="nav1">
 				<li><a href="/"><img src="/images/logo.png" alt="logo" class="logoimg"></a></li>
 				<li><a href="/Admin/AdminHome">관리자 홈</a></li>
-				<li class="emphasis-color"><a href="/logout">로그아웃</a></li>
+				<li><a href="/logout">로그아웃</a></li>
 			</ul>
 			<ul class="nav2">
 				<li><a href="/Admin/AdminUser">회원관리</a></li>
@@ -49,8 +25,8 @@
 	</div>
 	
 	<div class="list">
-	<h1>관리자 메인</h1>
-		<div class="list-title" >최근 가입자 10명</div>
+	<h2>관리자 홈</h2>
+		<div class="list-title" >최근 가입자 목록</div>
 			<table class="table">
 				<tr>
 					<th>아이디</th>
@@ -67,7 +43,7 @@
 					<td th:text="${#temporals.format(user.createdAt , 'yyyy-MM-dd HH:mm:ss')}"></td>
 				</tr>
 			</table>
-		<div class="list-title" >전체 리뷰 10개</div>
+		<div class="list-title" >전체 영화 리뷰</div>
 			<table class="table">
 				<tr>
 					<th>번호</th>
@@ -86,10 +62,8 @@
 					<td th:text ="${reviews.comment}"></td>
 					<td th:text ="${reviews.regDate}">
 				</tr>
-				
 			</table>
 	</div>
-	
 	<!-- tr 링크 클릭 이동 스크립트  -->
 	<script>
 		function UserDetailLink(rowElement){

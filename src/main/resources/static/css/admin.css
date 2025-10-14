@@ -10,7 +10,8 @@ li {
   padding: 0;
   overflow: hidden;
   background-color: #333333;
-  width: 100%;
+  max-width: 100%;
+  min-width: 1024px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -35,9 +36,7 @@ li {
 .nav1 li:first-child {
 	margin-right: auto;
 }
-.nav1 .emphasis-color {
-	color: #e84545;
-}
+
 
 /* ======= 두 번째 메뉴 바 ======= */
 .nav2 {
@@ -45,6 +44,8 @@ li {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  min-width: 1024px;
+  max-width: 100%;
   background-color: #3d3d3d;
 }
 .nav2 li {
@@ -80,16 +81,18 @@ li {
 	border-collapse: collapse;
 	margin-top: 20px;
 	margin-bottom: 50px;
-	width: 80%;
+	min-width: 900px;
+	max-width: 1024px;
 }
 .table th {
 	background-color: #e0e0e0;
 	font-size: 15px;
+	
 }
 .table td, th {
 	font-family: 'AstaSans', sans-serif;
 	border: 1px solid #cccccc;
-	padding: 8px 50px;
+	padding: 14px 40px;
 	text-align: center;
 }
 .table td {
@@ -98,12 +101,15 @@ li {
 	text-overflow: ellipsis;
 	overflow: hidden;
 }
+
+
 .table a {
 	color: black;
 }
 .table a:hover {
 	color: #e84545;
 }
+
 
 /* ==== 검색 바 ====*/
 .searchbar-container {
@@ -139,7 +145,8 @@ li {
 .detail-table {
 	margin-top: 20px;
 	margin-bottom: 50px;
-	width: 27%;
+	min-width: 400px;
+	max-width: 1000px;
 	border: 1px solid #e0e0e0;
 	border-collapse: collapse;
 }
@@ -185,9 +192,9 @@ li {
   font-weight: 700;
   line-height: 1.5;
   margin: 15px;
-  max-width: none;
+  max-width: 300px;
   min-height: 44px;
-  min-width: 10px;
+  min-width: 100px;
   outline: none;
   overflow: hidden;
   padding: 6px;
@@ -328,7 +335,6 @@ li {
     border-color: #ebccd1;
     width:350px;
 }
-
 
 /* 기본적으로 숨김 처리 */
 .UserStatus {

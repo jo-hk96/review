@@ -25,6 +25,10 @@ repositories {
 }
 
 dependencies {
+
+	//스타터 이메일
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	
 	//시큐리티
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.session:spring-session-jdbc'

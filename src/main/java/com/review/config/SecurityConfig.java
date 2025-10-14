@@ -35,16 +35,16 @@ public class SecurityConfig {
 		        //인가 설정
 		        .authorizeHttpRequests(authorizeRequests ->
 		            authorizeRequests
-		            	//로그인 없이 모두 허용할 경로 정의
+		            	//관리자
+			            .requestMatchers("/Admin/**").hasAnyRole("ADMIN")
+		            	//로그인 없이 모두 허용할 경로
+			            .requestMatchers("/UserMypage" , "/detail/**").hasAnyRole("USER","ADMIN")
 		                .requestMatchers("/",
 		                		"/css/**","/js/**","images/**",
 		                		"/detail/**",
 				                "/UserJoinForm","/UserLoginMain",
 		                        "/UserJoin","/MoviesList","/TopRate","/api/**"
 				                ).permitAll()
-		                //hasAuthority : ROLE_ADMIN
-		                .requestMatchers("/Admin/**").hasAnyRole("ADMIN")
-		                //위의 명시되지않은 모든 나머지요청은 로그인이 필요함
 		                .anyRequest().authenticated()
 		        ) 
 		        

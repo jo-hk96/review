@@ -20,6 +20,7 @@
 
 </style>
 <body>
+
 	<h1>회원가입</h1>
 		<div th:if="${errorMessage}" style="color: red; font-weight: bold; margin-bottom: 15px;">
 			    <span th:text="${errorMessage}"></span>
@@ -39,6 +40,8 @@
     <input type = "password" name ="password" id="password" placeholder = "비밀번호"><br>
     <span id="passwordCheckResult" ></span>
     
+    <input type = "password" name ="passwordConfirm" id="passwordConfirm" placeholder = "비밀번호 확인"><br>
+    <span id="passwordConfirmCheckResult" ></span>
     <input type = "date" name ="birthdate" 
             id="birthdate" min="1900-01-01" max="2025-09-27" th:value="${inputData?.birthdate}" placeholder = "생일"><br>
     <span id="birthdateCheckResult" ></span>

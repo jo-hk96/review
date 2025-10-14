@@ -5,84 +5,10 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/table-scroll.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%2210 0 100 100%22><text y=%22.90em%22 font-size=%2290%22>🎬</text></svg>"></link>
     <title>리뷰플러스 관리자</title>
-</head>
-<style>
-	#UserReviewsList{
-		position: relative;
-		cursor:pointer;
-		
-	}
-	
-	#UserReviewsList:hover{
-		background-color: #f0f0f0;
-		transition: background-color 0.2s ease;
-	}
-	
-	
-	#UserList{
-		position: relative;
-		cursor:pointer;
-	}
-	
-	#UserList:hover{
-		background-color: #f0f0f0;
-		transition: background-color 0.2s ease;
-	}
-	
-	
-/*===========================  */
-
-
-#tableMovie {
-  table-layout: fixed; 
-  width: 100%; 
-}
-
-#tableMovie thead {
-  display: table;
-  width: calc(100% - 20px); 
-  table-layout: fixed; 
-}
-
-#tableMovie tbody {
-  display: block;
-  max-height: 400px;
-  overflow-y: scroll;
-  width: 100%; 
-}
-
-#tableMovie tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed; 
-}
-
-#tableMovie thead th:nth-child(1),
-#tableMovie tbody td:nth-child(1) {
-    width: 17%;
-}
-
-#tableMovie thead th:nth-child(2),
-#tableMovie tbody td:nth-child(2) {
-    width: 17%;
-}
-
-#tableMovie thead th:nth-child(3),
-#tableMovie tbody td:nth-child(3) {
-    width: 20%; 
-}
-#tableMovie thead th:nth-child(4),
-#tableMovie tbody td:nth-child(4) {
-    width: 20%; 
-}
-#tableMovie thead th:nth-child(5),
-#tableMovie tbody td:nth-child(5) {
-    width: 20%;
-}
-</style>  
-
+</head> 
 
 <body>
 
@@ -92,7 +18,7 @@
 			<ul class="nav1">
 				<li><a href="/"><img src="/images/logo.png" alt="logo" class="logoimg"></a></li>
 				<li><a href="/Admin/AdminHome">관리자 홈</a></li>
-				<li class="emphasis-color"><a href="/logout">로그아웃</a></li>
+				<li><a href="/logout">로그아웃</a></li>
 			</ul>
 			<ul class="nav2">
 				<li><a href="/Admin/AdminUser">회원관리</a></li>
@@ -138,17 +64,18 @@
 						<button type="submit" class="btn-detail" onclick="toggleStatusButtons('userStatusContainer')">회원상태변경</button>
 					</div>
 					
-					<!-- 회원상태변경 -->
-					<form action = "/Admin/updateUserStatus" method = "post">
-						<input type ="hidden" name ="userId" th:value ="${userDetails.userId}">
-						<div id="userStatusContainer" class = "UserStatus">
-							<button type="submit" class="btn-detail" name="status" value="ROLE_ADMIN">관리자</button>
-							<button type="submit" class="btn-detail" name="status" value="ROLE_USER">일반회원</button>
-							<button type="submit" class="btn-detail" name="status" value="ROLE_DORMANT">휴면유저</button>
-						</div>
-					</form>
+					<!-- 회원 상태 변경 -->
+					
+				<form action = "/Admin/updateUserStatus" method = "post">
+					<input type ="hidden" name ="userId" th:value ="${userDetails.userId}">
+					<div id="userStatusContainer" class = "UserStatus">
+						<button type="submit" class="btn-detail" name="status" value="ROLE_ADMIN">관리자</button>
+						<button type="submit" class="btn-detail" name="status" value="ROLE_USER">일반회원</button>
+						<button type="submit" class="btn-detail" name="status" value="ROLE_DORMANT">휴면유저</button>
+					</div>
+				</form>	
 				
-				<!-- 회원수정 모달  -->
+				<!-- 회원 수정 모달  -->
 				<div id="editUserModal" class="modal">
 				    <div class="modal-content">
 				        <span class="close-button" onclick="closeModal('editUserModal')">닫기</span>
@@ -157,11 +84,11 @@
 				        	<input type = "hidden" name = "userId" th:value ="${userDetails.userId}">
 				            <label for="editNickname">닉네임:</label><br>
 				            <input type="text" id="editNickname" name = "nickname" th:value="${userDetails.nickname}"><br>
-				            <label for="editNickname">이름:</label><br>
+				            <label for="editPname">이름:</label><br>
 				            <input type="text" id="editPname" name = "pname" th:value="${userDetails.pname}"><br>
-				            <label for="editNickname">생년월일:</label><br>
+				            <label for="editBirthdate">생년월일:</label><br>
 				            <input type="text" id="editBirthdate" name = "birthdate" th:value="${userDetails.birthdate}"><br>
-				            <label for="editNickname">이메일:</label><br>
+				            <label for="editEmail">이메일:</label><br>
 				            <input type="text" id="editEmail" name = "email" th:value="${userDetails.email}"><br>
 				            <button type="submit" class="btn-modal-edit">수정</button>
 				        </form>
@@ -169,7 +96,7 @@
 				</div>
 				
 				
-				<!-- 회원상태 수정 성공 메시지 -->
+				<!-- 회원 상태 수정 성공 메시지 -->
 				<div th:if="${sucStatus}" class="alert alert-status">
 				    <p th:text="${sucStatus}"></p>
 				</div>
@@ -188,7 +115,7 @@
 				
 			<!-- 회원 리뷰 목록 -->	
 		<div class="list-title">회원 리뷰 목록</div>
-				<table class="table" id = "tableMovie">
+				<table class="table" >
 				<thead>
 					<tr>
 						<th>영화 제목</th>
@@ -198,8 +125,8 @@
 						<th>등록일</th>
 					</tr>
 				</thead>	
-				<!-- th:block  div 처럼 html 속성이 남는게 아닌 html자체 태그 없이 조건문 생성  -->
 				<tbody>
+					<!-- th:block div 처럼 html 속성이 남는게 아닌 html 자체 태그 없이 조건문 생성  -->
 					<th:block th:if="${!#lists.isEmpty(allUserReviews)}">	
 						<tr th:each = "userReviws : ${allUserReviews}"
 							th:data-url="@{/Admin/AdminReviewDetail/{reviewId}(reviewId=${userReviws.reviewId})}"
@@ -211,16 +138,16 @@
 							<td th:text = "${userReviws.rating}"></td>
 							<td th:text = "${userReviws.regDate}"></td>
 						</tr>
-					</th:block>
-				</tbody>	
-					<tr th:if="${#lists.isEmpty(allUserReviews)}">
-					    <td colspan="5" style="text-align: center; color: black;">사용자의 리뷰가 없습니다.</td>
-					</tr>
+					</th:block>	
+						<tr th:if="${#lists.isEmpty(allUserReviews)}">
+						    <td colspan="5" style="text-align: center; color: black;">사용자의 리뷰가 없습니다.</td>
+						</tr>
+				</tbody>
 				</table>
 </div>
 	
 	
-	<!-- 회원 리뷰행 선택시 해당 URL로 이동 -->	
+	<!-- 회원 리뷰 행 선택시 해당 URL로 이동 -->	
 	<script>
 			function UserDetailLink(rowElement){
 				const url = rowElement.getAttribute('data-url');

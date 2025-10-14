@@ -15,8 +15,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
     <title>리뷰플러스</title>
 </head>
-
-
+<style>
+	#MainMovieList{
+	color:gray;
+	}
+	
+	#MainMovieList:hover{
+	color:black;
+	}
+</style>
 <body>
 	<body>
 	<!--익명사용자(비로그인상태)isAnonymous -->
@@ -26,13 +33,21 @@
 	           <img th:src="@{/images/logo.png}" alt ="로고" >
 	        </a>   
        	<div sec:authorize="isAuthenticated()" class = "headerLeft">
-	       		<!-- ROLE_ADMIN일 경우 -->
+       	
+       			<!-- ROLE_DORMANT -->
+			    <span sec:authorize="hasRole('ROLE_DORMANT')">
+			        휴면계정
+			          <b><a href = "/UserDormant" > 관리자문의 </a></b>
+			    </span>
+			    
+	       		<!-- ROLE_ADMIN -->
 			    <span sec:authorize="hasRole('ROLE_ADMIN')">
 			        관리자 : <span th:text = "${#authentication.principal.nickname}"></span>
 			        <b><a href="/Admin/AdminHome">사이트관리</a></b>
 			    </span>
-			    <!-- ROLE_ADMIN이 아닐경우 -->
-			    <span sec:authorize="!hasRole('ROLE_ADMIN')">
+			    
+			    <!-- ROLE_USER -->
+			    <span sec:authorize="hasRole('ROLE_USER')">
 			       <b><span th:text = "${#authentication.principal.nickname}" ></span></b>
 			    </span>
 			    <span><a href="/MoviesList">인기</a></span>
@@ -71,7 +86,7 @@
 	<div id = "indexMovieList">
 	  	 <!-- 개봉중인 영화  -->
 		 <div class="slider-container2">
-	  		 	<h2><a href ="/MoviesList?category=now_playing">현재상영중</a></h2>
+	  		 	<h2><a id = "MainMovieList" href ="/MoviesList?category=now_playing">현재상영중</a></h2>
 			    <button id="prev-btn2" class="nav-btn2">&lt;</button> 
 			  	  <div id="movie-list2"></div>
 			    <button id="next-btn2" class="nav-btn2">&gt;</button> 
@@ -81,7 +96,7 @@
 		<hr>     	
 		  <!--최고평점-->
 		  <div class="slider-container">
-		  		<h2><a href ="/MoviesList?category=top_rated">최고평점</a></h2>
+		  		<h2><a id= "MainMovieList" href ="/MoviesList?category=top_rated">최고평점</a></h2>
 			    <button id="prev-btn" class="nav-btn">&lt;</button> 
 			    	<div id="movie-list"></div>
 			    <button id="next-btn" class="nav-btn">&gt;</button> 
@@ -109,7 +124,6 @@
 			</div>
 	</div>
 		<p th:if ="${recentReviews.isEmpty()}">아직 작성된 리뷰가 없습니다.</p>
-		
 		
 	<!-- -----------------------푸터--------------------------- -->
     <div id = "footer" th:fragment = "footer">

@@ -9,13 +9,14 @@
     <title>리뷰플러스 관리자</title>
    
 </head>
+
 <body>
 	<div id="header" th:fragment = "header">
 		<div class="nav">
 			<ul class="nav1">
 				<li><a href="/"><img src="/images/logo.png" alt="logo" class="logoimg"></a></li>
 				<li><a href="/Admin/AdminHome">관리자 홈</a></li>
-				<li class="emphasis-color"><a href="/logout">로그아웃</a></li>
+				<li><a href="/logout">로그아웃</a></li>
 			</ul>
 			<ul class="nav2">
 				<li><a href="/Admin/AdminUser">회원관리</a></li>
@@ -24,14 +25,15 @@
 			</ul>
 		</div>
 	</div>
+	
 	<div class="list">
-		<!-- 유저리뷰삭제오류 -->
+		<!-- 유저 리뷰 삭제 오류 -->
 		<div th:if="${sucReviewUpdate}">
 		    <p th:text="${sucReviewUpdate}"></p>
 		</div>
 				
 				
-		<!-- 리뷰정보 -->	
+		<!-- 리뷰 정보 -->	
 		<div class="list-title">리뷰 정보</div>
 			<form action="">
 				<table class="detail-table">
@@ -61,11 +63,11 @@
 					</tr>
 				</table>
 				<div class="btn-detail-container">
-					<a th:href="@{/Admin/deleteReview(reviewId=${urd.reviewId})}" 
+					<button th:href="@{/Admin/deleteReview(reviewId=${urd.reviewId})}" 
 					   onclick="return confirm('리뷰를 삭제합니다.');"
 					   class="btn-detail">
 					    삭제
-					</a>
+					</button>
 					<button type="button" class="btn-detail" onclick="openModal('editUserReviewModal')">수정</button>
 				</div>
 			</form>
@@ -113,7 +115,7 @@
         }
     }
 
-    // 모달 바깥을 클릭해도 닫힘
+    // 모달 밖을 클릭해도 닫힘
     window.onclick = function(event) {
         const modal = document.getElementById('editUserReviewModal');
         if (event.target == modal) {
@@ -121,5 +123,7 @@
         }
     }
 </script>	
+	
+	
 </body>
 </html>
