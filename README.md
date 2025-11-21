@@ -44,7 +44,7 @@
 
 ## 💻 화면 구성
 ### 🎬 메인
-![main png](./img/main.png)
+<img src = "./img/main.png" style = "width:350px; height:350px;" alt = "main png">
 
 ### 🔑 로그인 / 회원가입
 | 로그인 | 회원가입 |
